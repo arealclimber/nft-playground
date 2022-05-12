@@ -19,7 +19,7 @@ NFT Playground is the NFT marketplace and that allows not only sellers and buyer
 
 -   [ ] **Show the feature and update instantly**
 
-### Commands
+## Commands
 
 Hardhat:
 
