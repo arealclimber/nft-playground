@@ -4,8 +4,6 @@ This project is built to learn.
 
 NFT Playground is the NFT marketplace and that allows not only sellers and buyers but also the community to have fun.
 
----
-
 ## 🧱 Build 🔨
 
 #### Solidity 🎁
@@ -21,8 +19,6 @@ NFT Playground is the NFT marketplace and that allows not only sellers and buyer
 
 -   [ ] **Show the feature and update instantly**
 
----
-
 ### Commands
 
 Hardhat:
@@ -36,7 +32,5 @@ npx hardhat node
 node scripts/sample-script.js
 npx hardhat help
 ```
-
----
 
 ## References
