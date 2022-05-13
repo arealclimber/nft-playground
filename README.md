@@ -21,15 +21,18 @@ NFT Playground is the Fractionalized NFT marketplace that allows not only seller
 
 ## Commands
 
-Hardhat:
+**Hardhat:**
+`npx hardhat compile` to compile contracts and generate `abi` in `.json` of the folder artifacts
+
+`npx hardhat test` to run test
+
+`npx hardhat node` to get test accounts
+
+`node scripts/sample-script.js --network localshost` to deploy on the localhost
 
 ```shell
 npx hardhat accounts
-npx hardhat compile
 npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
 npx hardhat help
 ```
 
