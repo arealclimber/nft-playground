@@ -21,7 +21,6 @@ const client = create({
 		authorization: auth,
 	},
 })
-console.log(auth)
 
 import { nftContractAddress, marketContractAddress } from '../config'
 
@@ -86,7 +85,12 @@ export default function CreateItem() {
 		let transaction = await contract.createToken(url)
 		let tx = await transaction.wait()
 
+		// console.log(tx)
+		// console.log(tx.value)
+		// console.log(tx.events)
+
 		let event = tx.events[0]
+		console.log(event)
 		let value = event.args[2]
 		let tokenId = value.toNumber()
 
