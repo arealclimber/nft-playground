@@ -39,7 +39,7 @@ export default function Home() {
 					seller: i.seller,
 					owner: i.owner,
 					image: meta.data.image,
-					name: meta.data.namge,
+					name: meta.data.name,
 					description: meta.data.description,
 				}
 				return item
@@ -77,15 +77,15 @@ export default function Home() {
 						<div key={i} className="border shadow rounded-xl overflow-hidden">
 							<img src={nft.image} />
 							<div className="p-4">
-								<p style={{ height: '64px' }} className="text-2xl font-semibold">
+								<p style={{ height: '64px' }} className="text-4xl font-semibold">
 									{nft.name}
 								</p>
 								<div style={{ height: '70px', overflow: 'hidden' }}>
-									<p className="text-gray-400">{nft.description}</p>
+									<p className="text-lg text-blue-800">{nft.description}</p>
 								</div>
 							</div>
 							<div className="p-4 bg-slate-500">
-								<p className="text-2xl font-bold text-white">{nft.price} EHT</p>
+								<p className="text-2xl font-bold text-white">{nft.price} ETH</p>
 								<button
 									className="mt-4 w-full bg-blue-500 text-white font-bold py-2 px-12 rounded hover:bg-blue-400"
 									onClick={() => buyNft(nft)}

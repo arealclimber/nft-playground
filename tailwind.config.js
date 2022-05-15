@@ -3,7 +3,8 @@ module.exports = {
 	theme: {
 		extend: {},
 		fontFamily: {
-			'custom': ['ubuntu-mono', 'Ubuntu', 'sans-serif'],
+			'custom': ['Ubuntu', 'ubuntu-mono', 'sans-serif'],
+			'openSans': ['open-sans', 'sans-serif'],
 		},
 	},
 	plugins: [],
