@@ -27,5 +27,6 @@ contract NFT is ERC721URIStorage {
 
     // TODO: Add some basic functions in order to searching NFT conveniently
     // tokenOfOwnerByIndex  balanceOf?  
+    // Or I just need to dive into how market gets the NFT's owner rather than add function to NFT self
 
 }
