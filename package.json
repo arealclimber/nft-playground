@@ -15,9 +15,9 @@
     "axios": "^0.27.2",
     "chai": "^4.3.6",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^5.6.5",
-    "hardhat": "^2.9.4",
-    "ipfs-http-client": "50.1.2",
+    "ethers": "^5.6.6",
+    "hardhat": "^2.9.5",
+    "ipfs-http-client": "^56.0.3",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
@@ -30,5 +30,4 @@
     "postcss": "^8.4.13",
     "tailwindcss": "^3.0.24"
   }
-
 }

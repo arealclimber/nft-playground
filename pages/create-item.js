@@ -1,78 +1,104 @@
-import { useState } from 'react';
-import { ethers } from 'ethers';
-import { create as ipfsHttpClient } from 'ipfs-http-client';
-import { useRouter } from 'next/router';
-import Web3Modal from 'web3modal';
+import { useState } from 'react'
+import { ethers } from 'ethers'
+import { create, CID } from 'ipfs-http-client'
+import { useRouter } from 'next/router'
+import { Buffer } from 'buffer'
+import Web3Modal from 'web3modal'
 
 // const client = ipfsHttpClient('https://ipfs.fleek.co/ipfs/HASH');
-const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
+// 'https://ipfs.infura.io:5001/api/v0'
+const projectId = process.env.INFURA_IPFS_PROJECT_ID
+const projectSecret = process.env.INFURA_IPFS_PROJECT_SECRET
+const projectIdAndSecret = `${projectId}:${projectSecret}`
+const auth = `Basic ${Buffer.from(projectIdAndSecret).toString('base64')}`
+// Buffer.from(projectIdAndSecret).toString('base64')
+// authorization: `Basic ${Buffer.from(projectIdAndSecret).toString('base64')}`,
+const client = create({
+	host: 'ipfs.infura.io',
+	port: 5001,
+	protocol: 'https',
+	headers: {
+		authorization: auth,
+	},
+})
+console.log(auth)
 
-import { nftContractAddress, marketContractAddress } from '../config';
+import { nftContractAddress, marketContractAddress } from '../config'
 
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
-import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
+import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
+import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 
 export default function CreateItem() {
-	const [fileUrl, setFileUrl] = useState(null);
-	const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' });
-	const router = useRouter();
+	const [fileUrl, setFileUrl] = useState(null)
+	const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
+	const router = useRouter()
 
 	async function onChange(e) {
-		const file = e.target.files[0];
+		// const { cid } = client.add('Hello world')
+		// console.info(cid)
+
+		const file = e.target.files[0]
 		try {
 			const added = await client.add(file, {
 				progress: (prog) => console.log(`received: ${prog}`),
-			});
-			const url = `https://ipfs.infura.io:5001/api/${added.path}`;
-			setFileUrl(url);
-		} catch (e) {
-			console.log(e);
+			})
+
+			// const url = `https://ipfs.infura.io:5001/api/v0/cat?arg=${added.path}`
+			const url = `https://ipfs.infura.io/ipfs/${added.path}`
+
+			client.pin.add(added.path).then((res) => {
+				console.log(res)
+				setFileUrl(url)
+			})
+		} catch (error) {
+			console.log('Error uploading file: ', error)
 		}
 	}
 
 	async function createItem() {
-		const { name, description, price } = formInput;
-		if (!name || !description || !price || !fileUrl) return;
+		const { name, description, price } = formInput
+		if (!name || !description || !price || !fileUrl) return
+		/* first, upload to IPFS */
 		const data = JSON.stringify({
 			name,
 			description,
 			image: fileUrl,
-		});
+		})
 
 		try {
-			const added = await client.add(data);
-			const url = `https://ipfs.infura.io:5001/api/${added.path}`;
-
+			const added = await client.add(data)
+			// const url = `https://ipfs.infura.io:5001/api/v0/cat?arg=${added.path}`
+			const url = `https://ipfs.infura.io/ipfs/${added.path}`
 			// after file is uploaded to IPFS, pass the URL to save it on Polygon
-			createSale(url);
+			createSale(url)
 		} catch (error) {
-			console.log('Error uploading file: ', error);
+			console.log('Error uploading file: ', error)
 		}
 	}
 
-	async function createSale() {
-		const web3Modal = new Web3Modal();
-		const connection = await web3Modal.connect();
-		const provider = new ethers.providers.Web3Provider(connection);
-		const signer = provider.getSigner();
+	async function createSale(url) {
+		const web3Modal = new Web3Modal()
+		const connection = await web3Modal.connect()
+		const provider = new ethers.providers.Web3Provider(connection)
+		const signer = provider.getSigner()
 
-		let contract = new ethers.Contract(nftContractAddress, NFT.abi, signer);
-		let transaction = await contract.createToken(url);
-		let tx = await transaction.wait();
+		let contract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
+		let transaction = await contract.createToken(url)
+		let tx = await transaction.wait()
 
-		let event = tx.events[0];
-		let value = event.args[2];
-		let tokenId = value.toNumber();
+		let event = tx.events[0]
+		let value = event.args[2]
+		let tokenId = value.toNumber()
 
-		const price = ethers.utils.parseUnits(formInput.price, 'ether');
+		const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
-		contract = new ethers.Contract(marketContractAddress, Market.abi, signer);
-		let listingPrice = await contract.getListingPrice();
-		listingPrice = listingPrice.toString();
+		contract = new ethers.Contract(marketContractAddress, Market.abi, signer)
+		let listingPrice = await contract.getListingPrice()
+		listingPrice = listingPrice.toString()
 
-		transaction = await contract.createMarketItem(nftContractAddress, tokenId, price, { value: listingPrice });
-		await transaction.wait();
-		router.push('/');
+		transaction = await contract.createMarketItem(nftContractAddress, tokenId, price, { value: listingPrice })
+		await transaction.wait()
+		router.push('/')
 	}
 
 	return (
@@ -88,6 +114,11 @@ export default function CreateItem() {
 					className="mt-8 border rounded p-4"
 					onChange={(e) => updateFormInput({ ...formInput, description: e.target.value })}
 				/>
+				<input
+					placeholder="Asset Price in Eth"
+					className="mt-2 border rounded p-4"
+					onChange={(e) => updateFormInput({ ...formInput, price: e.target.value })}
+				/>
 				<input type="file" name="Asset" className="my-4" onChange={onChange} />
 				{fileUrl && <img className="rounded mt-4" width="350" src={fileUrl} />}
 				<button
@@ -98,5 +129,5 @@ export default function CreateItem() {
 				</button>
 			</div>
 		</div>
-	);
+	)
 }
