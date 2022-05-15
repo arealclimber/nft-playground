@@ -7,8 +7,11 @@ import { nftContractAddress, marketContractAddress } from '../config'
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+import Web3 from 'web3'
 
 export default function MyAssets() {
+	// const web3 = new Web3(window.ethereum)
+
 	const [nfts, setNfts] = useState([])
 	const [loadingState, setLoadingState] = useState('not-loaded')
 	useEffect(() => {
@@ -16,14 +19,30 @@ export default function MyAssets() {
 	}, [])
 
 	async function loadNFTs() {
+		// const contract = new web3.eth.Contract(NFT.abi, nftContractAddress)
+		// const walletAddress =
+
 		const web3Modal = new Web3Modal()
 		const connection = await web3Modal.connect()
 		const provider = new ethers.providers.Web3Provider(connection)
 		const signer = provider.getSigner()
+		let signerAddress = signer.getAddress()
+		// console.log(address)
+		// address.then(() => {
+		// 	console.log(address)
+		// })
+		signerAddress.then((i) => {
+			console.log(i)
+		})
 
 		const marketContract = new ethers.Contract(marketContractAddress, Market.abi, signer)
 		const tokenContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
 		const data = await marketContract.fetchMyNFTs()
+
+		const balance = await tokenContract.balanceOf(signerAddress)
+		console.log(balance.toNumber())
+
+		// console.log(tokenContract.methods.tokenOfOwnerByIndex(signerAddress, 0).call())
 
 		const items = await Promise.all(
 			data.map(async (i) => {

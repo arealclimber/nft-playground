@@ -25,4 +25,7 @@ contract NFT is ERC721URIStorage {
         return newItemId;
     }
 
+    // TODO: Add some basic functions in order to searching NFT conveniently
+    // tokenOfOwnerByIndex  balanceOf?  
+
 }
