@@ -6,7 +6,7 @@ NFT Playground is the Fractionalized NFT marketplace that allows not only seller
 
 ## 🧱 Build 🔨
 
-![BUIDL](public/BUIDL.png)
+![BUIDL](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG)
 
 #### Solidity 🎁
 
