@@ -1,15 +1,20 @@
-const hre = require('hardhat');
+const hre = require('hardhat')
 
 async function main() {
-	const NFTMarket = await hre.ethers.getContractFactory('NFTMarket');
-	const nftMarket = await NFTMarket.deploy();
-	await nftMarket.deployed();
-	console.log('nftMarket deployed to:', nftMarket.address);
+	const NFTMarket = await hre.ethers.getContractFactory('NFTMarket')
+	const nftMarket = await NFTMarket.deploy()
+	await nftMarket.deployed()
+	console.log('nftMarket deployed to:', nftMarket.address)
 
-	const NFT = await hre.ethers.getContractFactory('NFT');
-	const nft = await NFT.deploy(nftMarket.address);
-	await nft.deployed();
-	console.log('nft deployed to:', nft.address);
+	const NFT = await hre.ethers.getContractFactory('NFT')
+	const nft = await NFT.deploy(nftMarket.address)
+	await nft.deployed()
+	console.log('nft deployed to:', nft.address)
+
+	const Multicall = await hre.ethers.getContractFactory('Multicall')
+	const multicall = await Multicall.deploy()
+	await multicall.deployed()
+	console.log('multicall deployed to: ', multicall.address)
 }
 
 // We recommend this pattern to be able to use async/await everywhere
@@ -17,6 +22,6 @@ async function main() {
 main()
 	.then(() => process.exit(0))
 	.catch((error) => {
-		console.error(error);
-		process.exit(1);
-	});
+		console.error(error)
+		process.exit(1)
+	})

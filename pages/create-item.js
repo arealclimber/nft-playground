@@ -81,8 +81,8 @@ export default function CreateItem() {
 		const provider = new ethers.providers.Web3Provider(connection)
 		const signer = provider.getSigner()
 
-		let contract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
-		let transaction = await contract.createToken(url)
+		let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
+		let transaction = await nftContract.createToken(url)
 		let tx = await transaction.wait()
 
 		// console.log(tx)
@@ -96,13 +96,13 @@ export default function CreateItem() {
 
 		const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
-		contract = new ethers.Contract(marketContractAddress, Market.abi, signer)
-		let listingPrice = await contract.getListingPrice()
+		let marketContract = new ethers.Contract(marketContractAddress, Market.abi, signer)
+		let listingPrice = await marketContract.getListingPrice()
 		listingPrice = listingPrice.toString()
 
-		transaction = await contract.createMarketItem(nftContractAddress, tokenId, price, { value: listingPrice })
+		transaction = await marketContract.createMarketItem(nftContractAddress, tokenId, price, { value: listingPrice })
 		await transaction.wait()
-		router.push('/')
+		router.push('/market')
 	}
 
 	return (

@@ -21,7 +21,7 @@ NFT Playground is the Fractionalized NFT marketplace that allows not only seller
 
 -   [ ] **Show the feature and update instantly**
 
-Made with 💙 by [Lumii](https://github.com/arealclimber)
+Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 ## Commands
 

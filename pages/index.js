@@ -7,9 +7,11 @@ import { nftContractAddress, marketContractAddress } from '../config'
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+import Link from 'next/link'
 
 export default function Home() {
 	const [nfts, setNfts] = useState([])
+	const [sold, setSold] = useState([])
 	const [loadingState, setLoadingState] = useState('not-loaded')
 
 	useEffect(() => {
@@ -22,10 +24,10 @@ export default function Home() {
 		const provider = new ethers.providers.Web3Provider(connection)
 		// const signer = provider.getSigner()
 
-		// const provider = new ethers.providers.JsonRpcProvider();
+		// const provider = new ethers.providers.JsonRpcProvider()
 		const tokenContract = new ethers.Contract(nftContractAddress, NFT.abi, provider)
 		const marketContract = new ethers.Contract(marketContractAddress, Market.abi, provider)
-		const data = await marketContract.fetchMarketItems()
+		const data = await marketContract.fetchItemsCreated()
 
 		// Get the NFT array populated with metadata (IPFS in this case)
 		const items = await Promise.all(
@@ -48,50 +50,60 @@ export default function Home() {
 
 		setNfts(items)
 		setLoadingState('loaded')
+
+		const soldItems = items.filter((i) => i.sold)
+		setSold(soldItems)
+		setNfts(items)
+		setLoadingState('loaded')
 	}
-
-	async function buyNft(nft) {
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		// const provider = new ethers.providers.Web3Provider(connection)
-		const provider = new ethers.providers.Web3Provider(web3.currentProvider)
-
-		const signer = provider.getSigner()
-		const contract = new ethers.Contract(marketContractAddress, Market.abi, signer)
-
-		const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
-
-		const transaction = await contract.createMarketSale(nftContractAddress, nft.tokenId, { value: price })
-		await transaction.wait()
-		loadNFTs()
-	}
-
-	if (loadingState === 'loaded' && !nfts.length)
-		return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>
 
 	return (
-		<div className="flex justify-center">
-			<div className="px-4" style={{ maxWidth: '1600px' }}>
+		<div>
+			<div className="p-4">
+				{
+					<div>
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+							<Link href="/loans">
+								<h2 className="text-2xl font-bold py-2 text-blue-800 hover:text-gray-500 hover:cursor-pointer">
+									Fractional NFTs
+								</h2>
+							</Link>
+							<p className="text-2xl font-bold py-2">Lend and borrow with NFT.</p>
+						</div>
+
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+							{nfts.map((nft, i) => (
+								<div key={i} className="border shadow rounded-xl overflow-hidden">
+									<img src={nft.image} className="rounded" />
+									<div className="p-4 bg-black">
+										<p className="text-2xl font-bold text-white">{nft.name}</p>
+
+										<p className="text-2xl font-bold text-white">Price - {nft.price} ETH</p>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				}
+			</div>
+
+			<div className="p-4">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+					<Link href="/market">
+						<h2 className="text-2xl font-bold py-2 text-blue-800 hover:text-gray-500 hover:cursor-pointer">
+							NFT Marketplace
+						</h2>
+					</Link>
+					<p className="text-2xl font-bold py-2">Buy and sell your NFT.</p>
+				</div>
+
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 					{nfts.map((nft, i) => (
 						<div key={i} className="border shadow rounded-xl overflow-hidden">
-							<img src={nft.image} />
-							<div className="p-4">
-								<p style={{ height: '64px' }} className="text-4xl font-semibold">
-									{nft.name}
-								</p>
-								<div style={{ height: '70px', overflow: 'hidden' }}>
-									<p className="text-lg text-blue-800">{nft.description}</p>
-								</div>
-							</div>
-							<div className="p-4 bg-slate-500">
-								<p className="text-2xl font-bold text-white">{nft.price} ETH</p>
-								<button
-									className="mt-4 w-full bg-blue-500 text-white font-bold py-2 px-12 rounded hover:bg-blue-400"
-									onClick={() => buyNft(nft)}
-								>
-									Buy
-								</button>
+							<img src={nft.image} className="rounded" />
+							<div className="p-4 bg-black">
+								<p className="text-2xl font-bold text-white">{nft.name}</p>
+								<p className="text-2xl font-bold text-white">Price - {nft.price} Eth</p>
 							</div>
 						</div>
 					))}
