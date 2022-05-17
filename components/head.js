@@ -9,8 +9,9 @@ export default function PageHead() {
 
 				<nav className="border-b p-6">
 					<Link href="/">
-						<p className="text-4xl font-bold hover:text-gray-500 cursor-pointer">NFT Playground</p>
+						<a className="text-4xl font-bold hover:text-gray-500 cursor-pointer">NFT Playground</a>
 					</Link>
+
 					<div className="flex mt-4">
 						<Link href="/market">
 							<a className=" mr-6 font-bold hover:text-blue-400 text-blue-500">Market</a>
