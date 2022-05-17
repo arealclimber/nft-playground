@@ -30,9 +30,6 @@ export default function PageHead({ children }) {
 							<Link href="/my-assets">
 								<a className="mr-6 font-bold hover:text-blue-400 text-blue-500">My NFT</a>
 							</Link>
-							<Link href="/creator-dashboard">
-								<a className="mr-6 font-bold hover:text-blue-400 text-blue-500">Creator Dashboard</a>
-							</Link>
 						</div>
 					</nav>
 				</div>
