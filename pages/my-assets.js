@@ -9,6 +9,7 @@ import { nftContractAddress, marketContractAddress, multicallAddress } from '../
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 import Multicall from '../artifacts/contracts/multicall.sol/Multicall.json'
+import Layout from '../components/layout'
 
 // import Web3 from 'web3'
 
@@ -155,4 +156,8 @@ export default function MyAssets() {
 			</div>
 		</div>
 	)
+}
+
+MyAssets.getLayout = function getLayout(page) {
+	return <Layout>{page}</Layout>
 }

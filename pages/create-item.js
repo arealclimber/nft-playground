@@ -4,6 +4,7 @@ import { create, CID } from 'ipfs-http-client'
 import { useRouter } from 'next/router'
 import { Buffer } from 'buffer'
 import Web3Modal from 'web3modal'
+import Layout from '../components/layout'
 
 // const client = ipfsHttpClient('https://ipfs.fleek.co/ipfs/HASH');
 // 'https://ipfs.infura.io:5001/api/v0'
@@ -134,4 +135,8 @@ export default function CreateItem() {
 			</div>
 		</div>
 	)
+}
+
+CreateItem.getLayout = function getLayout(page) {
+	return <Layout>{page}</Layout>
 }
