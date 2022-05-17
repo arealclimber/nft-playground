@@ -31,7 +31,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 `npx hardhat test` to run test
 
-`npx hardhat node` to get test accounts
+`npx hardhat node` to run the localhost and get test accounts
 
 `node scripts/sample-script.js --network localshost` to deploy on the localhost
 

@@ -5,6 +5,7 @@ module.exports = {
 		fontFamily: {
 			'custom': ['Ubuntu', 'ubuntu-mono', 'sans-serif'],
 			'openSans': ['open-sans', 'sans-serif'],
+			'slim': ['karla', 'mukta'],
 		},
 	},
 	plugins: [],
