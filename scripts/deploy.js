@@ -1,6 +1,10 @@
+// const { ethers } = require('hardhat')
 const hre = require('hardhat')
 
 async function main() {
+	const [deployer] = await hre.ethers.getSigners()
+	console.log('Account balance: ', (await deployer.getBalance()).toString())
+
 	const NFTMarket = await hre.ethers.getContractFactory('NFTMarket')
 	const nftMarket = await NFTMarket.deploy()
 	await nftMarket.deployed()
@@ -11,10 +15,10 @@ async function main() {
 	await nft.deployed()
 	console.log('nft deployed to:', nft.address)
 
-	const Multicall = await hre.ethers.getContractFactory('Multicall')
-	const multicall = await Multicall.deploy()
-	await multicall.deployed()
-	console.log('multicall deployed to: ', multicall.address)
+	// const Multicall = await hre.ethers.getContractFactory('Multicall')
+	// const multicall = await Multicall.deploy()
+	// await multicall.deployed()
+	// console.log('multicall deployed to: ', multicall.address)
 }
 
 // We recommend this pattern to be able to use async/await everywhere

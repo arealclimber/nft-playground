@@ -4,6 +4,9 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+
+import "hardhat/console.sol";
 
 contract NFTMarket is ReentrancyGuard {
     using Counters for Counters.Counter;
@@ -12,7 +15,7 @@ contract NFTMarket is ReentrancyGuard {
 
     address payable owner;
     // `listingPrice` is the fee for listing NFT items on the marketplace
-    uint256 listingPrice = 0.01 ether;
+    uint256 listingPrice = 0.0001 ether;
 
     constructor() {
         owner = payable(msg.sender);

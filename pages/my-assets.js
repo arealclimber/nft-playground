@@ -4,11 +4,10 @@ import axios from 'axios'
 import Web3Modal from 'web3modal'
 import getConfig from 'next/config'
 
-import { nftContractAddress, marketContractAddress, multicallAddress } from '../config'
+import { nftContractAddress, marketContractAddress } from '../config'
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
-import Multicall from '../artifacts/contracts/multicall.sol/Multicall.json'
 import Layout from '../components/layout'
 
 // import Web3 from 'web3'
@@ -17,7 +16,7 @@ const Web3 = require('web3')
 
 export default function MyAssets() {
 	// const web3 = new Web3(window.ethereum)
-	const web3 = new Web3(process.env.ALCHEMY_MUMBAI_URL)
+	const web3 = new Web3(process.env.INFURA_MUMBAI_URL)
 	// console.log(process.env.ALCHEMY_MUMBAI_URL)
 
 	const [nfts, setNfts] = useState([])
@@ -27,7 +26,7 @@ export default function MyAssets() {
 	}, [])
 
 	// const { env } = getConfig()
-	// console.log(env.ALCHEMY_MUMBAI_URL)
+	// console.log(env.INFURA_MUMBAI_URL)
 
 	async function loadNFTs() {
 		// const contract = new web3.eth.Contract(NFT.abi, nftContractAddress)
@@ -141,23 +140,25 @@ export default function MyAssets() {
 	if (loadingState === 'loaded' && !nfts.length) return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>
 
 	return (
-		<div className="flex justify-center">
-			<div className="p-4">
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-					{nfts.map((nft, i) => (
-						<div key={i} className="border shadow rounded-xl overflow-hidden">
-							<img src={nft.image} className="rounded" />
-							<div className="p-4 bg-black">
-								<p className="text-2xl font-bold text-white">Price - {nft.price} ETH</p>
+		<Layout>
+			<div className="flex justify-center">
+				<div className="p-4">
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+						{nfts.map((nft, i) => (
+							<div key={i} className="border shadow rounded-xl overflow-hidden">
+								<img src={nft.image} className="rounded" />
+								<div className="p-4 bg-black">
+									<p className="text-2xl font-bold text-white">Price - {nft.price} ETH</p>
+								</div>
 							</div>
-						</div>
-					))}
+						))}
+					</div>
 				</div>
 			</div>
-		</div>
+		</Layout>
 	)
 }
 
-MyAssets.getLayout = function getLayout(page) {
-	return <Layout>{page}</Layout>
-}
+// MyAssets.getLayout = function getLayout(page) {
+// 	return <Layout>{page}</Layout>
+// }

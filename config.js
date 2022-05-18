@@ -1,3 +1,3 @@
-export const marketContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
-export const nftContractAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
-export const multicallAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
+export const marketContractAddress = '0xBadedA9ECAa2dF9379951C164a042bf3b93E3041'
+export const nftContractAddress = '0x1A4b177BCb09814F0e7B625a6a4522F5f6eB8375'
+// export const multicallAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
