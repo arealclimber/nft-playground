@@ -4,6 +4,7 @@ import axios from 'axios'
 import Web3Modal from 'web3modal'
 import Layout from '../components/layout'
 import WalletConnectProvider from '@walletconnect/web3-provider'
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk'
 
 // import { useAccount, useBalance } from 'wagmi'
 // import { useConnect } from 'wagmi'
@@ -25,6 +26,7 @@ export default function Home() {
 	// Hex
 	const rinkebyChainId = '0x4'
 	const mumbaiChainId = '0x13881'
+	const neededCahinId = mumbaiChainId
 
 	const [nfts, setNfts] = useState([])
 	const [sold, setSold] = useState([])
@@ -62,7 +64,7 @@ export default function Home() {
 			let chainId = await ethereum.request({ method: 'eth_chainId' })
 			console.log('Connect to chain: ' + chainId)
 
-			if (chainId !== mumbaiChainId) {
+			if (chainId !== neededCahinId) {
 				setCorrectNetwork(false)
 			} else {
 				setCorrectNetwork(true)
@@ -84,6 +86,16 @@ export default function Home() {
 			package: WalletConnectProvider, // required
 			options: {
 				infuraId: 'INFURA_ID', // required
+			},
+		},
+		coinbasewallet: {
+			package: CoinbaseWalletSDK, // Required
+			options: {
+				appName: 'NFT Playground', // Required
+				infuraId: 'INFURA_ID', // Required
+				rpc: '', // Optional if `infuraId` is provided; otherwise it's required
+				chainId: neededCahinId, // Optional. It defaults to 1 if not provided
+				darkMode: false, // Optional. Use dark theme, defaults to false
 			},
 		},
 	}
@@ -129,6 +141,16 @@ export default function Home() {
 				package: WalletConnectProvider, // required
 				options: {
 					infuraId: 'INFURA_ID', // required
+				},
+			},
+			coinbasewallet: {
+				package: CoinbaseWalletSDK, // Required
+				options: {
+					appName: 'NFT Playground', // Required
+					infuraId: 'INFURA_ID', // Required
+					rpc: '', // Optional if `infuraId` is provided; otherwise it's required
+					chainId: neededCahinId, // Optional. It defaults to 1 if not provided
+					darkMode: false, // Optional. Use dark theme, defaults to false
 				},
 			},
 		}
