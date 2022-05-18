@@ -1,55 +1,80 @@
 import '../styles/globals.css'
 import Link from 'next/link'
-import { Provider, chain, createClient, defaultChains } from 'wagmi'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk'
+import WalletConnect from '@walletconnect/web3-provider'
+import Web3Modal from 'web3modal'
+import { ethers } from 'ethers'
+import { useState } from 'react'
+
+import { chain, defaultChains } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import PageHead from '../components/head'
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 
-const alchemyId = process.env.ALCHEMY_MUMBAI_ID
+const connectors = ({ chainId }) => {
+	const rpcUrl = defaultChains.find((x) => x.id === chaindId)?.rpcUrls?.[0] ?? chain.mainnet.rpcUrls[0]
+}
+// const providerOptions = {
+// 	// Example with injected providers
+// 	injected: {
+// 		display: {
+// 			logo: 'data:image/gif;base64,INSERT_BASE64_STRING',
+// 			name: 'Injected',
+// 			description: 'Connect with the provider in your Browser',
+// 		},
+// 		package: null,
+// 	},
+// 	// Example with WalletConnect provider
+// 	walletconnect: {
+// 		display: {
+// 			logo: 'data:image/gif;base64,INSERT_BASE64_STRING',
+// 			name: 'Mobile',
+// 			description: 'Scan qrcode with your mobile wallet',
+// 		},
+// 		package: WalletConnectProvider,
+// 		options: {
+// 			infuraId: process.env.INFURA_MUMBAI_URL, // required
+// 		},
+// 	},
+// }
 
-const chains = defaultChains
-const defaultChain = chain.mainnet
-
-// Set up connectors
-const client = createClient({
-	autoConnect: true,
-	connectors({ chainId }) {
-		const chain = chains.find((x) => x.id === chainId) ?? defaultChain
-		const rpcUrl = chain.rpcUrls.alchemy ? `${chain.rpcUrls.alchemy}/${alchemyId}` : chain.rpcUrls.default
-		return [
-			new MetaMaskConnector({ chains }),
-			new CoinbaseWalletConnector({
-				chains,
-				options: {
-					appName: 'NFT-Playground',
-					chainId: chain.id,
-					jsonRpcUrl: rpcUrl,
-				},
-			}),
-			new WalletConnectConnector({
-				chains,
-				options: {
-					qrcode: true,
-					rpc: { [chain.id]: rpcUrl },
-				},
-			}),
-			new InjectedConnector({
-				chains,
-				options: { name: 'Injected' },
-			}),
-		]
-	},
-})
+// export const providerOptions = {
+//  coinbasewallet: {
+//    package: CoinbaseWalletSDK,
+//    options: {
+//      appName: "Web 3 Modal Demo",
+//      infuraId: process.env.INFURA_KEY
+//    }
+//  },
+//  walletconnect: {
+//    package: WalletConnect,
+//    options: {
+//      infuraId: process.env.INFURA_KEY
+//    }
+//  }
+// };
 
 export default function MyApp({ Component, pageProps }) {
+	// const web3Modal = new Web3Modal({
+	// 	providerOptions, // required
+	// })
+
+	// const [provider, setProvider] = useState()
+	// const [library, setLibrary] = useState()
+
+	// const connectWallet = async () => {
+	// 	try {
+	// 		const provider = await web3Modal.connect()
+	// 		const library = new ethers.providers.Web3Provider(provider)
+	// 		setProvider(provider)
+	// 		setLibrary(library)
+	// 	} catch (error) {
+	// 		console.error(error)
+	// 	}
+	// }
+
 	// const getLayout = Component.getLayout || ((page) => page)
 
 	// return getLayout(<Component {...pageProps} />)
-	return (
-		<Provider client={client}>
-			<Component {...pageProps} />
-		</Provider>
-	)
+	return <Component {...pageProps} />
 }

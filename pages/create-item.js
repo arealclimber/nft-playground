@@ -31,6 +31,8 @@ import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 export default function CreateItem() {
 	const [fileUrl, setFileUrl] = useState(null)
 	const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
+	const [txError, setTxError] = useState(null)
+
 	const router = useRouter()
 
 	async function onChange(e) {

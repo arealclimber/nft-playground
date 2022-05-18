@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 import Layout from '../components/layout'
+import WalletConnectProvider from '@walletconnect/web3-provider'
 
-import { useAccount, useBalance } from 'wagmi'
-import { useConnect } from 'wagmi'
+// import { useAccount, useBalance } from 'wagmi'
+// import { useConnect } from 'wagmi'
 
 import { nftContractAddress, marketContractAddress } from '../config'
 
@@ -14,24 +15,142 @@ import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 import Link from 'next/link'
 
 export default function Home() {
-	const [nfts, setNfts] = useState([])
-	const [sold, setSold] = useState([])
-	const [loadingState, setLoadingState] = useState('not-loaded')
-
 	useEffect(() => {
+		checkIfWalletIsConnected()
+		checkCorrectNetwork()
 		loadNFTs()
 	}, [])
 
+	const infuraId = process.env.INFURA_MUMBAI_URL
+	// Hex
+	const rinkebyChainId = '0x4'
+	const mumbaiChainId = '0x13881'
+
+	const [nfts, setNfts] = useState([])
+	const [sold, setSold] = useState([])
+	const [loadingState, setLoadingState] = useState('not-loaded')
+	const [provider, setProvider] = useState([])
+	const [library, setLibrary] = useState([])
+	const [currentAccount, setCurrentAccount] = useState('')
+	const [correctNetwork, setCorrectNetwork] = useState(false)
+
+	async function checkIfWalletIsConnected() {
+		const { ethereum } = window
+		if (ethereum) {
+			console.log('Got the ethereum object: ', ethereum)
+		} else {
+			console.log('No Wallet found. Connect Wallet')
+		}
+
+		try {
+			const accounts = await ethereum.request({ method: 'eth_accounts' })
+
+			if (accounts.length !== 0) {
+				console.log('Found authorized Account: ', accounts[0])
+				setCurrentAccount(accounts[0])
+			} else {
+				console.log('No Wallet found. Connect Wallet')
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
+	async function checkCorrectNetwork() {
+		try {
+			const { ethereum } = window
+			let chainId = await ethereum.request({ method: 'eth_chainId' })
+			console.log('Connect to chain: ' + chainId)
+
+			if (chainId !== mumbaiChainId) {
+				setCorrectNetwork(false)
+			} else {
+				setCorrectNetwork(true)
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
+	const providerOptions = {
+		injected: {
+			display: {
+				name: 'Injected',
+				description: 'Connect with the provider in your Browser',
+			},
+			package: null,
+		},
+		walletconnect: {
+			package: WalletConnectProvider, // required
+			options: {
+				infuraId: 'INFURA_ID', // required
+			},
+		},
+	}
+
+	const connectWallet = async () => {
+		const web3Modal = new Web3Modal({
+			providerOptions,
+			cacheProvider: true,
+			theme: {
+				background: 'rgb(39, 49, 56)',
+				main: 'rgb(199, 199, 199)',
+				secondary: 'rgb(136, 136, 136)',
+				border: 'rgba(195, 195, 195, 0.14)',
+				hover: 'rgb(16, 26, 32)',
+			},
+		})
+		try {
+			const provider = await web3Modal.connect()
+			const library = new ethers.providers.Web3Provider(provider)
+			setProvider(provider)
+			setLibrary(library)
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
 	async function loadNFTs() {
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		// const provider = new ethers.providers.Web3Provider(connection)
-		const provider = new ethers.providers.Web3Provider(web3.currentProvider)
-		// const signer = provider.getSigner()
+		// const provider = new ethers.providers.Web3Provider(web3.currentProvider)
+		// const signer = library.getSigner()
+		// provider.on('connect', (info: { chainId: number }) => {
+		// 	console.log(info)
+		// })
+
+		const providerOptions = {
+			injected: {
+				display: {
+					name: 'Injected',
+					description: 'Connect with the provider in your Browser',
+				},
+				package: null,
+			},
+			walletconnect: {
+				package: WalletConnectProvider, // required
+				options: {
+					infuraId: 'INFURA_ID', // required
+				},
+			},
+		}
+
+		const web3Modal = new Web3Modal({
+			providerOptions,
+			cacheProvider: true,
+			theme: {
+				background: 'rgb(39, 49, 56)',
+				main: 'rgb(199, 199, 199)',
+				secondary: 'rgb(136, 136, 136)',
+				border: 'rgba(195, 195, 195, 0.14)',
+				hover: 'rgb(16, 26, 32)',
+			},
+		})
+
+		const provider = await web3Modal.connect()
+		const library = new ethers.providers.Web3Provider(provider)
 
 		// const provider = new ethers.providers.JsonRpcProvider()
-		const tokenContract = new ethers.Contract(nftContractAddress, NFT.abi, provider)
-		const marketContract = new ethers.Contract(marketContractAddress, Market.abi, provider)
+		const tokenContract = new ethers.Contract(nftContractAddress, NFT.abi, library)
+		const marketContract = new ethers.Contract(marketContractAddress, Market.abi, library)
 		try {
 			const data = await marketContract.fetchItemsCreated()
 			// Get the NFT array populated with metadata (IPFS in this case)
@@ -60,7 +179,7 @@ export default function Home() {
 			setNfts(items)
 			setLoadingState('loaded')
 		} catch (error) {
-			console.log(error)
+			console.error(error)
 		}
 	}
 
@@ -68,31 +187,52 @@ export default function Home() {
 		<Layout>
 			<div>
 				<div className="p-4">
-					{
-						<div>
-							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-								<Link href="/loans">
-									<h2 className="text-2xl font-bold py-2 text-blue-800 hover:text-gray-500 hover:cursor-pointer">
-										Fractional NFTs
-									</h2>
-								</Link>
-								<p className="text-2xl font-bold py-2">Lend and borrow with NFTs.</p>
-							</div>
+					{currentAccount === '' ? (
+						<button
+							className="text-2xl font-bold py-3 px-12 bg-[#FFFDDE] text-[#2C2891] rounded-lg mb-10 hover:scale-105 transition duration-500 ease-in-out"
+							onClick={connectWallet}
+						>
+							Connect Wallet
+						</button>
+					) : correctNetwork ? (
+						<div className="flex flex-col justify-center items-center mb-20 font-bold text-2xl gap-y-3">
+							<div>----------------------------------------</div>
+							<div>Welcome to the Mumbai Testnet</div>
 
-							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-								{nfts.map((nft, i) => (
-									<div key={i} className="border shadow rounded-xl overflow-hidden">
-										<img src={nft.image} className="rounded" />
-										<div className="p-4 bg-black">
-											<p className="text-2xl font-bold text-white">{nft.name}</p>
-
-											<p className="text-2xl font-bold text-white">Price - {nft.price} ETH</p>
-										</div>
-									</div>
-								))}
-							</div>
+							<div>----------------------------------------</div>
 						</div>
-					}
+					) : (
+						<div className="flex flex-col justify-center items-center mb-20 font-bold text-2xl gap-y-3">
+							<div>----------------------------------------</div>
+							<div>Please connect to the Mumbai Testnet</div>
+							<div>and reload the page</div>
+							<div>----------------------------------------</div>
+						</div>
+					)}
+
+					<div>
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+							<Link href="/loans">
+								<h2 className="text-2xl font-bold py-2 text-blue-800 hover:text-gray-500 hover:cursor-pointer">
+									Fractional NFTs
+								</h2>
+							</Link>
+							<p className="text-2xl font-bold py-2">Lend and borrow with NFTs.</p>
+						</div>
+
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+							{nfts.map((nft, i) => (
+								<div key={i} className="border shadow rounded-xl overflow-hidden">
+									<img src={nft.image} className="rounded" />
+									<div className="p-4 bg-black">
+										<p className="text-2xl font-bold text-white">{nft.name}</p>
+
+										<p className="text-2xl font-bold text-white">Price - {nft.price} ETH</p>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
 				</div>
 
 				<div className="p-4">
