@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import Connector from '../components/connector'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
+import Footer from '../components/footer'
 
 export default function MyApp({ Component, pageProps }) {
 	return (
@@ -38,14 +39,39 @@ export default function MyApp({ Component, pageProps }) {
 						<div className="flex grid-flow-row w-1/2 md:w-full">
 							<Connector />
 						</div>
+						<div>
+							<Link href="https://github.com/arealclimber/nft-playground">
+								<button className="btn btn-sm">GitHub</button>
+							</Link>
+						</div>
 					</div>
 				</nav>
 			</div>
 
 			<Component {...pageProps} />
-			<footer>
-				<p>Test</p>
-			</footer>
+
+			{/* <div className="pt-20">
+				<Footer />
+				<style jsx global>
+					{`
+					html,
+					body  {
+
+						padding: 0 !important;
+					}
+					#__next {
+						min-height: 100vh;
+						display: flex;
+						flex-direction: column;
+						justify-content: space-between';
+						position: 'relative';
+					}
+					main {
+						flex: 1;
+					}
+				`}
+				</style>
+			</div> */}
 		</>
 	)
 }
