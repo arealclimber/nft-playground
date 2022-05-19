@@ -8,5 +8,8 @@ module.exports = {
 			'slim': ['karla', 'mukta'],
 		},
 	},
-	plugins: [],
+	plugins: [require('daisyui')],
+	daisyui: {
+		themes: [{}, 'forest', 'lemonade'],
+	},
 }

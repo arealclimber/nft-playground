@@ -4,6 +4,7 @@ import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk'
 import Head from 'next/head'
+import { Alert, Success, Fail } from './alert'
 
 export default function Connector() {
 	const rinkebyChainId = '0x4'
@@ -113,24 +114,18 @@ export default function Connector() {
 		<div className="p-4">
 			{currentAccount === '' ? (
 				<button
-					className="text-2xl font-bold py-3 px-12 bg-[#FFFDDE] text-[#2C2891] rounded-lg mb-10 hover:scale-105 transition duration-500 ease-in-out"
+					className="text-2xl font-bold py-3 px-3 bg-[#FFFDDE] text-[#2C2891] rounded-lg mb-10 hover:scale-105 transition duration-500 ease-in-out"
 					onClick={connectWallet}
 				>
-					Connect Wallet!!!
+					Connect Wallet
 				</button>
 			) : correctNetwork ? (
-				<div className="flex flex-col justify-center items-center mb-20 font-bold text-2xl gap-y-3">
-					<div>----------------------------------------</div>
-					<div>Welcome to the Mumbai Testnet</div>
-
-					<div>----------------------------------------</div>
+				<div className="flex flex-col justify-center items-center mb-20 font-bold text-xl gap-y-3">
+					<Success text="Connect to Mumbai." />
 				</div>
 			) : (
-				<div className="flex flex-col justify-center items-center mb-20 font-bold text-2xl gap-y-3">
-					<div>----------------------------------------</div>
-					<div>Please connect to the Mumbai Testnet</div>
-					<div>and reload the page</div>
-					<div>----------------------------------------</div>
+				<div className="flex flex-col justify-center items-center mb-20 font-bold text-xl gap-y-3">
+					<Fail text="Please change to Mumbai Testnet." />
 				</div>
 			)}
 		</div>

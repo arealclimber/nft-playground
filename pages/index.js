@@ -209,33 +209,10 @@ export default function Home() {
 		<Layout>
 			<div>
 				<div className="p-4">
-					{currentAccount === '' ? (
-						<button
-							className="text-2xl font-bold py-3 px-12 bg-[#FFFDDE] text-[#2C2891] rounded-lg mb-10 hover:scale-105 transition duration-500 ease-in-out"
-							onClick={connectWallet}
-						>
-							Connect Wallet
-						</button>
-					) : correctNetwork ? (
-						<div className="flex flex-col justify-center items-center mb-20 font-bold text-2xl gap-y-3">
-							<div>----------------------------------------</div>
-							<div>Welcome to the Mumbai Testnet</div>
-
-							<div>----------------------------------------</div>
-						</div>
-					) : (
-						<div className="flex flex-col justify-center items-center mb-20 font-bold text-2xl gap-y-3">
-							<div>----------------------------------------</div>
-							<div>Please connect to the Mumbai Testnet</div>
-							<div>and reload the page</div>
-							<div>----------------------------------------</div>
-						</div>
-					)}
-
 					<div>
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 							<Link href="/loans">
-								<h2 className="text-2xl font-bold py-2 text-blue-800 hover:text-gray-500 hover:cursor-pointer">
+								<h2 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
 									Fractional NFTs
 								</h2>
 							</Link>
@@ -260,7 +237,7 @@ export default function Home() {
 				<div className="p-4">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 						<Link href="/market">
-							<h2 className="text-2xl font-bold py-2 text-blue-800 hover:text-gray-500 hover:cursor-pointer">
+							<h2 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
 								NFT Marketplace
 							</h2>
 						</Link>
@@ -285,7 +262,7 @@ export default function Home() {
 						<div>
 							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 								<Link href="/community">
-									<h2 className="text-2xl font-bold py-2 text-blue-800 hover:text-gray-500 hover:cursor-pointer">
+									<h2 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
 										Community Playground
 									</h2>
 								</Link>
