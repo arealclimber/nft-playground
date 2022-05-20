@@ -17,6 +17,8 @@ contract NFTMarket is ReentrancyGuard {
     // `listingPrice` is the fee for listing NFT items on the marketplace
     uint256 listingPrice = 0.0001 ether;
 
+    uint256 commision = 0.01 ether;
+
     constructor() {
         owner = payable(msg.sender);
     }
@@ -49,8 +51,10 @@ contract NFTMarket is ReentrancyGuard {
 
     function createMarketItem(address nftContract, uint256 tokenId, uint256 price) public payable nonReentrant {
         require(price > 0, "Price must be at least 1 wei");
+        // Needed to pay the fee to get NFT listed
         require(msg.value == listingPrice, "Price must be equal to listing price");
 
+        // The logic is adding one first, and then assign the `_itemIds` to the `itemId` to store in the mapping `idToMarketItem` and the struct `marketItem`.
         _itemIds.increment();
 
         // It's the marketplace item that is going for sale right now

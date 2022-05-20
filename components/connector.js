@@ -87,6 +87,9 @@ export default function Connector() {
 		},
 	}
 
+	// FIXME: Error: accounts received is empty [Coinbasewallet cancelled]
+	// FIXME: Error: User closed modal [walletConnect]
+	// FIXME: If the wallet waited to unlock, it throws `user rejected error`
 	const connectWallet = async () => {
 		const web3Modal = new Web3Modal({
 			providerOptions,
@@ -100,21 +103,49 @@ export default function Connector() {
 			},
 		})
 
+		// const walletProvider = new WalletConnectProvider({
+		// 	infuraId: infuraId,
+		// })
+		// await walletProvider.enable().catch(reject)
+
 		try {
 			const provider = await web3Modal.connect()
 			const library = new ethers.providers.Web3Provider(provider)
 			setProvider(provider)
 			setLibrary(library)
+
+			const walletProvider = new WalletConnectProvider({
+				infuraId: infuraId,
+			})
+			await walletProvider.enable().catch(reject)
 		} catch (error) {
 			console.error(error)
 		}
+
+		// try {
+		// 	const walletProvider = new WalletConnectProvider({
+		// 		infuraId: infuraId,
+		// 	})
+		// 	await walletProvider.enable()
+		// } catch (err) {
+		// 	console.error(err)
+		// }
 	}
+
+	// try {
+	// 	const provider = new WalletConnectProvider({
+	// 	infuraId: 'c4f79cc821944d9680842e34466bfbd',
+	// 	});
+	// 	await provider.enable();
+	// 	} catch (error) {
+	// 	console.log(error);
+	// 	}
 
 	return (
 		<div className="p-4">
 			{currentAccount === '' ? (
 				<button
-					className="text-2xl font-bold py-3 px-3 bg-[#FFFDDE] text-[#2C2891] rounded-lg mb-10 hover:scale-105 transition duration-500 ease-in-out"
+					className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
 					onClick={connectWallet}
 				>
 					Connect Wallet

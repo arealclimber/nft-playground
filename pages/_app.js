@@ -49,29 +49,6 @@ export default function MyApp({ Component, pageProps }) {
 			</div>
 
 			<Component {...pageProps} />
-
-			{/* <div className="pt-20">
-				<Footer />
-				<style jsx global>
-					{`
-					html,
-					body  {
-
-						padding: 0 !important;
-					}
-					#__next {
-						min-height: 100vh;
-						display: flex;
-						flex-direction: column;
-						justify-content: space-between';
-						position: 'relative';
-					}
-					main {
-						flex: 1;
-					}
-				`}
-				</style>
-			</div> */}
 		</>
 	)
 }

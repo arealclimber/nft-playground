@@ -114,24 +114,24 @@ export default function CreateItem() {
 				<div className="w-1/2 flex flex-col pb-12">
 					<input
 						placeholder="Asset Name"
-						className="mt-8 border rounded p-4"
+						className="mt-8 border rounded p-4 text-black text-lg"
 						onChange={(e) => updateFormInput({ ...formInput, name: e.target.value })}
 					/>
 					<textarea
 						placeholder="Asset Description"
-						className="mt-8 border rounded p-4"
+						className="mt-8 border rounded p-4 text-black text-lg"
 						onChange={(e) => updateFormInput({ ...formInput, description: e.target.value })}
 					/>
 					<input
 						placeholder="Asset Price in Eth"
-						className="mt-2 border rounded p-4"
+						className="mt-2 border rounded p-4 text-black text-lg"
 						onChange={(e) => updateFormInput({ ...formInput, price: e.target.value })}
 					/>
-					<input type="file" name="Asset" className="my-4" onChange={onChange} />
+					<input type="file" name="Asset" className="my-4 text-lg" onChange={onChange} />
 					{fileUrl && <img className="rounded mt-4" width="350" src={fileUrl} />}
 					<button
 						onClick={createItem}
-						className="font-bold mt-4 bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
+						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
 					>
 						Create Digital Asset
 					</button>

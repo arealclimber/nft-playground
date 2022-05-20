@@ -47,6 +47,9 @@ export default function NFTMarket() {
 					return item
 				})
 			)
+			// const test = await tokenContract.totalSupply()
+			// console.log('Total Supply: ')
+			// console.log(test)
 
 			setNfts(items)
 			setLoadingState('loaded')

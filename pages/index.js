@@ -17,8 +17,8 @@ import Link from 'next/link'
 
 export default function Home() {
 	useEffect(() => {
-		checkIfWalletIsConnected()
-		checkCorrectNetwork()
+		// checkIfWalletIsConnected()
+		// checkCorrectNetwork()
 		loadNFTs()
 	}, [])
 
@@ -36,136 +36,135 @@ export default function Home() {
 	const [currentAccount, setCurrentAccount] = useState('')
 	const [correctNetwork, setCorrectNetwork] = useState(false)
 
-	async function checkIfWalletIsConnected() {
-		const { ethereum } = window
-		if (ethereum) {
-			console.log('Got the ethereum object: ', ethereum)
-		} else {
-			console.log('No Wallet found. Connect Wallet')
-		}
+	// async function checkIfWalletIsConnected() {
+	// 	const { ethereum } = window
+	// 	if (ethereum) {
+	// 		console.log('Got the ethereum object: ', ethereum)
+	// 	} else {
+	// 		console.log('No Wallet found. Connect Wallet')
+	// 	}
 
-		try {
-			const accounts = await ethereum.request({ method: 'eth_accounts' })
+	// 	try {
+	// 		const accounts = await ethereum.request({ method: 'eth_accounts' })
 
-			if (accounts.length !== 0) {
-				console.log('Found authorized Account: ', accounts[0])
-				setCurrentAccount(accounts[0])
-			} else {
-				console.log('No Wallet found. Connect Wallet')
-			}
-		} catch (error) {
-			console.error(error)
-		}
-	}
+	// 		if (accounts.length !== 0) {
+	// 			console.log('Found authorized Account: ', accounts[0])
+	// 			setCurrentAccount(accounts[0])
+	// 		} else {
+	// 			console.log('No Wallet found. Connect Wallet')
+	// 		}
+	// 	} catch (error) {
+	// 		console.error(error)
+	// 	}
+	// }
 
-	async function checkCorrectNetwork() {
-		try {
-			const { ethereum } = window
-			let chainId = await ethereum.request({ method: 'eth_chainId' })
-			console.log('Connect to chain: ' + chainId)
+	// async function checkCorrectNetwork() {
+	// 	try {
+	// 		const { ethereum } = window
+	// 		let chainId = await ethereum.request({ method: 'eth_chainId' })
+	// 		console.log('Connect to chain: ' + chainId)
 
-			if (chainId !== neededCahinId) {
-				setCorrectNetwork(false)
-			} else {
-				setCorrectNetwork(true)
-			}
-		} catch (error) {
-			console.error(error)
-		}
-	}
+	// 		if (chainId !== neededCahinId) {
+	// 			setCorrectNetwork(false)
+	// 		} else {
+	// 			setCorrectNetwork(true)
+	// 		}
+	// 	} catch (error) {
+	// 		console.error(error)
+	// 	}
+	// }
 
-	const providerOptions = {
-		injected: {
-			display: {
-				name: 'Injected',
-				description: 'Connect with the provider in your Browser',
-			},
-			package: null,
-		},
-		walletconnect: {
-			package: WalletConnectProvider, // required
-			options: {
-				infuraId: 'INFURA_ID', // required
-			},
-		},
-		coinbasewallet: {
-			package: CoinbaseWalletSDK, // Required
-			options: {
-				appName: 'NFT Playground', // Required
-				infuraId: 'INFURA_ID', // Required
-				rpc: '', // Optional if `infuraId` is provided; otherwise it's required
-				chainId: neededCahinId, // Optional. It defaults to 1 if not provided
-				darkMode: false, // Optional. Use dark theme, defaults to false
-			},
-		},
-	}
+	// const providerOptions = {
+	// 	injected: {
+	// 		display: {
+	// 			name: 'Injected',
+	// 			description: 'Connect with the provider in your Browser',
+	// 		},
+	// 		package: null,
+	// 	},
+	// 	walletconnect: {
+	// 		package: WalletConnectProvider, // required
+	// 		options: {
+	// 			infuraId: 'INFURA_ID', // required
+	// 		},
+	// 	},
+	// 	coinbasewallet: {
+	// 		package: CoinbaseWalletSDK, // Required
+	// 		options: {
+	// 			appName: 'NFT Playground', // Required
+	// 			infuraId: 'INFURA_ID', // Required
+	// 			rpc: '', // Optional if `infuraId` is provided; otherwise it's required
+	// 			chainId: neededCahinId, // Optional. It defaults to 1 if not provided
+	// 			darkMode: false, // Optional. Use dark theme, defaults to false
+	// 		},
+	// 	},
+	// }
 
-	const connectWallet = async () => {
-		const web3Modal = new Web3Modal({
-			providerOptions,
-			cacheProvider: true,
-			theme: {
-				background: 'rgb(39, 49, 56)',
-				main: 'rgb(199, 199, 199)',
-				secondary: 'rgb(136, 136, 136)',
-				border: 'rgba(195, 195, 195, 0.14)',
-				hover: 'rgb(16, 26, 32)',
-			},
-		})
-		try {
-			const provider = await web3Modal.connect()
-			const library = new ethers.providers.Web3Provider(provider)
-			setProvider(provider)
-			setLibrary(library)
-		} catch (error) {
-			console.error(error)
-		}
-	}
+	// const connectWallet = async () => {
+	// 	const web3Modal = new Web3Modal({
+	// 		providerOptions,
+	// 		cacheProvider: true,
+	// 		theme: {
+	// 			background: 'rgb(39, 49, 56)',
+	// 			main: 'rgb(199, 199, 199)',
+	// 			secondary: 'rgb(136, 136, 136)',
+	// 			border: 'rgba(195, 195, 195, 0.14)',
+	// 			hover: 'rgb(16, 26, 32)',
+	// 		},
+	// 	})
+	// 	try {
+	// 		const provider = await web3Modal.connect()
+	// 		const library = new ethers.providers.Web3Provider(provider)
+	// 		setProvider(provider)
+	// 		setLibrary(library)
+	// 	} catch (error) {
+	// 		console.error(error)
+	// 	}
+	// }
 
+	// FIXME: How to display the market item without user connecting wallet?
 	async function loadNFTs() {
-		// const provider = new ethers.providers.Web3Provider(web3.currentProvider)
-		// const signer = library.getSigner()
-		// provider.on('connect', (info: { chainId: number }) => {
-		// 	console.log(info)
+		const web3Modal = new Web3Modal()
+		// const connection = await web3Modal.connect()
+		// const provider = new ethers.providers.Web3Provider(connection)
+
+		// const providerOptions = {
+		// 	injected: {
+		// 		display: {
+		// 			name: 'Injected',
+		// 			description: 'Connect with the provider in your Browser',
+		// 		},
+		// 		package: null,
+		// 	},
+		// 	walletconnect: {
+		// 		package: WalletConnectProvider, // required
+		// 		options: {
+		// 			infuraId: 'INFURA_ID', // required
+		// 		},
+		// 	},
+		// 	coinbasewallet: {
+		// 		package: CoinbaseWalletSDK, // Required
+		// 		options: {
+		// 			appName: 'NFT Playground', // Required
+		// 			infuraId: 'INFURA_ID', // Required
+		// 			rpc: '', // Optional if `infuraId` is provided; otherwise it's required
+		// 			chainId: neededCahinId, // Optional. It defaults to 1 if not provided
+		// 			darkMode: false, // Optional. Use dark theme, defaults to false
+		// 		},
+		// 	},
+		// }
+
+		// const web3Modal = new Web3Modal({
+		// 	providerOptions,
+		// 	cacheProvider: true,
+		// 	theme: {
+		// 		background: 'rgb(39, 49, 56)',
+		// 		main: 'rgb(199, 199, 199)',
+		// 		secondary: 'rgb(136, 136, 136)',
+		// 		border: 'rgba(195, 195, 195, 0.14)',
+		// 		hover: 'rgb(16, 26, 32)',
+		// 	},
 		// })
-
-		const providerOptions = {
-			injected: {
-				display: {
-					name: 'Injected',
-					description: 'Connect with the provider in your Browser',
-				},
-				package: null,
-			},
-			walletconnect: {
-				package: WalletConnectProvider, // required
-				options: {
-					infuraId: 'INFURA_ID', // required
-				},
-			},
-			coinbasewallet: {
-				package: CoinbaseWalletSDK, // Required
-				options: {
-					appName: 'NFT Playground', // Required
-					infuraId: 'INFURA_ID', // Required
-					rpc: '', // Optional if `infuraId` is provided; otherwise it's required
-					chainId: neededCahinId, // Optional. It defaults to 1 if not provided
-					darkMode: false, // Optional. Use dark theme, defaults to false
-				},
-			},
-		}
-
-		const web3Modal = new Web3Modal({
-			providerOptions,
-			cacheProvider: true,
-			theme: {
-				background: 'rgb(39, 49, 56)',
-				main: 'rgb(199, 199, 199)',
-				secondary: 'rgb(136, 136, 136)',
-				border: 'rgba(195, 195, 195, 0.14)',
-				hover: 'rgb(16, 26, 32)',
-			},
-		})
 
 		const provider = await web3Modal.connect()
 		const library = new ethers.providers.Web3Provider(provider)
