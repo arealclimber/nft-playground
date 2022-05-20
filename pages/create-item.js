@@ -129,11 +129,18 @@ export default function CreateItem() {
 					/>
 					<input type="file" name="Asset" className="my-4 text-lg" onChange={onChange} />
 					{fileUrl && <img className="rounded mt-4" width="350" src={fileUrl} />}
+
 					<button
 						onClick={createItem}
 						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
 					>
-						Create Digital Asset
+						Simply Create NFT
+					</button>
+					<button
+						onClick={createItem}
+						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
+					>
+						Create & Sell NFT
 					</button>
 				</div>
 			</div>
