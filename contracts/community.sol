@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.4;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+
+
+// Accumulate the ERC20 token for exchaging the TREE NFT!
 contract Feeds {
     uint memberCount;
 
@@ -23,6 +28,7 @@ contract Feeds {
         require(membership[checkAddress] > 0);
         _;
     }
+
 
     
 
