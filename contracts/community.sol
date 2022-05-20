@@ -2,12 +2,13 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 
 // Accumulate the ERC20 token for exchaging the TREE NFT!
-contract Feeds {
+contract Feeds is Ownable, ReentrancyGuard {
     uint memberCount;
 
     struct Snippet {
