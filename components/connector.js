@@ -5,6 +5,8 @@ import WalletConnectProvider from '@walletconnect/web3-provider'
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk'
 import Head from 'next/head'
 import { Alert, Success, Fail } from './alert'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Connector() {
 	const rinkebyChainId = '0x4'
@@ -32,11 +34,40 @@ export default function Connector() {
 			if (accounts.length !== 0) {
 				console.log('Found authorized Account: ', accounts[0])
 				setCurrentAccount(accounts[0])
+
+				// toast.success('Connect to Mumbai !', {
+				// 	position: 'top-right',
+				// 	autoClose: 3000,
+				// 	hideProgressBar: false,
+				// 	closeOnClick: true,
+				// 	pauseOnHover: true,
+				// 	draggable: true,
+				// 	progress: undefined,
+				// })
 			} else {
 				console.log('No Wallet found. Connect Wallet')
+
+				// toast.warn('Make sure you have MetaMask Connected', {
+				// 	position: 'top-right',
+				// 	autoClose: 5000,
+				// 	hideProgressBar: false,
+				// 	closeOnClick: true,
+				// 	pauseOnHover: true,
+				// 	draggable: true,
+				// 	progress: undefined,
+				// })
 			}
 		} catch (error) {
 			console.error(error)
+			// toast.error(`${error.message}`, {
+			// 	position: 'top-right',
+			// 	autoClose: 5000,
+			// 	hideProgressBar: false,
+			// 	closeOnClick: true,
+			// 	pauseOnHover: true,
+			// 	draggable: true,
+			// 	progress: undefined,
+			// })
 		}
 	}
 
@@ -49,6 +80,15 @@ export default function Connector() {
 			if (chainId !== neededCahinId) {
 				setCorrectNetwork(false)
 			} else {
+				// toast.warn('Please change to Mumbai Testnet !', {
+				// 	position: 'top-right',
+				// 	autoClose: 5000,
+				// 	hideProgressBar: false,
+				// 	closeOnClick: true,
+				// 	pauseOnHover: true,
+				// 	draggable: true,
+				// 	progress: undefined,
+				// })
 				setCorrectNetwork(true)
 			}
 		} catch (error) {
@@ -140,6 +180,39 @@ export default function Connector() {
 	// 	} catch (error) {
 	// 	console.log(error);
 	// 	}
+
+	function toastPopup() {
+		const notify = () => {
+			toast('Default Notification !')
+
+			toast.success('Connect to Mumbai !', {
+				position: toast.POSITION.TOP_RIGHT,
+			})
+
+			toast.warn('Please change to Mumbai Testnet !', {
+				position: toast.POSITION.TOP_CENTER,
+			})
+		}
+
+		return (
+			<div>
+				<button onClick={notify}>Notify!</button>
+				<ToastContainer />
+			</div>
+		)
+	}
+
+	// const notify = () => {
+	// 	// toast('Default Notification !')
+
+	// 	toast.success('Connect to Mumbai !', {
+	// 		position: toast.POSITION.TOP_RIGHT,
+	// 	})
+
+	// 	// toast.warn('Please change to Mumbai Testnet !', {
+	// 	// 	position: toast.POSITION.TOP_CENTER,
+	// 	// })
+	// }
 
 	return (
 		<div className="p-4">
