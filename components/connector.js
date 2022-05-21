@@ -34,40 +34,30 @@ export default function Connector() {
 			if (accounts.length !== 0) {
 				console.log('Found authorized Account: ', accounts[0])
 				setCurrentAccount(accounts[0])
-
-				// toast.success('Connect to Mumbai !', {
-				// 	position: 'top-right',
-				// 	autoClose: 3000,
-				// 	hideProgressBar: false,
-				// 	closeOnClick: true,
-				// 	pauseOnHover: true,
-				// 	draggable: true,
-				// 	progress: undefined,
-				// })
 			} else {
 				console.log('No Wallet found. Connect Wallet')
 
-				// toast.warn('Make sure you have MetaMask Connected', {
-				// 	position: 'top-right',
-				// 	autoClose: 5000,
-				// 	hideProgressBar: false,
-				// 	closeOnClick: true,
-				// 	pauseOnHover: true,
-				// 	draggable: true,
-				// 	progress: undefined,
-				// })
+				toast.warn('Make sure you have Wallet Connected', {
+					position: 'top-right',
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				})
 			}
 		} catch (error) {
 			console.error(error)
-			// toast.error(`${error.message}`, {
-			// 	position: 'top-right',
-			// 	autoClose: 5000,
-			// 	hideProgressBar: false,
-			// 	closeOnClick: true,
-			// 	pauseOnHover: true,
-			// 	draggable: true,
-			// 	progress: undefined,
-			// })
+			toast.error(`${error.message}`, {
+				position: 'top-right',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			})
 		}
 	}
 
@@ -79,20 +69,41 @@ export default function Connector() {
 
 			if (chainId !== neededCahinId) {
 				setCorrectNetwork(false)
+
+				toast.warn('Please change to Mumbai Testnet !', {
+					position: 'top-right',
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				})
 			} else {
-				// toast.warn('Please change to Mumbai Testnet !', {
-				// 	position: 'top-right',
-				// 	autoClose: 5000,
-				// 	hideProgressBar: false,
-				// 	closeOnClick: true,
-				// 	pauseOnHover: true,
-				// 	draggable: true,
-				// 	progress: undefined,
-				// })
 				setCorrectNetwork(true)
+
+				toast.success('Connect to Mumbai !', {
+					position: 'top-right',
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				})
 			}
 		} catch (error) {
 			console.error(error)
+
+			toast.error(`${error.message}`, {
+				position: 'top-right',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			})
 		}
 	}
 
@@ -226,10 +237,32 @@ export default function Connector() {
 			) : correctNetwork ? (
 				<div className="flex flex-col justify-center items-center mb-20 font-bold text-xl gap-y-3">
 					<Success text="Connect to Mumbai." />
+					<ToastContainer
+						position="top-right"
+						autoClose={5000}
+						hideProgressBar={false}
+						newestOnTop={false}
+						closeOnClick
+						rtl={false}
+						pauseOnFocusLoss
+						draggable
+						pauseOnHover
+					/>
 				</div>
 			) : (
 				<div className="flex flex-col justify-center items-center mb-20 font-bold text-xl gap-y-3">
 					<Fail text="Please change to Mumbai Testnet." />
+					<ToastContainer
+						position="top-right"
+						autoClose={5000}
+						hideProgressBar={false}
+						newestOnTop={false}
+						closeOnClick
+						rtl={false}
+						pauseOnFocusLoss
+						draggable
+						pauseOnHover
+					/>
 				</div>
 			)}
 		</div>
