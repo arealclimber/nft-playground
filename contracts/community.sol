@@ -54,6 +54,7 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
 
     // mapping(address => (uint => Snippet[])) authorToSnippets;
     mapping(address => Snippet[]) authorToSnippets;
+    mapping(address => uint[]) publishRecords;
     
     uint dailyLimit;
     uint lowerBound;
@@ -86,7 +87,16 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
         _;
     }
 
-    function publish(string memory tokenURI) public returns (uint) {
+    modifier isExceed(address checkAddress) {
+        uint thirdToLast = publishRecords[checkAddress].length - 2;
+        uint thirdTimestamp = publishRecords[checkAddress][thirdToLast -1];
+        uint timeInterval = block.timestamp - thirdTimestamp;
+        require(timeInterval < 259200);
+        _;
+        
+    }
+    
+    function publish(string memory tokenURI) isExceed(msg.sender) public returns (uint) {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
 
@@ -94,8 +104,17 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
         _setTokenURI(newItemId, tokenURI);
         setApprovalForAll(contractAddress, true);
 
+        publishRecords[msg.sender].push(block.timestamp);
+
         return newItemId;
     }
+
+
+    function like() public returns () {}
+
+    function flag() public returns () {}
+
+    function claim() canClaim(msg.sender) public returns () {}
 
 
     
