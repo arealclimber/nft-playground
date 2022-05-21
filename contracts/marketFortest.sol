@@ -20,7 +20,7 @@ import "hardhat/console.sol";
 // 4. owner cannot be the buyer  
 */
 
-contract NFTMarket is ReentrancyGuard, Ownable {
+contract testNFTMarket is ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _itemIds; // FIXME: NONO! The number is also the amount NFT on the market
     Counters.Counter private _itemsSold; // The number is the NFT-sold amount
@@ -151,6 +151,10 @@ contract NFTMarket is ReentrancyGuard, Ownable {
 
     function setCommision(uint256 _commision) external onlyOwner nonReentrant {
         commision = _commision;
+    }
+
+    function getCommision() public view returns (uint) {
+        return commision;
     }
 
     function withdraw(address to) external onlyOwner nonReentrant {
