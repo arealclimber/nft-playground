@@ -26,6 +26,7 @@ contract NFTMarket is ReentrancyGuard, Ownable {
     Counters.Counter private _itemsSold; // The number is the NFT-sold amount
 
     uint256 commision = 0.01 ether;
+    address payable private manager;
 
     struct MarketItem {
         uint itemId;
@@ -47,6 +48,10 @@ contract NFTMarket is ReentrancyGuard, Ownable {
     // TODO: Is it necessary to mark nftContract `indexed`?
     event itemAdded(uint indexed itemId, uint indexed tokenId, uint price, address indexed nftContract);
     event itemSold(uint indexed itemId, uint indexed tokenId, uint price, address indexed buyer);
+
+    constructor() {
+        manager = payable(msg.sender);
+    }
 
     modifier onlyItemOwner(address tokenAddress, uint tokenId) {
         IERC721 tokenContract = IERC721(tokenAddress);
@@ -73,13 +78,17 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         _;
     }
 
-    function approveMarket(uint tokenId, address tokenAddress) external {
-        IERC721 tokenContract = IERC721(tokenAddress);
-        tokenContract.approve(address(this), tokenId);
+    // function approveMarket(uint tokenId, address tokenAddress) external {
+    //     IERC721 tokenContract = IERC721(tokenAddress);
+    //     tokenContract.approve(address(this), tokenId);
+    // }
+
+    function returnManager() public view returns (address) {
+        return(manager);
     }
 
     function addItemToMarket(uint tokenId, uint price,address tokenAddress) onlyItemOwner(tokenAddress, tokenId) hasTransferApproval(tokenAddress, tokenId) external returns (uint) {
-        require(activeItems[tokenAddress][tokenId] == false, "Item is already on sale!");
+        require(activeItems[tokenAddress][tokenId] == false, "Item is already on sale!");        
         uint newItemId = _itemIds.current();
         _itemIds.increment();
         itemsForSale.push(MarketItem(newItemId, tokenId, price, tokenAddress, payable(msg.sender), false, true));
@@ -103,7 +112,8 @@ contract NFTMarket is ReentrancyGuard, Ownable {
 
         IERC721(itemsForSale[id].nftContract).safeTransferFrom(itemsForSale[id].seller, msg.sender, itemsForSale[id].tokenId);
         
-        payable(address(this)).transfer(commision);
+        // payable(address(this)).transfer(commision);
+        payable(manager).transfer(commision);
 
 
         uint received = (msg.value - commision);
@@ -111,6 +121,8 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         itemsForSale[id].seller.transfer(received);
 
         _itemsSold.increment();
+
+        delete itemsForSale[id];
 
         emit itemSold(id, itemsForSale[id].tokenId, itemsForSale[id].price, msg.sender);
 

@@ -1,6 +1,6 @@
 const { expect } = require('chai')
-const { is } = require('express/lib/request')
-const { ethers } = require('hardhat')
+// const { is } = require('express/lib/request')
+const { ethers, waffle } = require('hardhat')
 
 let provider
 let nft
@@ -11,6 +11,7 @@ let marketContractAddress
 
 beforeEach(async () => {
 	provider = waffle.provider
+	
 	const Market = await ethers.getContractFactory('NFTMarket')
 	market = await Market.deploy()
 	await market.deployed()
@@ -64,40 +65,13 @@ describe('Working NFT Test: ', function () {
 		// console.log('The ', nft.tokenOfOwnerByIndex(add1.address, 0))
 	})
 
-	// it('Should create other NFTs', async function () {
-	// 	const [add1, add2, add3] = await ethers.getSigners()
-	// 	console.log('address 1: ', add1.address)
-	// 	console.log('address 2: ', add2.address)
-	// 	console.log('address 3: ', add3.address)
-
-	// 	// If not clearly saying who creating the token, it defaultly set to the address 1.
-	// 	await nft.connect(add3).createToken('https://www.mytokenlocation.com')
-	// 	await nft.connect(add2).createToken('https://www.mytokenlocation.com')
-	// 	await nft.connect(add3).createToken('https://www.mytokenlocation.com')
-
-	// 	// Check the totalsupply is equal to the already-minted number 
-	// 	const nftTotalSupply = (await nft.totalSupply()).toNumber();
-	// 	console.log('The NFT total supply: ', nftTotalSupply)
-	// 	expect(nftTotalSupply).to.equal(3)
-
-	// 	// Check the address 1's balance of this NFT
-	// 	const balanceOfadd1 = (await nft.balanceOf(add1.address)).toNumber();
-	// 	console.log('The address1 has NFT amount: ', balanceOfadd1)
-
-	// 	// Check the NFT's owner using the tokenId
-	// 	const tokenIdToOwner = await nft.ownerOf(0)
-	// 	console.log('The Owner of tokenId=0 : ', tokenIdToOwner)
-	// 	expect(tokenIdToOwner).to.equal(add3.address)
-
-	// 	expect(await nft.ownerOf(0)).to.equal(add3.address)
-	// })
-
 })
 
 describe('Working NFT Market Test: ', function () {
-	it('Should create items and execute market sales', async function () {
+	it('Should create items and execute market sales and resell the NFT', async function () {
 		// Local testing environment: using the test accounts
 		// Have the buyer and the seller be different person
+
 		const [_, add1, add2] = await ethers.getSigners()
 		console.log('The address _ : ', _.address)
 		console.log('The address 1 : ', add1.address)
@@ -154,15 +128,21 @@ describe('Working NFT Market Test: ', function () {
 				return item
 			})
 		)
-		console.log('items: ', items)
+		console.log('After adding items, the items on the market: ', items)
+
+		console.log('The seller before-sold-balance: ', (await _.getBalance()).toString())
 
 		await market.connect(add1).buyItem(0, { value: auctionPrice })
-		console.log((await nft.balanceOf(add1.address)).toNumber())
+		console.log('After buying token-id-0 NFT, the address 1 has the number of NFT: ', (await nft.balanceOf(add1.address)).toNumber())
 
-		let sellerBalance = await _.getBalance().toString()
-		console.log('The seller balance: ', sellerBalance)
-		let marketBalance = await marketContractAddress.getBalance().toString()
+		let sellerBalance = (await _.getBalance()).toString()
+		console.log('The seller after-sold-balance: ', sellerBalance)
+		let marketBalance = (await provider.getBalance(marketContractAddress)).toString()
 		console.log('The marketplace balance: ', marketBalance)
+		console.log(await market.returnManager)
+		console.log(await market.manager)
+
+		// console.log('The manager balance: ', (await marketContractAddress.manager.getBalance()).toString())
 
 		// TODO: Test if the marketplace receive the commision
 		// TODO: Test if the seller receive the commision
@@ -187,6 +167,27 @@ describe('Working NFT Market Test: ', function () {
 			})
 		)
 
-		console.log('items: ', items)
+		console.log('After buying the item, the items on the market: ', items)
+
+		console.log('The number of address_ own NFTs: ', (await nft.balanceOf(_.address)).toNumber())
+		console.log('The number of address1 own NFTs: ', (await nft.balanceOf(add1.address)).toNumber())
+		console.log('The number of address2 own NFTs: ', (await nft.balanceOf(add2.address)).toNumber())
+
+		// *------------------------Resell the NFT------------------------* //
+		await nft.connect(add1).approve(marketContractAddress, 0);
+		
+		await market.connect(add1).addItemToMarket(0, auctionPrice, nftContractAddress)
+		await market.connect(add2).buyItem(2, { value: auctionPrice })
+		await market.connect(add2).buyItem(1, { value: auctionPrice })
+
+		console.log('The number of address_ own NFTs: ', (await nft.balanceOf(_.address)).toNumber())
+		console.log('The number of address1 own NFTs: ', (await nft.balanceOf(add1.address)).toNumber())
+		console.log('The number of address2 own NFTs: ', (await nft.balanceOf(add2.address)).toNumber())
+
+		console.log('The balance of address_ wallet: ', (await _.getBalance()).toString())
+		console.log('The balance of address1 wallet: ', (await add1.getBalance()).toString())
+		console.log('The balance of address2 wallet: ', (await add2.getBalance()).toString())
+
+
 	})
 })

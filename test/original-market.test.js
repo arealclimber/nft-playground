@@ -45,7 +45,7 @@
 // 		console.log('The seller wallet balance: ', (await _.getBalance()).toString())
 // 		console.log('The buyer wallet balance: ', (await buyerAddress.getBalance()).toString())
 // 		console.log('The nothing wallet balance: ', (await add2.getBalance()).toString())
-// 		console.log('The marketplace wallet balance: ', (await provider.getBalance(marketContractAddress)).toString())
+// 		console.log('The marketplace contract balance: ', (await provider.getBalance(marketContractAddress)).toString())
 
 // 		// await market.connect(buyerAddress).
 
