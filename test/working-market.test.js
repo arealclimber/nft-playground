@@ -1,4 +1,5 @@
 const { expect } = require('chai')
+const { getAddress } = require('ethers/lib/utils')
 // const { is } = require('express/lib/request')
 const { ethers, waffle } = require('hardhat')
 
@@ -81,7 +82,7 @@ describe('Working NFT Market Test: ', function () {
 		let commision = await market.getCommision()
 		commision = commision.toString()
 
-		const auctionPrice = ethers.utils.parseUnits('2333', 'ether')
+		const auctionPrice = ethers.utils.parseUnits('4000', 'ether')
 
 		// await nft.createToken('https://www.mytokenlocation.com')
 		// await nft.createToken('https://www.mytokenlocation.com')
@@ -139,8 +140,15 @@ describe('Working NFT Market Test: ', function () {
 		console.log('The seller after-sold-balance: ', sellerBalance)
 		let marketBalance = (await provider.getBalance(marketContractAddress)).toString()
 		console.log('The marketplace balance: ', marketBalance)
-		console.log(await market.returnManager)
-		console.log(await market.manager)
+		let marketOwner = await market.owner();
+		console.log('The owner address deploy the market contract: ', marketOwner)
+		let manager = await market.manager();
+		console.log('The manager address receives the commision: ', manager)
+		const initialManagerBalance = (await provider.getBalance(manager)).toString()
+		console.log('The manager balance: ', initialManagerBalance)
+		
+
+		// console.log(await market.manager)
 
 		// console.log('The manager balance: ', (await marketContractAddress.manager.getBalance()).toString())
 
@@ -168,7 +176,12 @@ describe('Working NFT Market Test: ', function () {
 		)
 
 		console.log('After buying the item, the items on the market: ', items)
-
+		
+		const secondManagerBalance = (await provider.getBalance(manager)).toString()
+		console.log(ethers.utils.formatUnits(secondManagerBalance, "ether"));
+		let commisionRevenue = ethers.utils.formatUnits(secondManagerBalance, "ether") - ethers.utils.formatUnits(initialManagerBalance, "ether");
+		console.log('The manager balance: ', secondManagerBalance)
+		console.log('The manager GET: ', commisionRevenue)
 		console.log('The number of address_ own NFTs: ', (await nft.balanceOf(_.address)).toNumber())
 		console.log('The number of address1 own NFTs: ', (await nft.balanceOf(add1.address)).toNumber())
 		console.log('The number of address2 own NFTs: ', (await nft.balanceOf(add2.address)).toNumber())
@@ -184,10 +197,32 @@ describe('Working NFT Market Test: ', function () {
 		console.log('The number of address1 own NFTs: ', (await nft.balanceOf(add1.address)).toNumber())
 		console.log('The number of address2 own NFTs: ', (await nft.balanceOf(add2.address)).toNumber())
 
+		console.log('The manager balance: ', (await provider.getBalance(manager)).toString())
 		console.log('The balance of address_ wallet: ', (await _.getBalance()).toString())
 		console.log('The balance of address1 wallet: ', (await add1.getBalance()).toString())
 		console.log('The balance of address2 wallet: ', (await add2.getBalance()).toString())
 
+		let allItems = await market.returnAllListedItems();
+
+		allItems = await Promise.all(
+			allItems.map(async (i) => {
+				const tokenUri = await nft.tokenURI(i.tokenId);
+				let details = {
+					price: i.price.toString(),
+					tokenId: i.tokenId.toString(),
+					itemId: i.itemId.toString(),
+					seller: i.seller,
+					contract: i.nftContract,
+					isSold: i.isSold,
+					isOnSale: i.isOnSale,
+					owner: nft.ownerOf(i.tokenId),
+					tokenUri,
+				}
+				return details;
+			})
+		)
+
+		console.log('The whole items-for-sale: ', allItems)
 
 	})
 })

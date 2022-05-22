@@ -85,6 +85,7 @@ contract OriginalNFTMarket is ReentrancyGuard {
         idToMarketItem[itemId].owner = payable(msg.sender);
         idToMarketItem[itemId].sold = true;
         _itemsSold.increment();
+        
         payable(owner).transfer(listingPrice);
     }
 

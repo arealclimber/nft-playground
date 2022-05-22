@@ -25,8 +25,8 @@ contract NFTMarket is ReentrancyGuard, Ownable {
     Counters.Counter private _itemIds; // FIXME: NONO! The number is also the amount NFT on the market
     Counters.Counter private _itemsSold; // The number is the NFT-sold amount
 
-    uint256 commision = 0.01 ether;
-    address payable private manager;
+    uint256 commision = 1;
+    address payable public manager;
 
     struct MarketItem {
         uint itemId;
@@ -84,7 +84,24 @@ contract NFTMarket is ReentrancyGuard, Ownable {
     // }
 
     function returnManager() public view returns (address) {
-        return(manager);
+        return manager;
+    }
+
+    function returnAllListedItems() public view returns (MarketItem[] memory) {
+        uint itemCount = _itemIds.current();
+        uint itemLength = itemsForSale.length;
+        uint currentIndex = 0;
+
+        MarketItem[] memory items = new MarketItem[](itemLength);
+        for (uint i = 0; i < itemCount; i++) {
+            uint currentId = itemsForSale[i].itemId;
+            MarketItem storage currentItem = itemsForSale[currentId];
+            items[currentIndex] = currentItem;
+            currentIndex += 1;
+        }
+        return items;
+        
+
     }
 
     function addItemToMarket(uint tokenId, uint price,address tokenAddress) onlyItemOwner(tokenAddress, tokenId) hasTransferApproval(tokenAddress, tokenId) external returns (uint) {
@@ -113,20 +130,24 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         IERC721(itemsForSale[id].nftContract).safeTransferFrom(itemsForSale[id].seller, msg.sender, itemsForSale[id].tokenId);
         
         // payable(address(this)).transfer(commision);
-        payable(manager).transfer(commision);
+        uint revenue = (msg.value) * 1 / 100;
+        payable(manager).transfer(revenue);
 
 
-        uint received = (msg.value - commision);
+        uint received = (msg.value - revenue);
 
         itemsForSale[id].seller.transfer(received);
 
         _itemsSold.increment();
 
-        delete itemsForSale[id];
+        // TODO: May use `mapping` instead of `array` is the more efficient way when there's no need to run for-loop
+        // delete itemsForSale[id];
 
         emit itemSold(id, itemsForSale[id].tokenId, itemsForSale[id].price, msg.sender);
 
     }
+
+    
 
     function fetchMarketItems() public view returns (MarketItem[] memory) {
         uint itemCount = _itemIds.current();
@@ -171,16 +192,6 @@ contract NFTMarket is ReentrancyGuard, Ownable {
 
     function getCommision() public view returns (uint) {
         return commision;
-    }
-
-    function withdraw(address to) external onlyOwner nonReentrant {
-        uint256 balance = address(this).balance;
-        payable(to).transfer(balance);
-    }
-
-    function withdrawMoney() external onlyOwner nonReentrant {
-        (bool success, ) = msg.sender.call{value: address(this).balance}("");
-        require(success, "Transfer failed.");
     }
 
 
