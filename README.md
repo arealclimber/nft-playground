@@ -49,7 +49,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 # Collaborations 💗
 
--   Favicon and the carrot NFT by [Parry](https://www.instagram.com/parryfromfantasytostart/)
+-   Favicon and the carrot NFT created by [Parry](https://www.instagram.com/parryfromfantasytostart/)
 
 # References 🖥
 
