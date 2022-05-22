@@ -20,7 +20,7 @@ import "hardhat/console.sol";
 // 4. owner cannot be the buyer  
 */
 
-contract testNFTMarket is ReentrancyGuard, Ownable {
+contract NFTMarket is ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _itemIds; // FIXME: NONO! The number is also the amount NFT on the market
     Counters.Counter private _itemsSold; // The number is the NFT-sold amount
@@ -73,6 +73,10 @@ contract testNFTMarket is ReentrancyGuard, Ownable {
         _;
     }
 
+    function approveMarket(uint tokenId, address tokenAddress) external {
+        IERC721 tokenContract = IERC721(tokenAddress);
+        tokenContract.approve(address(this), tokenId);
+    }
 
     function addItemToMarket(uint tokenId, uint price,address tokenAddress) onlyItemOwner(tokenAddress, tokenId) hasTransferApproval(tokenAddress, tokenId) external returns (uint) {
         require(activeItems[tokenAddress][tokenId] == false, "Item is already on sale!");
