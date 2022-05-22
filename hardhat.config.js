@@ -11,6 +11,7 @@ module.exports = {
 			},
 		},
 	},
+	defaultNetwork: 'mumbai',
 	networks: {
 		hardhat: {
 			chainId: 1337,

@@ -5,7 +5,7 @@ export default function Community() {
 		<Layout>
 			<div className="flex justify-center">
 				<h1 className="py-10 px-20 text-3xl">Building...🔨🔨🔨{'\n'}</h1>
-				<br />
+
 				<h3 className="py-10 px-20 text-xl">
 					Here is your participation in community! NFT created by yourself.
 				</h3>

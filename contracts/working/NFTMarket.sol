@@ -85,7 +85,6 @@ contract NFTMarket is ReentrancyGuard, Ownable {
             currentIndex += 1;
         }
         return items;
-        
     }
 
     function unlistItem(uint id, uint tokenId, address tokenAddress) onlyItemOwner(tokenAddress, tokenId) external {
@@ -127,8 +126,6 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         payable(manager).transfer(revenue);
 
         // payable(address(this)).transfer(revenue);
-
-
 
         uint received = (msg.value - revenue);
 

@@ -28,7 +28,7 @@ import { nftContractAddress, marketContractAddress } from '../config'
 import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json'
 import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
 
-export default function CreateItem() {
+export default function createNFT() {
 	const [fileUrl, setFileUrl] = useState(null)
 	const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
 	const [txError, setTxError] = useState(null)
@@ -57,7 +57,12 @@ export default function CreateItem() {
 		}
 	}
 
-	async function createItem() {
+	async function createNFT() {
+		const web3Modal = new Web3Modal()
+		const connection = await web3Modal.connect()
+		const provider = new ethers.providers.Web3Provider(connection)
+		const signer = provider.getSigner()
+
 		const { name, description, price } = formInput
 		if (!name || !description || !price || !fileUrl) return
 		/* first, upload to IPFS */
@@ -76,9 +81,34 @@ export default function CreateItem() {
 		} catch (error) {
 			console.log('Error uploading file: ', error)
 		}
+
+		try {
+			let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
+			let transaction = await nftContract.createToken(url)
+			let tx = await transaction.wait()
+
+			if (tx) {
+				toast.success('Success!', {
+					position: 'top-right',
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				})
+			}
+		} catch (error) {
+			console.error(error)
+		}
+
+		let event = tx.events[0]
+		console.log(event)
+		let value = event.args[2]
+		let tokenId = value.toNumber()
 	}
 
-	async function createSale(url) {
+	async function createAndSale(url) {
 		const web3Modal = new Web3Modal()
 		const connection = await web3Modal.connect()
 		const provider = new ethers.providers.Web3Provider(connection)
@@ -88,10 +118,6 @@ export default function CreateItem() {
 		let transaction = await nftContract.createToken(url)
 		let tx = await transaction.wait()
 
-		// console.log(tx)
-		// console.log(tx.value)
-		// console.log(tx.events)
-
 		let event = tx.events[0]
 		console.log(event)
 		let value = event.args[2]
@@ -100,11 +126,63 @@ export default function CreateItem() {
 		const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
 		let marketContract = new ethers.Contract(marketContractAddress, Market.abi, signer)
-		let listingPrice = await marketContract.getListingPrice()
-		listingPrice = listingPrice.toString()
 
-		transaction = await marketContract.createMarketItem(nftContractAddress, tokenId, price, { value: listingPrice })
+		transaction = await marketContract.addItemToMarket(tokenId, price, nftContractAddress)
 		await transaction.wait()
+
+		if (transaction) {
+			toast.success('Success!', {
+				position: 'top-right',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			})
+		}
+
+		// try {
+		// 	let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
+		// 	let transaction = await nftContract.createToken(url)
+		// 	let tx = await transaction.wait()
+
+		// 	let event = tx.events[0]
+		// 	console.log(event)
+		// 	let value = event.args[2]
+		// 	let tokenId = value.toNumber()
+
+		// 	const price = ethers.utils.parseUnits(formInput.price, 'ether')
+
+		// 	let marketContract = new ethers.Contract(marketContractAddress, Market.abi, signer)
+
+		// 	transaction = await marketContract.addItemToMarket(tokenId, price, nftContractAddress)
+		// 	await transaction.wait()
+
+		// 	if (transaction) {
+		// 		toast.success('Success!', {
+		// 			position: 'top-right',
+		// 			autoClose: 3000,
+		// 			hideProgressBar: false,
+		// 			closeOnClick: true,
+		// 			pauseOnHover: true,
+		// 			draggable: true,
+		// 			progress: undefined,
+		// 		})
+		// 	}
+		// } catch (error) {
+		// 	console.error(error)
+		// }
+
+		// console.log(tx)
+		// console.log(tx.value)
+		// console.log(tx.events)
+
+		// let listingPrice = await marketContract.getListingPrice()
+		// listingPrice = listingPrice.toString()
+
+		// transaction = await marketContract.addItemToMarket(nftContractAddress, tokenId, price, { value: listingPrice })
+
 		router.push('/market')
 	}
 
@@ -123,24 +201,26 @@ export default function CreateItem() {
 						onChange={(e) => updateFormInput({ ...formInput, description: e.target.value })}
 					/>
 					<input
-						placeholder="Asset Price in Eth"
+						placeholder="Asset Price in Eth (Optional)"
 						className="mt-2 border rounded p-4 text-black text-lg"
 						onChange={(e) => updateFormInput({ ...formInput, price: e.target.value })}
 					/>
 					<input type="file" name="Asset" className="my-4 text-lg" onChange={onChange} />
+
 					{fileUrl && <img className="rounded mt-4" width="350" src={fileUrl} />}
 
 					<button
-						onClick={createItem}
-						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
-					>
-						Simply Create NFT
-					</button>
-					<button
-						onClick={createItem}
+						onClick={createAndSale}
 						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
 					>
 						Create & Sell NFT
+					</button>
+
+					<button
+						onClick={createNFT}
+						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
+					>
+						Simply Create NFT
 					</button>
 				</div>
 			</div>
@@ -148,6 +228,6 @@ export default function CreateItem() {
 	)
 }
 
-// CreateItem.getLayout = function getLayout(page) {
+// createNFT.getLayout = function getLayout(page) {
 // 	return <Layout>{page}</Layout>
 // }
