@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 import { Buffer } from 'buffer'
 import Web3Modal from 'web3modal'
 import Layout from '../components/layout'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 // const client = ipfsHttpClient('https://ipfs.fleek.co/ipfs/HASH');
 // 'https://ipfs.infura.io:5001/api/v0'
@@ -57,7 +59,7 @@ export default function createNFT() {
 		}
 	}
 
-	async function createNFT() {
+	async function createNFTItem() {
 		const web3Modal = new Web3Modal()
 		const connection = await web3Modal.connect()
 		const provider = new ethers.providers.Web3Provider(connection)
@@ -77,38 +79,76 @@ export default function createNFT() {
 			// const url = `https://ipfs.infura.io:5001/api/v0/cat?arg=${added.path}`
 			const url = `https://ipfs.infura.io/ipfs/${added.path}`
 			// after file is uploaded to IPFS, pass the URL to save it on Polygon
-			createSale(url)
+
+			// let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
+			// let transaction = await nftContract.createToken(url)
+			// let tx = await transaction.wait()
+
+			// if (tx) {
+			// 	toast.success('Success!', {
+			// 		position: 'top-right',
+			// 		autoClose: 3000,
+			// 		hideProgressBar: false,
+			// 		closeOnClick: true,
+			// 		pauseOnHover: true,
+			// 		draggable: true,
+			// 		progress: undefined,
+			// 	})
+			// }
 		} catch (error) {
 			console.log('Error uploading file: ', error)
 		}
 
-		try {
-			let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
-			let transaction = await nftContract.createToken(url)
-			let tx = await transaction.wait()
+		router.push('/my-assets')
+	}
 
-			if (tx) {
-				toast.success('Success!', {
-					position: 'top-right',
-					autoClose: 3000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-				})
-			}
-		} catch (error) {
-			console.error(error)
-		}
+	async function create(url) {
+		const web3Modal = new Web3Modal()
+		const connection = await web3Modal.connect()
+		const provider = new ethers.providers.Web3Provider(connection)
+		const signer = provider.getSigner()
+
+		let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
+		let transaction = await nftContract.createToken(url)
+		let tx = await transaction.wait()
 
 		let event = tx.events[0]
 		console.log(event)
 		let value = event.args[2]
 		let tokenId = value.toNumber()
+
+		if (true) {
+			toast.success('Success!', {
+				position: 'top-right',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			})
+		}
+
+		// const price = ethers.utils.parseUnits(formInput.price, 'ether')
+
+		// let marketContract = new ethers.Contract(marketContractAddress, Market.abi, signer)
+
+		// transaction = await marketContract.addItemToMarket(tokenId, price, nftContractAddress)
+		// await transaction.wait()
+
+		// if (transaction) {
+		// 	toast.success('Success!', {
+		// 		position: 'top-right',
+		// 		autoClose: 3000,
+		// 		hideProgressBar: false,
+		// 		closeOnClick: true,
+		// 		pauseOnHover: true,
+		// 		draggable: true,
+		// 		progress: undefined,
+		// 	})
 	}
 
-	async function createAndSale(url) {
+	async function createAndSell(url) {
 		const web3Modal = new Web3Modal()
 		const connection = await web3Modal.connect()
 		const provider = new ethers.providers.Web3Provider(connection)
@@ -200,29 +240,41 @@ export default function createNFT() {
 						className="mt-8 border rounded p-4 text-black text-lg"
 						onChange={(e) => updateFormInput({ ...formInput, description: e.target.value })}
 					/>
-					<input
+					{/* <input
 						placeholder="Asset Price in Eth (Optional)"
 						className="mt-2 border rounded p-4 text-black text-lg"
 						onChange={(e) => updateFormInput({ ...formInput, price: e.target.value })}
-					/>
+					/> */}
+
 					<input type="file" name="Asset" className="my-4 text-lg" onChange={onChange} />
 
 					{fileUrl && <img className="rounded mt-4" width="350" src={fileUrl} />}
 
-					<button
-						onClick={createAndSale}
+					{/* <button
+						onClick={createAndSell}
 						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
 					>
-						Create & Sell NFT
-					</button>
+						Create and Sell NFT
+					</button> */}
 
 					<button
-						onClick={createNFT}
+						onClick={create}
 						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
 					>
 						Simply Create NFT
 					</button>
 				</div>
+				<ToastContainer
+					position="top-right"
+					autoClose={5000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+				/>
 			</div>
 		</Layout>
 	)

@@ -31,23 +31,60 @@ export default function MyAssets() {
 	async function loadNFTs() {
 		// const contract = new web3.eth.Contract(NFT.abi, nftContractAddress)
 		// const walletAddress =
+		let accounts
 
 		const web3Modal = new Web3Modal()
 		const connection = await web3Modal.connect()
 		const provider = new ethers.providers.Web3Provider(connection)
 		const signer = provider.getSigner()
-		let signerAddress = signer.getAddress()
-		// console.log(address)
-		// address.then(() => {
-		// 	console.log(address)
-		// })
 
-		// signerAddress.then((i) => {
-		// 	console.log(i)
-		// })
+		const { ethereum } = window
+		if (ethereum) {
+			console.log('Got the ethereum object: ', ethereum)
+		} else {
+			console.log('No Wallet found. Connect Wallet')
+		}
+
+		try {
+			accounts = await ethereum.request({ method: 'eth_accounts' })
+
+			if (accounts.length !== 0) {
+				console.log('Found authorized Account: ', accounts[0])
+			} else {
+				console.log('No Wallet found. Connect Wallet')
+			}
+		} catch (error) {
+			console.error(error)
+		}
+
+		// TODO: Return Promise, try it later
+		// let signerAddress = signer.getAddress()
+		// console.log('signer address: ', signerAddress)
+		// // console.log(address)
+		// // address.then(() => {
+		// // 	console.log(address)
+		// // })
+
+		// // signerAddress.then((i) => {
+		// // 	console.log(i)
+		// // })
 
 		const marketContract = new ethers.Contract(marketContractAddress, Market.abi, signer)
 		const tokenContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
+
+		console.log('NFT Balance: ')
+		const ownedNFT = await tokenContract.balanceOf(accounts[0]).then((v) => console.log(v.toNumber()))
+
+		const totalSupply = await tokenContract.totalSupply().then((v) => {
+			return v.toNumber()
+		})
+		console.log('total supply: ', totalSupply)
+		for (let i = 0; i < totalSupply; i++) {
+			let tokenId = (await tokenContract.tokenOfOwnerByIndex(accounts[0], i)).toNumber()
+			let tokenURI = await tokenContract.tokenURI(tokenId)
+			console.log(tokenId)
+			console.log(tokenURI)
+		}
 
 		// const nftContract = new web3.eth.Contract(NFT.abi, nftContractAddress)
 		// const callData1 = tokenContract.ownerOf(1).encodeABI();

@@ -166,6 +166,8 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         return items;
     }
 
+    
+
 
     function setCommision(uint256 _commision) external onlyOwner nonReentrant {
         commision = _commision;
