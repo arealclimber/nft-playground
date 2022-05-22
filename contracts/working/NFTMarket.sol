@@ -133,6 +133,9 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         uint revenue = (msg.value) * 1 / 100;
         payable(manager).transfer(revenue);
 
+        // payable(address(this)).transfer(revenue);
+
+
 
         uint received = (msg.value - revenue);
 

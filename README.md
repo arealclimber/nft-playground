@@ -1,10 +1,10 @@
-# NFT Playground
+# NFT Playground Intro
 
-This project is built to learn.
+This project is built to learn and make everyone in the world have fun with NFT.
 
-NFT Playground is the Fractionalized NFT marketplace that allows not only sellers and buyers and borrowers and lenders but also the community to have fun.
+NFT Playground is the community-oriented NFT marketplace where everyone can share thoughts and get the free NFT (costing gas fee).
 
-## 🧱 Build 🔨
+# 🧱 Roadmap 🔨
 
 ![BUIDL](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG)
 
@@ -23,7 +23,7 @@ NFT Playground is the Fractionalized NFT marketplace that allows not only seller
 
 Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
-## Commands
+# Commands
 
 **Hardhat:**
 
@@ -33,7 +33,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 `npx hardhat node` to run the localhost and get test accounts
 
-`node scripts/sample-script.js --network localshost` to deploy on the localhost
+`node scripts/deploy.js --network localshost` to deploy on the localhost
 
 ```shell
 npx hardhat accounts
@@ -41,6 +41,10 @@ npx hardhat clean
 npx hardhat help
 ```
 
-## References
+# Collaborations
 
-Favicon by Freepik at https://www.flaticon.com/
+-   Favicon and the carrot NFT by [Parry](https://www.instagram.com/parryfromfantasytostart/)
+
+# References
+
+-   Nader Dabit's tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))

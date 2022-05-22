@@ -70,7 +70,7 @@ export default function Connector() {
 			if (chainId !== neededCahinId) {
 				setCorrectNetwork(false)
 
-				toast.warn('Please change to Mumbai Testnet !', {
+				toast.warn('Please change to Mumbai Testnet and refresh !', {
 					position: 'top-right',
 					autoClose: 5000,
 					hideProgressBar: false,

@@ -8,7 +8,7 @@ let nft
 let nftContractAddress
 let market
 let marketContractAddress
-// let [add1, add2, add3] = []
+
 
 beforeEach(async () => {
 	provider = waffle.provider
@@ -51,7 +51,7 @@ describe('Working NFT Test: ', function () {
 		console.log('The address2 has NFT amount: ', (await nft.balanceOf(add2.address)).toNumber())
 		console.log('The address3 has NFT amount: ', (await nft.balanceOf(add3.address)).toNumber())
 
-		// Give `tokenOfOwnerByIndex` the parameter of index=0 and address-3, and it return the tokenId owned by address-3. 
+		// Give `tokenOfOwnerByIndex` the parameter of index=0 and address-3, and it'll return the tokenId owned by address-3. 
 		// `index=0` means the `tokenOfOwnerByIndex` run the loop for one time
 		console.log('The tokenOfOwnerByIndex with index=1 and address-3: ', (await nft.tokenOfOwnerByIndex(add3.address, 1)));
 
@@ -73,10 +73,11 @@ describe('Working NFT Market Test: ', function () {
 		// Local testing environment: using the test accounts
 		// Have the buyer and the seller be different person
 
-		const [_, add1, add2] = await ethers.getSigners()
+		const [_, add1, add2, add3] = await ethers.getSigners()
 		console.log('The address _ : ', _.address)
 		console.log('The address 1 : ', add1.address)
 		console.log('The address 2 : ', add2.address)
+		console.log('The address 3 : ', add3.address)
 
 
 		let commision = await market.getCommision()
@@ -89,9 +90,10 @@ describe('Working NFT Market Test: ', function () {
 
 		await nft.connect(_).createToken('https://www.mytokenlocation.com')
 		await nft.connect(add1).createToken('https://www.mytokenlocation.com')
+		await nft.connect(add1).createToken('https://www.mytokenlocation.com')
 		console.log('The address1 has NFT amount: ', (await nft.balanceOf(add1.address)).toNumber())
 		console.log('The NFT tokenId owned by address_ : ', (await nft.tokenOfOwnerByIndex(_.address, 0))); //tokenId=0
-		console.log('The NFT tokenId owned by address1: ', (await nft.tokenOfOwnerByIndex(add1.address, 0))); //tokenId=1
+		console.log('The NFT tokenId owned by address1: ', (await nft.tokenOfOwnerByIndex(add1.address, 1))); //tokenId=1
 		console.log('The token 1 approved by: ', (await nft.getApproved(1)))
 		console.log('The token 0 approved by: ', (await nft.getApproved(0)))
 
@@ -185,28 +187,34 @@ describe('Working NFT Market Test: ', function () {
 		console.log('The number of address_ own NFTs: ', (await nft.balanceOf(_.address)).toNumber())
 		console.log('The number of address1 own NFTs: ', (await nft.balanceOf(add1.address)).toNumber())
 		console.log('The number of address2 own NFTs: ', (await nft.balanceOf(add2.address)).toNumber())
+		console.log('The number of address3 own NFTs: ', (await nft.balanceOf(add3.address)).toNumber())
 
 		// *------------------------Resell the NFT------------------------* //
 		await nft.connect(add1).approve(marketContractAddress, 0);
 		
 		await market.connect(add1).addItemToMarket(0, auctionPrice, nftContractAddress)
-		await market.connect(add2).buyItem(2, { value: auctionPrice })
+		await market.connect(add3).buyItem(2, { value: auctionPrice })
 		await market.connect(add2).buyItem(1, { value: auctionPrice })
 
 		console.log('The number of address_ own NFTs: ', (await nft.balanceOf(_.address)).toNumber())
 		console.log('The number of address1 own NFTs: ', (await nft.balanceOf(add1.address)).toNumber())
 		console.log('The number of address2 own NFTs: ', (await nft.balanceOf(add2.address)).toNumber())
+		console.log('The number of address3 own NFTs: ', (await nft.balanceOf(add3.address)).toNumber())
+
 
 		console.log('The manager balance: ', (await provider.getBalance(manager)).toString())
 		console.log('The balance of address_ wallet: ', (await _.getBalance()).toString())
 		console.log('The balance of address1 wallet: ', (await add1.getBalance()).toString())
 		console.log('The balance of address2 wallet: ', (await add2.getBalance()).toString())
+		console.log('The balance of address3 wallet: ', (await add3.getBalance()).toString())
+
 
 		let allItems = await market.returnAllListedItems();
 
 		allItems = await Promise.all(
 			allItems.map(async (i) => {
 				const tokenUri = await nft.tokenURI(i.tokenId);
+				const tokenOwner = await nft.ownerOf(i.tokenId);
 				let details = {
 					price: i.price.toString(),
 					tokenId: i.tokenId.toString(),
@@ -215,18 +223,22 @@ describe('Working NFT Market Test: ', function () {
 					contract: i.nftContract,
 					isSold: i.isSold,
 					isOnSale: i.isOnSale,
-					owner: nft.ownerOf(i.tokenId),
+					tokenOwner,
 					tokenUri,
 				}
 				return details;
 			})
 		)
 
-		console.log('The whole items-for-sale: ', allItems)
+		console.log('The history of the whole items-for-sale: ', allItems)
 
 		const thirdManagerBalance = (await provider.getBalance(manager)).toString()
 		commisionRevenue = ethers.utils.formatUnits(thirdManagerBalance, "ether") - ethers.utils.formatUnits(secondManagerBalance, "ether");
 		console.log('The manager balance: ', thirdManagerBalance)
 		console.log('The manager GET: ', commisionRevenue, 'ether')
+
+		// console.log(nft)
+		// console.log(market)
+
 	})
 })
