@@ -236,22 +236,21 @@ export default function Connector() {
 				</button>
 			) : correctNetwork ? (
 				<div className="flex flex-col justify-center items-center mb-20 font-bold text-xl gap-y-3">
-					<Success text="Connect to Mumbai." />
+					{/* <Success text="Connect to Mumbai." /> */}
 					<ToastContainer
 						position="top-right"
-						autoClose={5000}
+						autoClose={3000}
 						hideProgressBar={false}
 						newestOnTop={false}
 						closeOnClick
 						rtl={false}
 						pauseOnFocusLoss
 						draggable
-						pauseOnHover
 					/>
 				</div>
 			) : (
 				<div className="flex flex-col justify-center items-center mb-20 font-bold text-xl gap-y-3">
-					<Fail text="Please change to Mumbai Testnet." />
+					{/* <Fail text="Please change to Mumbai Testnet." /> */}
 					<ToastContainer
 						position="top-right"
 						autoClose={5000}

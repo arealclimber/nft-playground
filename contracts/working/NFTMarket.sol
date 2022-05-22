@@ -10,19 +10,12 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
 
-
 import "hardhat/console.sol";
 
-// TODO: For the NFT, necessary to check:
-/* 1. its owner
-// 2. if already on sale
-// 3. if sold out
-// 4. owner cannot be the buyer  
-*/
 
 contract NFTMarket is ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
-    Counters.Counter private _itemIds; // FIXME: NONO! The number is also the amount NFT on the market
+    Counters.Counter private _itemIds; // The number is also the accumulating amount of NFT on the market
     Counters.Counter private _itemsSold; // The number is the NFT-sold amount
 
     uint256 commision = 1;
@@ -48,6 +41,7 @@ contract NFTMarket is ReentrancyGuard, Ownable {
     // TODO: Is it necessary to mark nftContract `indexed`?
     event itemAdded(uint indexed itemId, uint indexed tokenId, uint price, address indexed nftContract);
     event itemSold(uint indexed itemId, uint indexed tokenId, uint price, address indexed buyer);
+    event itemRemoved(uint indexed itemId, uint indexed tokenId, uint price, address indexed nftContract);
 
     constructor() {
         manager = payable(msg.sender);
@@ -78,15 +72,6 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         _;
     }
 
-    // function approveMarket(uint tokenId, address tokenAddress) external {
-    //     IERC721 tokenContract = IERC721(tokenAddress);
-    //     tokenContract.approve(address(this), tokenId);
-    // }
-
-    function returnManager() public view returns (address) {
-        return manager;
-    }
-
     function returnAllListedItems() public view returns (MarketItem[] memory) {
         uint itemCount = _itemIds.current();
         uint itemLength = itemsForSale.length;
@@ -101,6 +86,14 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         }
         return items;
         
+    }
+
+    function unlistItem(uint id, uint tokenId, address tokenAddress) onlyItemOwner(tokenAddress, tokenId) external {
+        require(activeItems[tokenAddress][tokenId] == true, "Item is not on sale!");
+        itemsForSale[id].isOnSale = false;
+        activeItems[tokenAddress][tokenId] = false;
+
+        emit itemRemoved(id, tokenId, itemsForSale[id].price, tokenAddress);
 
     }
 
@@ -176,18 +169,6 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         return items;
     }
 
-    // function fetchMyNFTs(address userAddress, address tokenAddress) public view returns (MarketItem[] memory) {
-    //     uint totalItemCount = _itemIds.current();
-    //     uint itemCount = 0;
-    //     uint currentIndex = 0;
-
-    //     IERC721 tokenContract = IERC721(tokenAddress);
-    //     for (uint i = 0; i < totalItemCount; i++) {
-    //         if (tokenContract.ownerOf(tokenId) == userAddress) {
-    //             uint currentId = 
-    //         }
-    //     }
-    // }
 
     function setCommision(uint256 _commision) external onlyOwner nonReentrant {
         commision = _commision;

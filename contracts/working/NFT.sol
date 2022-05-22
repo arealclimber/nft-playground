@@ -21,10 +21,6 @@ contract NFT is ERC721URIStorage, ERC721Enumerable {
     constructor() ERC721("NFT", "NFT") {
     }
 
-    // constructor(string memory name_, string memory symbol_, address marketplaceAddress) ERC721(name_, symbol_) {
-    //     contractAddress = marketplaceAddress;
-    // }
-
     // Required overrides from parent contracts
     function _burn(uint256 tokenId) internal virtual override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
@@ -43,7 +39,6 @@ contract NFT is ERC721URIStorage, ERC721Enumerable {
         return super.supportsInterface(interfaceId);
     }
 
-
     function createToken(string memory tokenURI) public returns (uint) {
         
         uint256 newItemId = _tokenIds.current();
@@ -52,10 +47,8 @@ contract NFT is ERC721URIStorage, ERC721Enumerable {
         _safeMint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
-
         return newItemId;
     }
-
 
 
 

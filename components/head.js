@@ -3,5 +3,9 @@ import Link from 'next/link'
 import Connector from './connector'
 
 export default function PageHead() {
-	return <Head></Head>
+	return (
+		<Head>
+			<title>NFT Playground</title>
+		</Head>
+	)
 }
