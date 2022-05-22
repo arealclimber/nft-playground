@@ -1,27 +1,59 @@
-# NFT Playground Intro
+# NFT Playground
 
-This project is built to learn and make everyone in the world have fun with NFT.
+This project is started with the intention to make everyone in the world have fun with NFT.
 
-NFT Playground is the community-oriented NFT marketplace where everyone can share thoughts and get the free NFT (costing gas fee).
+NFT Playground is the community-oriented NFT-based ecosystem where everyone can share thoughts and get free NFTs (costing gas fee).
 
 # 🧱 Roadmap 🔨
 
 ![BUIDL](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG)
 
-#### Solidity 🎁
+## Community😋
 
--   [ ] **NFT Marketplace functions**
-    -   [ ] Mint
-    -   [ ] Trade
-    -   [ ] Fractionalized NFT with lending and borrowing
--   [ ] **Community functions**
-    -   [ ] Allow the community members to publish articles or pictures or something else to gain the governance token
+### Share to Earn
 
-#### Frontend 🎉
+-   [ ] Send messages like Twitter and Get your articles to be NFT with a \***one-click**\* button.
+-   [ ] As your messages help more people (getting more likes), you can earn the beautiful NFT created by collaborative artists.
 
--   [ ] **Show the feature and update instantly**
+### Welcome every creators!
+
+-   [ ] Welcome any artists, writers, or people who're passionate about the world or the environment to share the love here!
+
+## NFT Create & Sell🎉
+
+#### Make your memory NFTs
+
+-   [x] Drag and drop your pictures and have them be NFTs.
+-   [ ] Show off your one-of-a-kind precise NFTs on our platform or anyother social media.
+-   [ ] Give your NFT to your friends as convenient as you want
+
+#### NFT Marketplace
+
+-   [ ] You can sell or trade your \***fresh**\* NFT here
+
+## NFT Fractions🎈
+
+#### Add liquidity to your valuable NFTs
+
+-   [ ] Fractionalized your NFTs
+
+-   [ ] Lend or borrow with NFTs
+
+## More Friendly Designs🧶
+
+#### Wallet integrations, fiat-to-crypto bridges, and more
+
+-   [ ] Make the Crypto world more available to the world
 
 Made with 💙 by [Lumii](https://twitter.com/arealclimber)
+
+# Collaborations 💗
+
+-   Favicon and the carrot NFT by [Parry](https://www.instagram.com/parryfromfantasytostart/)
+
+# References 🖥
+
+-   Nader Dabit's tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))
 
 # Commands
 
@@ -40,11 +72,3 @@ npx hardhat accounts
 npx hardhat clean
 npx hardhat help
 ```
-
-# Collaborations
-
--   Favicon and the carrot NFT by [Parry](https://www.instagram.com/parryfromfantasytostart/)
-
-# References
-
--   Nader Dabit's tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))
