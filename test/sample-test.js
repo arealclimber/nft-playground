@@ -1,14 +1,16 @@
 const { expect } = require('chai')
-const { ethers } = require('hardhat')
+const { ethers, waffle } = require('hardhat')
 
 describe('NFT Market', function () {
 	it('Should create and execute market sales', async function () {
-		const Market = await ethers.getContractFactory('NFTMarket')
+		const provider = waffle.provider
+
+		const Market = await ethers.getContractFactory('OriginalNFTMarket')
 		const market = await Market.deploy()
 		await market.deployed()
 		const marketContractAddress = market.address
 
-		const NFT = await ethers.getContractFactory('NFT')
+		const NFT = await ethers.getContractFactory('OriginalNFT')
 		const nft = await NFT.deploy(marketContractAddress)
 		await nft.deployed()
 		const nftContractAddress = nft.address
@@ -29,9 +31,13 @@ describe('NFT Market', function () {
 
 		// Local testing environment: using the test accounts
 		// Have the buyer and the seller be different person
-		const [_, buyerAddress] = await ethers.getSigners()
+		const [_, buyerAddress, add2] = await ethers.getSigners()
 
 		await market.connect(buyerAddress).createMarketSale(nftContractAddress, 1, { value: auctionPrice })
+		console.log('The seller wallet balance: ', (await _.getBalance()).toString())
+		console.log('The buyer wallet balance: ', (await buyerAddress.getBalance()).toString())
+		console.log('The nothing wallet balance: ', (await add2.getBalance()).toString())
+		console.log('The marketplace wallet balance: ', (await provider.getBalance(marketContractAddress)).toString())
 
 		// await market.connect(buyerAddress).
 

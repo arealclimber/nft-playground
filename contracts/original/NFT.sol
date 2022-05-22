@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "hardhat/console.sol";
 
 
-contract NFT is ERC721URIStorage, ERC721Enumerable {
+contract OriginalNFT is ERC721URIStorage, ERC721Enumerable {
     using Strings for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
