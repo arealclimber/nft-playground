@@ -59,12 +59,12 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
     uint dailyLimit;
     uint lowerBound;
 
-    function setLowerBound(uint _num) onlyOwner nonReentrant returns (uint) {
+    function setLowerBound(uint _num) onlyOwner nonReentrant public returns (uint) {
         lowerBound = _num;
         return lowerBound;
     }
 
-    function setDailyLimit(uint _num) onlyOwner nonReentrant returns (uint) {
+    function setDailyLimit(uint _num) onlyOwner nonReentrant public returns (uint) {
         dailyLimit = _num;
         return dailyLimit;
     }
@@ -102,7 +102,6 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
 
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
-        setApprovalForAll(contractAddress, true);
 
         publishRecords[msg.sender].push(block.timestamp);
 
@@ -110,11 +109,11 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
     }
 
 
-    function like() public returns () {}
+    // function like() public returns () {}
 
-    function flag() public returns () {}
+    // function flag() public returns () {}
 
-    function claim() canClaim(msg.sender) public returns () {}
+    // function claim() canClaim(msg.sender) public returns () {}
 
 
     
