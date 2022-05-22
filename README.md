@@ -72,3 +72,7 @@ npx hardhat accounts
 npx hardhat clean
 npx hardhat help
 ```
+
+# License
+
+[MIT License](https://github.com/arealclimber/nft-playground/blob/main/LICENSE)
