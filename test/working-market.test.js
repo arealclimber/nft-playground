@@ -224,5 +224,9 @@ describe('Working NFT Market Test: ', function () {
 
 		console.log('The whole items-for-sale: ', allItems)
 
+		const thirdManagerBalance = (await provider.getBalance(manager)).toString()
+		commisionRevenue = ethers.utils.formatUnits(thirdManagerBalance, "ether") - ethers.utils.formatUnits(secondManagerBalance, "ether");
+		console.log('The manager balance: ', thirdManagerBalance)
+		console.log('The manager GET: ', commisionRevenue, 'ether')
 	})
 })
