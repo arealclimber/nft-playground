@@ -45,6 +45,7 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
     uint memberCount;
 
     struct Snippet {
+        uint id;
         uint likeCount;
         uint flagCount;
         address author;
