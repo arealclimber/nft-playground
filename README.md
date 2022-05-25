@@ -24,7 +24,7 @@ NFT Playground is the community-oriented NFT-based ecosystem where everyone can 
 #### Make your memory NFTs
 
 -   [x] Drag and drop your pictures and have them be NFTs.
--   [ ] Show off your one-of-a-kind precise NFTs on our platform or anyother social media.
+-   [ ] Show off your one-of-a-kind precise NFTs on our platform or any other social media.
 -   [ ] Give your NFT to your friends as convenient as you want
 
 #### NFT Marketplace
@@ -53,7 +53,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 # References 🖥
 
--   Nader Dabit's tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))
+-   Appreciate Nader Dabit's tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))
 
 # Commands
 
