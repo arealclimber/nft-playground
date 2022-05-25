@@ -53,7 +53,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 # References 🖥
 
--   Nader Dabit's tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))
+-   Appreciate Nader Dabit's tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))
 
 # Commands
 
