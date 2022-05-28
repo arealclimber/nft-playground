@@ -18,6 +18,7 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
     using Strings for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
+    Counters.Counter private _ids;
 
     constructor() ERC721("NFT", "NFT") {
     }
@@ -45,11 +46,10 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
     uint memberCount;
 
     struct Snippet {
-        uint id;
+        uint snippetId;
         uint likeCount;
         uint flagCount;
         address author;
-        string content;
         bool restricted;
     }
 
@@ -88,6 +88,11 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
         _;
     }
 
+    // modifier canClaim() {
+    //     require(authorToSnippets[msg.sender].length > lowerBound);
+    //     _;
+    // }
+    
     modifier isExceed(address checkAddress) {
         uint thirdToLast = publishRecords[checkAddress].length - 2;
         uint thirdTimestamp = publishRecords[checkAddress][thirdToLast -1];
@@ -100,21 +105,56 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
     function publish(string memory tokenURI) isExceed(msg.sender) public returns (uint) {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
+        uint256 newArticleId = _ids.current();
 
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
+        snippets.push(Snippet(newArticleId, 0, 0, msg.sender, false))
         publishRecords[msg.sender].push(block.timestamp);
 
         return newItemId;
     }
+/*     struct Snippet {
+        uint snippetId;
+        uint likeCount;
+        uint flagCount;
+        address author;
+        bool restricted;
+    }
+*/
+
+    function checkStatus(uint id) public returns(Snippet[] memory) {
+        require(snippets[id].snippetId == id, "Not found the snippet. Id isn't accorded.");
+
+        Snippet querySnippet = Snippet[] memory snippets[id]
+        return querySnippet;
+        
+    }
+
+    // TODO: Maybe some tips?
+    function like(uint id, address author) public {
+        require(snippets[id].snippetId == id, "Not found the snippet. Id isn't accorded.");
+        snippets[id].likeCount ++;
+    }
+
+    function flag(uint id, address author) public {
+        require(snippets[id].snippetId == id, "Not found the snippet. Id isn't accorded.");
+        snippets[id].flagCount ++;
+    }
+
+    // TODO: uint256 commision = 1; 
+    function giveTips(uint id, address author) payable public nonReentrant {
+        require(snippets[id].snippetId == id, "Not found the snippet. Id isn't accorded.");
+        snippets[id].author.transfer(msg.value)
+    }
+
+    // function claim() canClaim(msg.sender) public {
+        
+        
+    // }
 
 
-    // function like() public returns () {}
-
-    // function flag() public returns () {}
-
-    // function claim() canClaim(msg.sender) public returns () {}
 
 
     

@@ -77,7 +77,8 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         uint itemLength = itemsForSale.length;
         uint currentIndex = 0;
 
-        MarketItem[] memory items = new MarketItem[](itemLength);
+        // MarketItem[] memory items = new MarketItem[](itemLength);
+        MarketItem[] memory items = new MarketItem[](itemCount);
         for (uint i = 0; i < itemCount; i++) {
             uint currentId = itemsForSale[i].itemId;
             MarketItem storage currentItem = itemsForSale[currentId];
