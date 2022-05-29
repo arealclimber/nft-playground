@@ -49,7 +49,7 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
         uint snippetId;
         uint likeCount;
         uint flagCount;
-        address author;
+        address payable author;
         bool restricted;
     }
 
@@ -59,6 +59,10 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
     
     uint dailyLimit;
     uint lowerBound;
+
+    mapping(address => uint) private membership;
+
+    Snippet[] public snippets;
 
     function setLowerBound(uint _num) onlyOwner nonReentrant public returns (uint) {
         lowerBound = _num;
@@ -71,12 +75,7 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
     }
 
     
-    
-    // Tree NFT of ERC20 !!
 
-    mapping(address => uint) membership;
-
-    Snippet[] public snippets;
 
     modifier isMemeber(address checkAddress) {
         require(membership[checkAddress] > 0);
@@ -101,6 +100,7 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
         _;
         
     }
+
     
     function publish(string memory tokenURI) isExceed(msg.sender) public returns (uint) {
         _tokenIds.increment();
@@ -110,24 +110,45 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
-        snippets.push(Snippet(newArticleId, 0, 0, msg.sender, false))
+        snippets.push(Snippet(newArticleId, 0, 0, payable(msg.sender), false));
+
+
         publishRecords[msg.sender].push(block.timestamp);
 
         return newItemId;
     }
-/*     struct Snippet {
+/*     
+    struct Snippet {
         uint snippetId;
         uint likeCount;
         uint flagCount;
         address author;
         bool restricted;
     }
+
+    Snippet[] public snippets;
 */
 
-    function checkStatus(uint id) public returns(Snippet[] memory) {
+    
+    function fetchAllFeeds() public view returns (Snippet[] memory) {
+        // uint snippetsAll = _ids.current();
+        // uint currentIndex = 0;
+
+        // Snippet[] memory feed = new Snippet[](snippetsAll);
+        // for (uint i = 0; i < snippetsAll; i++) {
+        //     uint currentId = snippets[i].snippetId;
+        //     Snippet storage
+        // }
+        return snippets;
+    }
+
+    // Check the status of the very feed
+    function checkStatus(uint id) public view returns(Snippet memory) {
         require(snippets[id].snippetId == id, "Not found the snippet. Id isn't accorded.");
 
-        Snippet querySnippet = Snippet[] memory snippets[id]
+        // Snippet querySnippet = Snippet[] memory snippets[id];
+        Snippet memory querySnippet = snippets[id];
+
         return querySnippet;
         
     }
@@ -146,7 +167,7 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
     // TODO: uint256 commision = 1; 
     function giveTips(uint id, address author) payable public nonReentrant {
         require(snippets[id].snippetId == id, "Not found the snippet. Id isn't accorded.");
-        snippets[id].author.transfer(msg.value)
+        snippets[id].author.transfer(msg.value);
     }
 
     // function claim() canClaim(msg.sender) public {
@@ -154,10 +175,6 @@ contract Feeds is Ownable, ReentrancyGuard, ERC721URIStorage, ERC721Enumerable {
         
     // }
 
-
-
-
-    
 
 }
 
