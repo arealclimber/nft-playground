@@ -97,6 +97,37 @@ export default function MyAssets() {
 			let tokenURI = await tokenContract.tokenURI(tokenId)
 			console.log(tokenId)
 			console.log(tokenURI)
+
+			// https://ipfs.infura.io/ipfs/QmVkvSwMBkcUnUuH1BBBiqmR2ayJCAS9LAHfhyZjAPmrBt
+			const metadataUri = await fetch(tokenURI)
+				.then((response) => {
+					// let res = JSON.parse(response)
+					// res.json()
+
+					console.log(response)
+					// let resData = response.url
+					// console.log(resData.json())
+
+					let res = JSON.stringify(response.url)
+					res = JSON.parse(res)
+					return res
+
+					// console.log(res)
+
+					// response.url
+				})
+				.catch((error) => console.error(error))
+
+			// response.json()
+
+			// console.log(response)
+			console.log(metadataUri)
+			try {
+				const metadata = await fetch(metadataUri).then((res) => res.json())
+				console.log(metadata)
+			} catch (e) {
+				console.error(e)
+			}
 		}
 
 		// const nftContract = new web3.eth.Contract(NFT.abi, nftContractAddress)
