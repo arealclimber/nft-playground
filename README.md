@@ -51,9 +51,11 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 -   Favicon and the carrot NFT created by [Parry](https://www.instagram.com/parryfromfantasytostart/)
 
-# References 🖥
+# Special Thanks 🖥
 
--   Appreciate Nader Dabit's tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))
+-   [Nader Dabit](https://twitter.com/dabit3)
+
+    -   Tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))
 
 # Commands
 
