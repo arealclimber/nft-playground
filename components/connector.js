@@ -70,7 +70,7 @@ export default function Connector() {
 			if (chainId !== neededCahinId) {
 				setCorrectNetwork(false)
 
-				toast.warn('Please change to Mumbai Testnet and refresh !', {
+				toast.warn('Please change to Mumbai Testnet !', {
 					position: 'top-right',
 					autoClose: 5000,
 					hideProgressBar: false,
@@ -84,7 +84,7 @@ export default function Connector() {
 
 				toast.success('Connect to Mumbai !', {
 					position: 'top-right',
-					autoClose: 3000,
+					autoClose: 2000,
 					hideProgressBar: false,
 					closeOnClick: true,
 					pauseOnHover: true,
@@ -141,6 +141,7 @@ export default function Connector() {
 	// FIXME: Error: accounts received is empty [Coinbasewallet cancelled]
 	// FIXME: Error: User closed modal [walletConnect]
 	// FIXME: If the wallet waited to unlock, it throws `user rejected error`
+	// FIXME: In the page showing individual assets, it throws `pauseOnFocusLoss` ERROR
 	const connectWallet = async () => {
 		const web3Modal = new Web3Modal({
 			providerOptions,

@@ -32,7 +32,11 @@ import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
 
 export default function createNFT() {
 	const [fileUrl, setFileUrl] = useState(null)
-	const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
+	const [formInput, updateFormInput] = useState({
+		price: '',
+		name: '',
+		description: '',
+	})
 	const [txError, setTxError] = useState(null)
 
 	const router = useRouter()
@@ -65,8 +69,8 @@ export default function createNFT() {
 		const provider = new ethers.providers.Web3Provider(connection)
 		const signer = provider.getSigner()
 
-		const { name, description, price } = formInput
-		if (!name || !description || !price || !fileUrl) return
+		const { name, description } = formInput
+		if (!name || !description || !fileUrl) return
 		/* first, upload to IPFS */
 		const data = JSON.stringify({
 			name,
@@ -78,7 +82,9 @@ export default function createNFT() {
 			const added = await client.add(data)
 			// const url = `https://ipfs.infura.io:5001/api/v0/cat?arg=${added.path}`
 			const url = `https://ipfs.infura.io/ipfs/${added.path}`
+
 			// after file is uploaded to IPFS, pass the URL to save it on Polygon
+			create(url)
 
 			// let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
 			// let transaction = await nftContract.createToken(url)
@@ -98,8 +104,6 @@ export default function createNFT() {
 		} catch (error) {
 			console.log('Error uploading file: ', error)
 		}
-
-		router.push('/my-assets')
 	}
 
 	async function create(url) {
@@ -117,7 +121,7 @@ export default function createNFT() {
 		let value = event.args[2]
 		let tokenId = value.toNumber()
 
-		if (true) {
+		if (tokenId) {
 			toast.success('Success!', {
 				position: 'top-right',
 				autoClose: 3000,
@@ -128,6 +132,8 @@ export default function createNFT() {
 				progress: undefined,
 			})
 		}
+
+		router.push('/my-assets')
 
 		// const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
@@ -165,9 +171,17 @@ export default function createNFT() {
 
 		const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
-		let marketContract = new ethers.Contract(marketContractAddress, Market.abi, signer)
+		let marketContract = new ethers.Contract(
+			marketContractAddress,
+			Market.abi,
+			signer
+		)
 
-		transaction = await marketContract.addItemToMarket(tokenId, price, nftContractAddress)
+		transaction = await marketContract.addItemToMarket(
+			tokenId,
+			price,
+			nftContractAddress
+		)
 		await transaction.wait()
 
 		if (transaction) {
@@ -233,12 +247,19 @@ export default function createNFT() {
 					<input
 						placeholder="Asset Name"
 						className="mt-8 border rounded p-4 text-black text-lg"
-						onChange={(e) => updateFormInput({ ...formInput, name: e.target.value })}
+						onChange={(e) =>
+							updateFormInput({ ...formInput, name: e.target.value })
+						}
 					/>
 					<textarea
 						placeholder="Asset Description"
 						className="mt-8 border rounded p-4 text-black text-lg"
-						onChange={(e) => updateFormInput({ ...formInput, description: e.target.value })}
+						onChange={(e) =>
+							updateFormInput({
+								...formInput,
+								description: e.target.value,
+							})
+						}
 					/>
 					{/* <input
 						placeholder="Asset Price in Eth (Optional)"
@@ -246,9 +267,16 @@ export default function createNFT() {
 						onChange={(e) => updateFormInput({ ...formInput, price: e.target.value })}
 					/> */}
 
-					<input type="file" name="Asset" className="my-4 text-lg" onChange={onChange} />
+					<input
+						type="file"
+						name="Asset"
+						className="my-4 text-lg"
+						onChange={onChange}
+					/>
 
-					{fileUrl && <img className="rounded mt-4" width="350" src={fileUrl} />}
+					{fileUrl && (
+						<img className="rounded mt-4" width="350" src={fileUrl} />
+					)}
 
 					{/* <button
 						onClick={createAndSell}
@@ -258,7 +286,7 @@ export default function createNFT() {
 					</button> */}
 
 					<button
-						onClick={create}
+						onClick={createNFTItem}
 						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
 					>
 						Simply Create NFT

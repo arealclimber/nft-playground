@@ -34,6 +34,7 @@ export default function NFTMarket() {
 			Market.abi,
 			provider
 		)
+		console.log(tokenContract)
 
 		try {
 			const data = await marketContract.fetchMarketItems()
@@ -63,7 +64,7 @@ export default function NFTMarket() {
 			setNfts(items)
 			setLoadingState('loaded')
 		} catch (error) {
-			console.log(error)
+			console.error(error)
 			return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>
 		}
 	}

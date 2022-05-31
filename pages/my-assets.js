@@ -69,18 +69,31 @@ export default function MyAssets() {
 		// // 	console.log(i)
 		// // })
 
-		const marketContract = new ethers.Contract(marketContractAddress, Market.abi, signer)
-		const tokenContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
+		const marketContract = new ethers.Contract(
+			marketContractAddress,
+			Market.abi,
+			signer
+		)
+		const tokenContract = new ethers.Contract(
+			nftContractAddress,
+			NFT.abi,
+			signer
+		)
 
-		console.log('NFT Balance: ')
-		const ownedNFT = await tokenContract.balanceOf(accounts[0]).then((v) => console.log(v.toNumber()))
+		console.log(tokenContract)
+		const ownedNFT = await tokenContract
+			.balanceOf(accounts[0])
+			.then((v) => v.toNumber())
+		console.log(`The amount of NFT this user own: ${ownedNFT}`)
 
 		const totalSupply = await tokenContract.totalSupply().then((v) => {
 			return v.toNumber()
 		})
 		console.log('total supply: ', totalSupply)
 		for (let i = 0; i < totalSupply; i++) {
-			let tokenId = (await tokenContract.tokenOfOwnerByIndex(accounts[0], i)).toNumber()
+			let tokenId = (
+				await tokenContract.tokenOfOwnerByIndex(accounts[0], i)
+			).toNumber()
 			let tokenURI = await tokenContract.tokenURI(tokenId)
 			console.log(tokenId)
 			console.log(tokenURI)
@@ -97,6 +110,8 @@ export default function MyAssets() {
 			// })
 			// console.log(callData1)
 			// console.log(ownerOfToken1)
+			// const nftAllBalance = await tokenContract.balanceOf()
+
 			const data = await marketContract.fetchMyNFTs()
 			// let owner = await tokenContract.ownerOf(0)
 
@@ -174,7 +189,8 @@ export default function MyAssets() {
 
 		// console.log(tokenContract.methods.tokenOfOwnerByIndex(signerAddress, 0).call())
 	}
-	if (loadingState === 'loaded' && !nfts.length) return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>
+	if (loadingState === 'loaded' && !nfts.length)
+		return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>
 
 	return (
 		<Layout>
@@ -182,10 +198,15 @@ export default function MyAssets() {
 				<div className="p-4">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 						{nfts.map((nft, i) => (
-							<div key={i} className="border shadow rounded-xl overflow-hidden">
+							<div
+								key={i}
+								className="border shadow rounded-xl overflow-hidden"
+							>
 								<img src={nft.image} className="rounded" />
 								<div className="p-4 bg-black">
-									<p className="text-2xl font-bold text-white">Price - {nft.price} ETH</p>
+									<p className="text-2xl font-bold text-white">
+										Price - {nft.price} ETH
+									</p>
 								</div>
 							</div>
 						))}
