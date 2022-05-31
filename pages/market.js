@@ -39,6 +39,7 @@ export default function NFTMarket() {
 		try {
 			const data = await marketContract.fetchMarketItems()
 			// Get the NFT array populated with metadata (IPFS in this case)
+			console.log(`data: ${data}`)
 			const items = await Promise.all(
 				data.map(async (i) => {
 					const tokenUri = await tokenContract.tokenURI(i.tokenId)
@@ -57,8 +58,9 @@ export default function NFTMarket() {
 					return item
 				})
 			)
-			// const test = await tokenContract.totalSupply()
-			// console.log('Total Supply: ')
+
+			const totalNFT = (await tokenContract.totalSupply()).toNumber()
+			console.log('Total Supply: ', totalNFT)
 			// console.log(test)
 
 			setNfts(items)

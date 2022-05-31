@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 import getConfig from 'next/config'
+import { ToastContainer, toast } from 'react-toastify'
 
 import { nftContractAddress, marketContractAddress } from '../config'
 
@@ -22,7 +23,8 @@ export default function MyAssets() {
 
 	const [nfts, setNfts] = useState([])
 	const [loadingState, setLoadingState] = useState('not-loaded')
-	const [listState, setListState] = useState(false)
+	const [listingState, setListingState] = useState(false)
+
 	useEffect(() => {
 		loadNFTs()
 	}, [])
@@ -30,7 +32,56 @@ export default function MyAssets() {
 	// const { env } = getConfig()
 	// console.log(env.INFURA_MUMBAI_URL)
 
-	async function list() {}
+	// TODO: 1. Set approval 2. Put the item on the market
+	// TODO: Check if already existed
+	async function list(nft) {
+		const web3Modal = new Web3Modal()
+		const connection = await web3Modal.connect()
+		const provider = new ethers.providers.Web3Provider(connection)
+		const signer = provider.getSigner()
+
+		const marketContract = new ethers.Contract(
+			marketContractAddress,
+			Market.abi,
+			signer
+		)
+
+		const tokenContract = new ethers.Contract(
+			nftContractAddress,
+			NFT.abi,
+			signer
+		)
+
+		const price = ethers.utils.parseUnits('0.01', 'ether')
+
+		let transaction = await tokenContract.approve(
+			marketContractAddress,
+			nft.tokenId
+		)
+		let tx = await transaction.wait()
+		console.log(`The tx: ${tx}`)
+
+		transaction = await marketContract.addItemToMarket(
+			nft.tokenId,
+			price,
+			nftContractAddress
+		)
+		tx = await transaction.wait()
+		let event = tx.events[0]
+		console.log(event)
+		let value = event.args[2]
+		if (value) {
+			toast.success('Success to put NFT on Market!', {
+				position: 'top-right',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			})
+		}
+	}
 
 	async function unlist() {}
 
@@ -81,6 +132,7 @@ export default function MyAssets() {
 			Market.abi,
 			signer
 		)
+
 		const tokenContract = new ethers.Contract(
 			nftContractAddress,
 			NFT.abi,
@@ -273,7 +325,7 @@ export default function MyAssets() {
 
 								<div className="grid grid-cols-2">
 									<button
-										onClick={list}
+										onClick={() => list(nft)}
 										className="font-bold mt-4 text-2xl bg-blue-400 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-800 text-white rounded-lg p-4 shadow-lg"
 									>
 										List
@@ -288,6 +340,17 @@ export default function MyAssets() {
 							</div>
 						))}
 					</div>
+					<ToastContainer
+						position="top-right"
+						autoClose={5000}
+						hideProgressBar={false}
+						newestOnTop={false}
+						closeOnClick
+						rtl={false}
+						pauseOnFocusLoss
+						draggable
+						pauseOnHover
+					/>
 				</div>
 			</div>
 		</Layout>
