@@ -14,6 +14,7 @@ import Layout from '../components/layout'
 
 const Web3 = require('web3')
 
+// TODO: List and unlist function
 export default function MyAssets() {
 	// const web3 = new Web3(window.ethereum)
 	const web3 = new Web3(process.env.INFURA_MUMBAI_URL)
@@ -21,6 +22,7 @@ export default function MyAssets() {
 
 	const [nfts, setNfts] = useState([])
 	const [loadingState, setLoadingState] = useState('not-loaded')
+	const [listState, setListState] = useState(false)
 	useEffect(() => {
 		loadNFTs()
 	}, [])
