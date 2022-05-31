@@ -177,6 +177,12 @@ export default function createNFT() {
 			signer
 		)
 
+		// TODO: The token ID of the fresh NFT
+		// Maybe in `tx` of the creating process
+		transaction = await tokenContract.approve(marketContractAddress, nft.tokenId)
+		tx = await transaction.wait()
+		console.log(`The tx: ${tx}`)
+
 		transaction = await marketContract.addItemToMarket(
 			tokenId,
 			price,
@@ -278,12 +284,12 @@ export default function createNFT() {
 						<img className="rounded mt-4" width="350" src={fileUrl} />
 					)}
 
-					{/* <button
+					<button
 						onClick={createAndSell}
 						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
 					>
 						Create and Sell NFT
-					</button> */}
+					</button>
 
 					<button
 						onClick={createNFTItem}

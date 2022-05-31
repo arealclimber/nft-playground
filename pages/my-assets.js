@@ -33,7 +33,7 @@ export default function MyAssets() {
 	// console.log(env.INFURA_MUMBAI_URL)
 
 	// TODO: 1. Set approval 2. Put the item on the market
-	// TODO: Check if already existed
+	// TODO: Check if item already existed
 	async function list(nft) {
 		const web3Modal = new Web3Modal()
 		const connection = await web3Modal.connect()
