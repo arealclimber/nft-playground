@@ -28,10 +28,15 @@ export default function MyAssets() {
 	// const { env } = getConfig()
 	// console.log(env.INFURA_MUMBAI_URL)
 
+	async function list() {}
+
+	async function unlist() {}
+
 	async function loadNFTs() {
 		// const contract = new web3.eth.Contract(NFT.abi, nftContractAddress)
 		// const walletAddress =
 		let accounts
+		let nftArray = []
 
 		const web3Modal = new Web3Modal()
 		const connection = await web3Modal.connect()
@@ -90,31 +95,27 @@ export default function MyAssets() {
 			return v.toNumber()
 		})
 		console.log('total supply: ', totalSupply)
+
 		for (let i = 0; i < totalSupply; i++) {
 			let tokenId = (
 				await tokenContract.tokenOfOwnerByIndex(accounts[0], i)
 			).toNumber()
 			let tokenURI = await tokenContract.tokenURI(tokenId)
-			console.log(tokenId)
-			console.log(tokenURI)
+			console.log(`Token ID: ${tokenId}`)
+			console.log(`Token URI: ${tokenURI}`)
 
-			// https://ipfs.infura.io/ipfs/QmVkvSwMBkcUnUuH1BBBiqmR2ayJCAS9LAHfhyZjAPmrBt
+			// redirection
 			const metadataUri = await fetch(tokenURI)
 				.then((response) => {
-					// let res = JSON.parse(response)
-					// res.json()
-
-					console.log(response)
-					// let resData = response.url
-					// console.log(resData.json())
-
-					let res = JSON.stringify(response.url)
-					res = JSON.parse(res)
-					return res
-
 					// console.log(res)
+					// console.log(response)
+					// let res = JSON.stringify(response.url)
+					// res = JSON.parse(res)
+					// return res
+					// return response.json()
+					console.log('metadataUri run:', i)
 
-					// response.url
+					return response.url
 				})
 				.catch((error) => console.error(error))
 
@@ -122,103 +123,128 @@ export default function MyAssets() {
 
 			// console.log(response)
 			console.log(metadataUri)
+
+			// TODO: Know why not working?
+			// const metadata = await fetch(metadataUri)
+			// 	.then((res) => {
+			// 		console.log(res.json())
+			// 		return res.json()
+			// 	})
+			// 	.catch((err) => console.error(err))
+
 			try {
 				const metadata = await fetch(metadataUri).then((res) => res.json())
 				console.log(metadata)
+
+				let item = {
+					tokenId: tokenId,
+					name: metadata['name'],
+					description: metadata['description'],
+					image: metadata.image,
+				}
+				console.log(item)
+				console.log('metadata run:', i)
+
+				nftArray.push(item)
+
+				// return item
 			} catch (e) {
 				console.error(e)
+				return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>
 			}
 		}
+		setNfts(nftArray)
+		setLoadingState('loaded')
 
-		// const nftContract = new web3.eth.Contract(NFT.abi, nftContractAddress)
-		// const callData1 = tokenContract.ownerOf(1).encodeABI();
-		// const callData1 = nftContract.methods['ownerOf'](1).encodeABI()
-		// const callData2 = nftContract.methods['ownerOf'](2).encodeABI()
-		try {
-			// const ownerOfToken1 = await web3.eth.call({
-			// 	to: nftContractAddress,
-			// 	data: callData1,
-			// })
-			// console.log(callData1)
-			// console.log(ownerOfToken1)
-			// const nftAllBalance = await tokenContract.balanceOf()
+		// // const nftContract = new web3.eth.Contract(NFT.abi, nftContractAddress)
+		// // const callData1 = tokenContract.ownerOf(1).encodeABI();
+		// // const callData1 = nftContract.methods['ownerOf'](1).encodeABI()
+		// // const callData2 = nftContract.methods['ownerOf'](2).encodeABI()
+		// try {
+		// 	// const ownerOfToken1 = await web3.eth.call({
+		// 	// 	to: nftContractAddress,
+		// 	// 	data: callData1,
+		// 	// })
+		// 	// console.log(callData1)
+		// 	// console.log(ownerOfToken1)
+		// 	// const nftAllBalance = await tokenContract.balanceOf()
 
-			const data = await marketContract.fetchMyNFTs()
-			// let owner = await tokenContract.ownerOf(0)
+		// 	const data = await marketContract.fetchMyNFTs()
+		// 	// let owner = await tokenContract.ownerOf(0)
 
-			const items = await Promise.all(
-				data.map(async (i) => {
-					const tokenUri = await tokenContract.tokenURI(i.tokenId)
-					const meta = await axios.get(tokenUri)
-					let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
-					let item = {
-						price,
-						tokenId: i.tokenId.toNumber(),
-						seller: i.seller,
-						owner: i.owner,
-						image: meta.data.image,
-					}
-					return item
-				})
-			)
-			setNfts(items)
-			setLoadingState('loaded')
-			console.log(owner)
-		} catch (error) {
-			console.log(error)
-			return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>
-		}
+		// 	const items = await Promise.all(
+		// 		data.map(async (i) => {
+		// 			const tokenUri = await tokenContract.tokenURI(i.tokenId)
+		// 			const meta = await axios.get(tokenUri)
+		// 			let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+		// 			let item = {
+		// 				price,
+		// 				tokenId: i.tokenId.toNumber(),
+		// 				seller: i.seller,
+		// 				owner: i.owner,
+		// 				image: meta.data.image,
+		// 			}
+		// 			return item
+		// 		})
+		// 	)
+		// 	setNfts(items)
+		// 	setLoadingState('loaded')
+		// 	console.log(owner)
+		// } catch (error) {
+		// 	console.log(error)
+		// 	return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>
+		// }
 
-		// const callData3 = nftContract.methods['ownerOf'](3).encodeABI()
+		// // const callData3 = nftContract.methods['ownerOf'](3).encodeABI()
 
-		// console.log(callData2)
-		// console.log(multicallAddress)
-		// console.log(Multicall.abi)
+		// // console.log(callData2)
+		// // console.log(multicallAddress)
+		// // console.log(Multicall.abi)
 
-		// TODO: Localhost
-		// const multicallContract = new web3.eth.Contract(Multicall.abi, multicallAddress)
-		// const multicallArgs = [
-		// 	{
-		// 		target: nftContract,
-		// 		callData: callData1,
-		// 	},
-		// 	{
-		// 		target: nftContract,
-		// 		callData: callData2,
-		// 	},
-		// ]
-		// const ownersOf = await multicallContract.methods['aggregate'](multicallArgs).call()
-		// console.log(ownersOf)
+		// // TODO: Localhost
+		// // const multicallContract = new web3.eth.Contract(Multicall.abi, multicallAddress)
+		// // const multicallArgs = [
+		// // 	{
+		// // 		target: nftContract,
+		// // 		callData: callData1,
+		// // 	},
+		// // 	{
+		// // 		target: nftContract,
+		// // 		callData: callData2,
+		// // 	},
+		// // ]
+		// // const ownersOf = await multicallContract.methods['aggregate'](multicallArgs).call()
+		// // console.log(ownersOf)
 
-		// const multicallAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
-		// const multicallAbi = [
-		// 	{
-		// 		constant: false,
-		// 		inputs: [
-		// 			{
-		// 				components: [
-		// 					{ name: 'target', type: 'address' },
-		// 					{ name: 'callData', type: 'bytes' },
-		// 				],
-		// 				name: 'calls',
-		// 				type: 'tuple[]',
-		// 			},
-		// 		],
-		// 		name: 'aggregate',
-		// 		outputs: [
-		// 			{ name: 'blockNumber', type: 'uint256' },
-		// 			{ name: 'returnData', type: 'bytes[]' },
-		// 		],
-		// 		payable: false,
-		// 		stateMutability: 'nonpayable',
-		// 		type: 'function',
-		// 	},
-		// ]
+		// // const multicallAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
+		// // const multicallAbi = [
+		// // 	{
+		// // 		constant: false,
+		// // 		inputs: [
+		// // 			{
+		// // 				components: [
+		// // 					{ name: 'target', type: 'address' },
+		// // 					{ name: 'callData', type: 'bytes' },
+		// // 				],
+		// // 				name: 'calls',
+		// // 				type: 'tuple[]',
+		// // 			},
+		// // 		],
+		// // 		name: 'aggregate',
+		// // 		outputs: [
+		// // 			{ name: 'blockNumber', type: 'uint256' },
+		// // 			{ name: 'returnData', type: 'bytes[]' },
+		// // 		],
+		// // 		payable: false,
+		// // 		stateMutability: 'nonpayable',
+		// // 		type: 'function',
+		// // 	},
+		// // ]
 
-		// const balance = await tokenContract.balanceOf(signerAddress)
-		// console.log(balance.toNumber())
+		// // const balance = await tokenContract.balanceOf(signerAddress)
+		// // console.log(balance.toNumber())
 
-		// console.log(tokenContract.methods.tokenOfOwnerByIndex(signerAddress, 0).call())
+		// // console.log(tokenContract.methods.tokenOfOwnerByIndex(signerAddress, 0).call())
 	}
 	if (loadingState === 'loaded' && !nfts.length)
 		return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>
@@ -236,8 +262,26 @@ export default function MyAssets() {
 								<img src={nft.image} className="rounded" />
 								<div className="p-4 bg-black">
 									<p className="text-2xl font-bold text-white">
-										Price - {nft.price} ETH
+										{nft.name}
 									</p>
+									<p className="text-m font-bold">
+										{nft.description}
+									</p>
+								</div>
+
+								<div className="grid grid-cols-2">
+									<button
+										onClick={list}
+										className="font-bold mt-4 text-2xl bg-blue-400 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-800 text-white rounded-lg p-4 shadow-lg"
+									>
+										List
+									</button>
+									<button
+										onClick={unlist}
+										className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-500 text-white rounded-lg p-4 shadow-lg"
+									>
+										Unlist
+									</button>
 								</div>
 							</div>
 						))}
