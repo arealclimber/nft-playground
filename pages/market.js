@@ -124,12 +124,12 @@ export default function NFTMarket() {
 											overflow: 'hidden',
 										}}
 									>
-										<p className="text-lg text-blue-800">
+										<p className="text-lg text-blue-300">
 											{nft.description}
 										</p>
 									</div>
 								</div>
-								<div className="p-4 bg-slate-500">
+								<div className="p-4 bg-slate-800">
 									<p className="text-2xl font-bold text-white">
 										{nft.price} ETH
 									</p>
