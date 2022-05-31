@@ -168,12 +168,21 @@ export default function Home() {
 
 		const provider = await web3Modal.connect()
 		const library = new ethers.providers.Web3Provider(provider)
+		const signer = library.getSigner()
 
 		// const provider = new ethers.providers.JsonRpcProvider()
-		const tokenContract = new ethers.Contract(nftContractAddress, NFT.abi, library)
-		const marketContract = new ethers.Contract(marketContractAddress, Market.abi, library)
+		const tokenContract = new ethers.Contract(
+			nftContractAddress,
+			NFT.abi,
+			signer
+		)
+		const marketContract = new ethers.Contract(
+			marketContractAddress,
+			Market.abi,
+			signer
+		)
 		try {
-			const data = await marketContract.fetchItemsCreated()
+			const data = await marketContract.fetchMarketItems()
 			// Get the NFT array populated with metadata (IPFS in this case)
 			const items = await Promise.all(
 				data.map(async (i) => {
@@ -182,6 +191,7 @@ export default function Home() {
 					let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
 					let item = {
 						price,
+						itemId: i.itemId.toNumber(),
 						tokenId: i.tokenId.toNumber(),
 						seller: i.seller,
 						owner: i.owner,
@@ -195,8 +205,8 @@ export default function Home() {
 			setNfts(items)
 			setLoadingState('loaded')
 
-			const soldItems = items.filter((i) => i.sold)
-			setSold(soldItems)
+			// const soldItems = items.filter((i) => i.sold)
+			// setSold(soldItems)
 			setNfts(items)
 			setLoadingState('loaded')
 		} catch (error) {
@@ -215,17 +225,26 @@ export default function Home() {
 									Fractional NFTs
 								</h2>
 							</Link>
-							<p className="text-2xl font-bold py-2">Lend and borrow with NFTs.</p>
+							<p className="text-2xl font-bold py-2">
+								Lend and borrow with NFTs.
+							</p>
 						</div>
 
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 							{nfts.map((nft, i) => (
-								<div key={i} className="border shadow rounded-xl overflow-hidden">
+								<div
+									key={i}
+									className="border shadow rounded-xl overflow-hidden"
+								>
 									<img src={nft.image} className="rounded" />
 									<div className="p-4 bg-black">
-										<p className="text-2xl font-bold text-white">{nft.name}</p>
+										<p className="text-2xl font-bold text-white">
+											{nft.name}
+										</p>
 
-										<p className="text-2xl font-bold text-white">Price - {nft.price} ETH</p>
+										<p className="text-2xl font-bold text-white">
+											Price - {nft.price} ETH
+										</p>
 									</div>
 								</div>
 							))}
@@ -240,16 +259,25 @@ export default function Home() {
 								NFT Marketplace
 							</h2>
 						</Link>
-						<p className="text-2xl font-bold py-2">Buy and sell your NFTs.</p>
+						<p className="text-2xl font-bold py-2">
+							Buy and sell your NFTs.
+						</p>
 					</div>
 
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 						{nfts.map((nft, i) => (
-							<div key={i} className="border shadow rounded-xl overflow-hidden">
+							<div
+								key={i}
+								className="border shadow rounded-xl overflow-hidden"
+							>
 								<img src={nft.image} className="rounded" />
 								<div className="p-4 bg-black">
-									<p className="text-2xl font-bold text-white">{nft.name}</p>
-									<p className="text-2xl font-bold text-white">Price - {nft.price} Eth</p>
+									<p className="text-2xl font-bold text-white">
+										{nft.name}
+									</p>
+									<p className="text-2xl font-bold text-white">
+										Price - {nft.price} Eth
+									</p>
 								</div>
 							</div>
 						))}
@@ -265,17 +293,26 @@ export default function Home() {
 										Community Playground
 									</h2>
 								</Link>
-								<p className="text-2xl font-bold py-2">Thoughts and chats.</p>
+								<p className="text-2xl font-bold py-2">
+									Thoughts and chats.
+								</p>
 							</div>
 
 							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 								{nfts.map((nft, i) => (
-									<div key={i} className="border shadow rounded-xl overflow-hidden">
+									<div
+										key={i}
+										className="border shadow rounded-xl overflow-hidden"
+									>
 										<img src={nft.image} className="rounded" />
 										<div className="p-4 bg-black">
-											<p className="text-2xl font-bold text-white">{nft.name}</p>
+											<p className="text-2xl font-bold text-white">
+												{nft.name}
+											</p>
 
-											<p className="text-2xl font-bold text-white">Price - {nft.price} ETH</p>
+											<p className="text-2xl font-bold text-white">
+												Price - {nft.price} ETH
+											</p>
 										</div>
 									</div>
 								))}

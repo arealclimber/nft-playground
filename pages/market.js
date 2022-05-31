@@ -24,8 +24,16 @@ export default function NFTMarket() {
 		// const signer = provider.getSigner()
 
 		// const provider = new ethers.providers.JsonRpcProvider()
-		const tokenContract = new ethers.Contract(nftContractAddress, NFT.abi, provider)
-		const marketContract = new ethers.Contract(marketContractAddress, Market.abi, provider)
+		const tokenContract = new ethers.Contract(
+			nftContractAddress,
+			NFT.abi,
+			provider
+		)
+		const marketContract = new ethers.Contract(
+			marketContractAddress,
+			Market.abi,
+			provider
+		)
 
 		try {
 			const data = await marketContract.fetchMarketItems()
@@ -37,6 +45,7 @@ export default function NFTMarket() {
 					let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
 					let item = {
 						price,
+						itemId: i.itemId.toNumber(),
 						tokenId: i.tokenId.toNumber(),
 						seller: i.seller,
 						owner: i.owner,
@@ -66,11 +75,21 @@ export default function NFTMarket() {
 		const provider = new ethers.providers.Web3Provider(web3.currentProvider)
 
 		const signer = provider.getSigner()
-		const contract = new ethers.Contract(marketContractAddress, Market.abi, signer)
+		const contract = new ethers.Contract(
+			marketContractAddress,
+			Market.abi,
+			signer
+		)
 
 		const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
 
-		const transaction = await contract.createMarketSale(nftContractAddress, nft.tokenId, { value: price })
+		const transaction = await contract.buyItem(nft.itemId, { value: price })
+
+		// const transaction = await contract.createMarketSale(
+		// 	nftContractAddress,
+		// 	nft.tokenId,
+		// 	{ value: price }
+		// )
 		await transaction.wait()
 		loadNFTs()
 	}
@@ -84,18 +103,33 @@ export default function NFTMarket() {
 				<div className="px-4" style={{ maxWidth: '1600px' }}>
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 						{nfts.map((nft, i) => (
-							<div key={i} className="border shadow rounded-xl overflow-hidden">
+							<div
+								key={i}
+								className="border shadow rounded-xl overflow-hidden"
+							>
 								<img src={nft.image} />
 								<div className="p-4">
-									<p style={{ height: '64px' }} className="text-4xl font-semibold">
+									<p
+										style={{ height: '64px' }}
+										className="text-4xl font-semibold"
+									>
 										{nft.name}
 									</p>
-									<div style={{ height: '70px', overflow: 'hidden' }}>
-										<p className="text-lg text-blue-800">{nft.description}</p>
+									<div
+										style={{
+											height: '70px',
+											overflow: 'hidden',
+										}}
+									>
+										<p className="text-lg text-blue-800">
+											{nft.description}
+										</p>
 									</div>
 								</div>
 								<div className="p-4 bg-slate-500">
-									<p className="text-2xl font-bold text-white">{nft.price} ETH</p>
+									<p className="text-2xl font-bold text-white">
+										{nft.price} ETH
+									</p>
 									<button
 										className="mt-4 w-full bg-blue-500 text-white font-bold py-2 px-12 rounded hover:bg-blue-400"
 										onClick={() => buyNft(nft)}
