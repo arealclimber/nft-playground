@@ -54,6 +54,7 @@ export default function MyAssets() {
 
 		const price = ethers.utils.parseUnits('0.01', 'ether')
 
+		// Approve Market
 		let transaction = await tokenContract.approve(
 			marketContractAddress,
 			nft.tokenId
@@ -61,6 +62,7 @@ export default function MyAssets() {
 		let tx = await transaction.wait()
 		console.log(`The tx: ${tx}`)
 
+		// List NFT on Market
 		transaction = await marketContract.addItemToMarket(
 			nft.tokenId,
 			price,
@@ -150,7 +152,7 @@ export default function MyAssets() {
 		})
 		console.log('total supply: ', totalSupply)
 
-		for (let i = 0; i < totalSupply; i++) {
+		for (let i = 0; i < ownedNFT; i++) {
 			let tokenId = (
 				await tokenContract.tokenOfOwnerByIndex(accounts[0], i)
 			).toNumber()

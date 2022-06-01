@@ -34,7 +34,7 @@ export default function NFTMarket() {
 			Market.abi,
 			provider
 		)
-		console.log(tokenContract)
+		// console.log(tokenContract)
 
 		try {
 			const data = await marketContract.fetchMarketItems()
@@ -74,26 +74,59 @@ export default function NFTMarket() {
 	async function buyNft(nft) {
 		const web3Modal = new Web3Modal()
 		const connection = await web3Modal.connect()
-		// const provider = new ethers.providers.Web3Provider(connection)
-		const provider = new ethers.providers.Web3Provider(web3.currentProvider)
+		const provider = new ethers.providers.Web3Provider(connection)
+		// This doesn't work for we can't get Infura provider to go on transaction.
+		// const provider = new ethers.providers.Web3Provider(web3.currentProvider)
 
 		const signer = provider.getSigner()
+
+		// // MetaMask requires requesting permission to connect users accounts
+		// // Will connect to Brave Wallet?
+		// await provider.send('eth_requestAccounts', [])
+
+		// const resp = await signer
+		// 	.getAddress()
+		// 	.then((result) => console.log(result))
+		// 	.catch((err) => console.error(err))
+		// const user = await ethers.utils.getAddress(signer)
+		// console.log(provider)
+
+		// for (const account of signer) {
+		// 	console.log(account.address)
+		// }
+
+		// console.log(`Signer: ${signer.getAddress}`)
+		// console.log(`Window: ${window.ethereum}`)
+
 		const contract = new ethers.Contract(
 			marketContractAddress,
 			Market.abi,
 			signer
 		)
+		console.log(contract.signer)
 
 		const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
+		// console.log(`Price: ${price}`)
 
 		const transaction = await contract.buyItem(nft.itemId, { value: price })
+
+		// const transaction = await contract
+		// 	.buyItem(nft.itemId, { value: price })
+		// 	.then((res) => console.log(res))
+		// 	.catch((err) => console.error(err))
+
+		console.log(transaction)
 
 		// const transaction = await contract.createMarketSale(
 		// 	nftContractAddress,
 		// 	nft.tokenId,
 		// 	{ value: price }
 		// )
-		await transaction.wait()
+		const tx = await transaction.wait()
+		const event = tx.events[0]
+		console.log(`Transaction: ${tx}`)
+		console.log(`Event: ${event}`)
+
 		loadNFTs()
 	}
 
