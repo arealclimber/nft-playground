@@ -1,6 +1,0 @@
-{
-	"solidity.compileUsingRemoteVersion": "v0.8.4+commit.c7e474f2",
-	"rpc.checkIdle": false,
-	"rpc.lowerDetailsDebugging": "Debugging: {git_branch}",
-	"rpc.detailsEditing": "In {git_branch} {problems}"
-}
