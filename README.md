@@ -51,7 +51,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 -   Favicon and the carrot NFT created by [Parry](https://www.instagram.com/parryfromfantasytostart/)
 
-# Special Thanks 🖥
+# Acknowledgments 🖥
 
 -   [Nader Dabit](https://twitter.com/dabit3)
 
