@@ -218,41 +218,6 @@ export default function Home() {
 		<Layout>
 			<div className="">
 				<div className="p-6">
-					<div>
-						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-							<Link href="/loans">
-								<h2 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
-									Fractional NFTs
-								</h2>
-							</Link>
-							<p className="text-2xl font-bold py-2">
-								Lend and borrow with NFTs.
-							</p>
-						</div>
-
-						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-							{nfts.map((nft, i) => (
-								<div
-									key={i}
-									className="border shadow rounded-xl overflow-hidden"
-								>
-									<img src={nft.image} className="rounded" />
-									<div className="p-4 bg-black">
-										<p className="text-2xl font-bold text-white">
-											{nft.name}
-										</p>
-
-										<p className="text-2xl font-bold text-white">
-											Price - {nft.price} ETH
-										</p>
-									</div>
-								</div>
-							))}
-						</div>
-					</div>
-				</div>
-
-				<div className="p-6">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 						<Link href="/market">
 							<h2 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
@@ -285,6 +250,41 @@ export default function Home() {
 				</div>
 
 				<div className="p-6">
+					<div>
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+							<Link href="/loans">
+								<h2 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
+									Fractional NFTs
+								</h2>
+							</Link>
+							<p className="text-2xl font-bold py-2">
+								Lend and borrow with NFTs.
+							</p>
+						</div>
+
+						{/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+							{nfts.map((nft, i) => (
+								<div
+									key={i}
+									className="border shadow rounded-xl overflow-hidden"
+								>
+									<img src={nft.image} className="rounded" />
+									<div className="p-4 bg-black">
+										<p className="text-2xl font-bold text-white">
+											{nft.name}
+										</p>
+
+										<p className="text-2xl font-bold text-white">
+											Price - {nft.price} ETH
+										</p>
+									</div>
+								</div>
+							))}
+						</div> */}
+					</div>
+				</div>
+
+				<div className="p-6">
 					{
 						<div>
 							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
@@ -298,7 +298,7 @@ export default function Home() {
 								</p>
 							</div>
 
-							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+							{/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 								{nfts.map((nft, i) => (
 									<div
 										key={i}
@@ -316,7 +316,7 @@ export default function Home() {
 										</div>
 									</div>
 								))}
-							</div>
+							</div> */}
 						</div>
 					}
 				</div>

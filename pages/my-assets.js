@@ -83,6 +83,8 @@ export default function MyAssets() {
 				progress: undefined,
 			})
 		}
+
+		// loadNFTs()
 	}
 
 	async function unlist() {}
