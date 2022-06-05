@@ -29,7 +29,7 @@ NFT Playground is the community-oriented NFT-based ecosystem where everyone can 
 
 #### NFT Marketplace
 
--   [ ] You can sell or trade your \***fresh**\* NFT here
+-   [x] You can sell or trade your \***fresh**\* NFT here
 
 ## NFT Fractions🎈
 
