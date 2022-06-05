@@ -47,7 +47,7 @@ NFT Playground is the community-oriented NFT-based ecosystem where everyone can 
 
 Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
-# Collaborations 💗
+# Credit 💗
 
 -   Favicon and the carrot NFT created by [Parry](https://www.instagram.com/parryfromfantasytostart/)
 
