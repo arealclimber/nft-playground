@@ -1,33 +1,34 @@
-import { ethers } from 'ethers'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import Web3Modal from 'web3modal'
-import getConfig from 'next/config'
-import { ToastContainer, toast } from 'react-toastify'
+import { ethers } from 'ethers';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Web3Modal from 'web3modal';
+import getConfig from 'next/config';
+import { ToastContainer, toast } from 'react-toastify';
 
-import { nftContractAddress, marketContractAddress } from '../config'
+import { nftContractAddress, marketContractAddress } from '../config';
 
-import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json'
-import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
-import Layout from '../components/layout'
+// TODO: turn imports into environment variables instead of the relative file path because of not-working build function on Vercel
+import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json';
+import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json';
+import Layout from '../components/layout';
 
 // import Web3 from 'web3'
 
-const Web3 = require('web3')
+const Web3 = require('web3');
 
 // TODO: List and unlist function
 export default function MyAssets() {
 	// const web3 = new Web3(window.ethereum)
-	const web3 = new Web3(process.env.INFURA_MUMBAI_URL)
+	const web3 = new Web3(process.env.INFURA_MUMBAI_URL);
 	// console.log(process.env.ALCHEMY_MUMBAI_URL)
 
-	const [nfts, setNfts] = useState([])
-	const [loadingState, setLoadingState] = useState('not-loaded')
-	const [listingState, setListingState] = useState(false)
+	const [nfts, setNfts] = useState([]);
+	const [loadingState, setLoadingState] = useState('not-loaded');
+	const [listingState, setListingState] = useState(false);
 
 	useEffect(() => {
-		loadNFTs()
-	}, [])
+		loadNFTs();
+	}, []);
 
 	// const { env } = getConfig()
 	// console.log(env.INFURA_MUMBAI_URL)
@@ -35,43 +36,43 @@ export default function MyAssets() {
 	// TODO: 1. Set approval 2. Put the item on the market
 	// TODO: Check if item already existed
 	async function list(nft) {
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		const provider = new ethers.providers.Web3Provider(connection)
-		const signer = provider.getSigner()
+		const web3Modal = new Web3Modal();
+		const connection = await web3Modal.connect();
+		const provider = new ethers.providers.Web3Provider(connection);
+		const signer = provider.getSigner();
 
 		const marketContract = new ethers.Contract(
 			marketContractAddress,
 			Market.abi,
 			signer
-		)
+		);
 
 		const tokenContract = new ethers.Contract(
 			nftContractAddress,
 			NFT.abi,
 			signer
-		)
+		);
 
-		const price = ethers.utils.parseUnits('0.01', 'ether')
+		const price = ethers.utils.parseUnits('0.01', 'ether');
 
 		// Approve Market
 		let transaction = await tokenContract.approve(
 			marketContractAddress,
 			nft.tokenId
-		)
-		let tx = await transaction.wait()
-		console.log(`The tx: ${tx}`)
+		);
+		let tx = await transaction.wait();
+		console.log(`The tx: ${tx}`);
 
 		// List NFT on Market
 		transaction = await marketContract.addItemToMarket(
 			nft.tokenId,
 			price,
 			nftContractAddress
-		)
-		tx = await transaction.wait()
-		let event = tx.events[0]
-		console.log(event)
-		let value = event.args[2]
+		);
+		tx = await transaction.wait();
+		let event = tx.events[0];
+		console.log(event);
+		let value = event.args[2];
 		if (value) {
 			toast.success('Success to put NFT on Market!', {
 				position: 'top-right',
@@ -81,7 +82,7 @@ export default function MyAssets() {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-			})
+			});
 		}
 
 		// loadNFTs()
@@ -92,31 +93,31 @@ export default function MyAssets() {
 	async function loadNFTs() {
 		// const contract = new web3.eth.Contract(NFT.abi, nftContractAddress)
 		// const walletAddress =
-		let accounts
-		let nftArray = []
+		let accounts;
+		let nftArray = [];
 
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		const provider = new ethers.providers.Web3Provider(connection)
-		const signer = provider.getSigner()
+		const web3Modal = new Web3Modal();
+		const connection = await web3Modal.connect();
+		const provider = new ethers.providers.Web3Provider(connection);
+		const signer = provider.getSigner();
 
-		const { ethereum } = window
+		const { ethereum } = window;
 		if (ethereum) {
-			console.log('Got the ethereum object: ', ethereum)
+			console.log('Got the ethereum object: ', ethereum);
 		} else {
-			console.log('No Wallet found. Connect Wallet')
+			console.log('No Wallet found. Connect Wallet');
 		}
 
 		try {
-			accounts = await ethereum.request({ method: 'eth_accounts' })
+			accounts = await ethereum.request({ method: 'eth_accounts' });
 
 			if (accounts.length !== 0) {
-				console.log('Found authorized Account: ', accounts[0])
+				console.log('Found authorized Account: ', accounts[0]);
 			} else {
-				console.log('No Wallet found. Connect Wallet')
+				console.log('No Wallet found. Connect Wallet');
 			}
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 		}
 
 		// TODO: Return Promise, try it later
@@ -135,32 +136,32 @@ export default function MyAssets() {
 			marketContractAddress,
 			Market.abi,
 			signer
-		)
+		);
 
 		const tokenContract = new ethers.Contract(
 			nftContractAddress,
 			NFT.abi,
 			signer
-		)
+		);
 
-		console.log(tokenContract)
+		console.log(tokenContract);
 		const ownedNFT = await tokenContract
 			.balanceOf(accounts[0])
-			.then((v) => v.toNumber())
-		console.log(`The amount of NFT this user own: ${ownedNFT}`)
+			.then((v) => v.toNumber());
+		console.log(`The amount of NFT this user own: ${ownedNFT}`);
 
 		const totalSupply = await tokenContract.totalSupply().then((v) => {
-			return v.toNumber()
-		})
-		console.log('total supply: ', totalSupply)
+			return v.toNumber();
+		});
+		console.log('total supply: ', totalSupply);
 
 		for (let i = 0; i < ownedNFT; i++) {
 			let tokenId = (
 				await tokenContract.tokenOfOwnerByIndex(accounts[0], i)
-			).toNumber()
-			let tokenURI = await tokenContract.tokenURI(tokenId)
-			console.log(`Token ID: ${tokenId}`)
-			console.log(`Token URI: ${tokenURI}`)
+			).toNumber();
+			let tokenURI = await tokenContract.tokenURI(tokenId);
+			console.log(`Token ID: ${tokenId}`);
+			console.log(`Token URI: ${tokenURI}`);
 
 			// redirection
 			const metadataUri = await fetch(tokenURI)
@@ -171,16 +172,16 @@ export default function MyAssets() {
 					// res = JSON.parse(res)
 					// return res
 					// return response.json()
-					console.log('metadataUri run:', i)
+					console.log('metadataUri run:', i);
 
-					return response.url
+					return response.url;
 				})
-				.catch((error) => console.error(error))
+				.catch((error) => console.error(error));
 
 			// response.json()
 
 			// console.log(response)
-			console.log(metadataUri)
+			console.log(metadataUri);
 
 			// TODO: Know why not working?
 			// const metadata = await fetch(metadataUri)
@@ -191,28 +192,28 @@ export default function MyAssets() {
 			// 	.catch((err) => console.error(err))
 
 			try {
-				const metadata = await fetch(metadataUri).then((res) => res.json())
-				console.log(metadata)
+				const metadata = await fetch(metadataUri).then((res) => res.json());
+				console.log(metadata);
 
 				let item = {
 					tokenId: tokenId,
 					name: metadata['name'],
 					description: metadata['description'],
 					image: metadata.image,
-				}
-				console.log(item)
-				console.log('metadata run:', i)
+				};
+				console.log(item);
+				console.log('metadata run:', i);
 
-				nftArray.push(item)
+				nftArray.push(item);
 
 				// return item
 			} catch (e) {
-				console.error(e)
-				return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>
+				console.error(e);
+				return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>;
 			}
 		}
-		setNfts(nftArray)
-		setLoadingState('loaded')
+		setNfts(nftArray);
+		setLoadingState('loaded');
 
 		// // const nftContract = new web3.eth.Contract(NFT.abi, nftContractAddress)
 		// // const callData1 = tokenContract.ownerOf(1).encodeABI();
@@ -305,7 +306,7 @@ export default function MyAssets() {
 		// // console.log(tokenContract.methods.tokenOfOwnerByIndex(signerAddress, 0).call())
 	}
 	if (loadingState === 'loaded' && !nfts.length)
-		return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>
+		return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>;
 
 	return (
 		<Layout>
@@ -358,7 +359,7 @@ export default function MyAssets() {
 				</div>
 			</div>
 		</Layout>
-	)
+	);
 }
 
 // MyAssets.getLayout = function getLayout(page) {
