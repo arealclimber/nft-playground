@@ -1,40 +1,43 @@
-import { ethers } from 'ethers'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import Web3Modal from 'web3modal'
-import Layout from '../components/layout'
-import WalletConnectProvider from '@walletconnect/web3-provider'
-import CoinbaseWalletSDK from '@coinbase/wallet-sdk'
+import { ethers } from 'ethers';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Web3Modal from 'web3modal';
+import Layout from '../components/layout';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 
 // import { useAccount, useBalance } from 'wagmi'
 // import { useConnect } from 'wagmi'
 
-import { nftContractAddress, marketContractAddress } from '../config'
+import { nftContractAddress, marketContractAddress } from '../config';
+import NFT from '../NFT.json';
+import Market from '../Market.json';
 
-import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json'
-import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
-import Link from 'next/link'
+// import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json'
+// import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
+
+import Link from 'next/link';
 
 export default function Home() {
 	useEffect(() => {
 		// checkIfWalletIsConnected()
 		// checkCorrectNetwork()
-		loadNFTs()
-	}, [])
+		loadNFTs();
+	}, []);
 
-	const infuraId = process.env.INFURA_MUMBAI_URL
+	const infuraId = process.env.INFURA_MUMBAI_URL;
 	// Hex
-	const rinkebyChainId = '0x4'
-	const mumbaiChainId = '0x13881'
-	const neededCahinId = mumbaiChainId
+	const rinkebyChainId = '0x4';
+	const mumbaiChainId = '0x13881';
+	const neededCahinId = mumbaiChainId;
 
-	const [nfts, setNfts] = useState([])
-	const [sold, setSold] = useState([])
-	const [loadingState, setLoadingState] = useState('not-loaded')
-	const [provider, setProvider] = useState([])
-	const [library, setLibrary] = useState([])
-	const [currentAccount, setCurrentAccount] = useState('')
-	const [correctNetwork, setCorrectNetwork] = useState(false)
+	const [nfts, setNfts] = useState([]);
+	const [sold, setSold] = useState([]);
+	const [loadingState, setLoadingState] = useState('not-loaded');
+	const [provider, setProvider] = useState([]);
+	const [library, setLibrary] = useState([]);
+	const [currentAccount, setCurrentAccount] = useState('');
+	const [correctNetwork, setCorrectNetwork] = useState(false);
 
 	// async function checkIfWalletIsConnected() {
 	// 	const { ethereum } = window
@@ -124,7 +127,7 @@ export default function Home() {
 
 	// FIXME: How to display the market item without user connecting wallet?
 	async function loadNFTs() {
-		const web3Modal = new Web3Modal()
+		const web3Modal = new Web3Modal();
 		// const connection = await web3Modal.connect()
 		// const provider = new ethers.providers.Web3Provider(connection)
 
@@ -166,29 +169,28 @@ export default function Home() {
 		// 	},
 		// })
 
-		const provider = await web3Modal.connect()
-		const library = new ethers.providers.Web3Provider(provider)
-		const signer = library.getSigner()
+		const provider = await web3Modal.connect();
+		const library = new ethers.providers.Web3Provider(provider);
+		const signer = library.getSigner();
 
 		// const provider = new ethers.providers.JsonRpcProvider()
-		const tokenContract = new ethers.Contract(
-			nftContractAddress,
-			NFT.abi,
-			signer
-		)
+		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
 		const marketContract = new ethers.Contract(
 			marketContractAddress,
-			Market.abi,
+			Market,
 			signer
-		)
+		);
 		try {
-			const data = await marketContract.fetchMarketItems()
+			const data = await marketContract.fetchMarketItems();
 			// Get the NFT array populated with metadata (IPFS in this case)
 			const items = await Promise.all(
 				data.map(async (i) => {
-					const tokenUri = await tokenContract.tokenURI(i.tokenId)
-					const meta = await axios.get(tokenUri)
-					let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+					const tokenUri = await tokenContract.tokenURI(i.tokenId);
+					const meta = await axios.get(tokenUri);
+					let price = ethers.utils.formatUnits(
+						i.price.toString(),
+						'ether'
+					);
 					let item = {
 						price,
 						itemId: i.itemId.toNumber(),
@@ -198,19 +200,19 @@ export default function Home() {
 						image: meta.data.image,
 						name: meta.data.name,
 						description: meta.data.description,
-					}
-					return item
+					};
+					return item;
 				})
-			)
-			setNfts(items)
-			setLoadingState('loaded')
+			);
+			setNfts(items);
+			setLoadingState('loaded');
 
 			// const soldItems = items.filter((i) => i.sold)
 			// setSold(soldItems)
-			setNfts(items)
-			setLoadingState('loaded')
+			setNfts(items);
+			setLoadingState('loaded');
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 		}
 	}
 
@@ -322,7 +324,7 @@ export default function Home() {
 				</div>
 			</div>
 		</Layout>
-	)
+	);
 }
 
 // Home.getLayout = function getLayout(page) {

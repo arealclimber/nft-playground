@@ -1,4 +1,4 @@
 {
-	"extends": "next/core-web-vitals",
-	"quote-props": [1, "as-needed"]
+	"extends": "next/core-web-vitals"
+	// "quote-props": [1, "as-needed"]
 }

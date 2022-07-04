@@ -1,19 +1,19 @@
-import { useState } from 'react'
-import { ethers } from 'ethers'
-import { create, CID } from 'ipfs-http-client'
-import { useRouter } from 'next/router'
-import { Buffer } from 'buffer'
-import Web3Modal from 'web3modal'
-import Layout from '../components/layout'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { useState } from 'react';
+import { ethers } from 'ethers';
+import { create, CID } from 'ipfs-http-client';
+import { useRouter } from 'next/router';
+import { Buffer } from 'buffer';
+import Web3Modal from 'web3modal';
+import Layout from '../components/layout';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // const client = ipfsHttpClient('https://ipfs.fleek.co/ipfs/HASH');
 // 'https://ipfs.infura.io:5001/api/v0'
-const projectId = process.env.INFURA_IPFS_PROJECT_ID
-const projectSecret = process.env.INFURA_IPFS_PROJECT_SECRET
-const projectIdAndSecret = `${projectId}:${projectSecret}`
-const auth = `Basic ${Buffer.from(projectIdAndSecret).toString('base64')}`
+const projectId = process.env.INFURA_IPFS_PROJECT_ID;
+const projectSecret = process.env.INFURA_IPFS_PROJECT_SECRET;
+const projectIdAndSecret = `${projectId}:${projectSecret}`;
+const auth = `Basic ${Buffer.from(projectIdAndSecret).toString('base64')}`;
 // Buffer.from(projectIdAndSecret).toString('base64')
 // authorization: `Basic ${Buffer.from(projectIdAndSecret).toString('base64')}`,
 const client = create({
@@ -23,70 +23,72 @@ const client = create({
 	headers: {
 		authorization: auth,
 	},
-})
+});
 
-import { nftContractAddress, marketContractAddress } from '../config'
+import { nftContractAddress, marketContractAddress } from '../config';
+import NFT from '../NFT.json';
+import Market from '../Market.json';
 
-import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json'
-import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
+// import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json';
+// import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json';
 
 export default function createNFT() {
-	const [fileUrl, setFileUrl] = useState(null)
+	const [fileUrl, setFileUrl] = useState(null);
 	const [formInput, updateFormInput] = useState({
 		price: '',
 		name: '',
 		description: '',
-	})
-	const [txError, setTxError] = useState(null)
+	});
+	const [txError, setTxError] = useState(null);
 
-	const router = useRouter()
+	const router = useRouter();
 
 	async function onChange(e) {
 		// const { cid } = client.add('Hello world')
 		// console.info(cid)
 
-		const file = e.target.files[0]
+		const file = e.target.files[0];
 		try {
 			const added = await client.add(file, {
 				progress: (prog) => console.log(`received: ${prog}`),
-			})
+			});
 
 			// const url = `https://ipfs.infura.io:5001/api/v0/cat?arg=${added.path}`
-			const url = `https://ipfs.infura.io/ipfs/${added.path}`
+			const url = `https://ipfs.infura.io/ipfs/${added.path}`;
 
 			client.pin.add(added.path).then((res) => {
-				console.log(res)
-				setFileUrl(url)
-			})
+				console.log(res);
+				setFileUrl(url);
+			});
 		} catch (error) {
-			console.log('Error uploading file: ', error)
+			console.log('Error uploading file: ', error);
 		}
 	}
 
 	async function createNFTItem() {
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		const provider = new ethers.providers.Web3Provider(connection)
-		const signer = provider.getSigner()
+		const web3Modal = new Web3Modal();
+		const connection = await web3Modal.connect();
+		const provider = new ethers.providers.Web3Provider(connection);
+		const signer = provider.getSigner();
 
-		const { name, description } = formInput
-		if (!name || !description || !fileUrl) return
+		const { name, description } = formInput;
+		if (!name || !description || !fileUrl) return;
 		/* first, upload to IPFS */
 		const data = JSON.stringify({
 			name,
 			description,
 			image: fileUrl,
-		})
+		});
 
 		try {
-			const added = await client.add(data)
+			const added = await client.add(data);
 			// const url = `https://ipfs.infura.io:5001/api/v0/cat?arg=${added.path}`
-			const url = `https://ipfs.infura.io/ipfs/${added.path}`
+			const url = `https://ipfs.infura.io/ipfs/${added.path}`;
 
 			// after file is uploaded to IPFS, pass the URL to save it on Polygon
-			create(url)
+			create(url);
 
-			// let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
+			// let nftContract = new ethers.Contract(nftContractAddress, NFT, signer)
 			// let transaction = await nftContract.createToken(url)
 			// let tx = await transaction.wait()
 
@@ -102,24 +104,24 @@ export default function createNFT() {
 			// 	})
 			// }
 		} catch (error) {
-			console.log('Error uploading file: ', error)
+			console.log('Error uploading file: ', error);
 		}
 	}
 
 	async function create(url) {
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		const provider = new ethers.providers.Web3Provider(connection)
-		const signer = provider.getSigner()
+		const web3Modal = new Web3Modal();
+		const connection = await web3Modal.connect();
+		const provider = new ethers.providers.Web3Provider(connection);
+		const signer = provider.getSigner();
 
-		let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
-		let transaction = await nftContract.createToken(url)
-		let tx = await transaction.wait()
+		let nftContract = new ethers.Contract(nftContractAddress, NFT, signer);
+		let transaction = await nftContract.createToken(url);
+		let tx = await transaction.wait();
 
-		let event = tx.events[0]
-		console.log(event)
-		let value = event.args[2]
-		let tokenId = value.toNumber()
+		let event = tx.events[0];
+		console.log(event);
+		let value = event.args[2];
+		let tokenId = value.toNumber();
 
 		if (tokenId) {
 			toast.success('Success!', {
@@ -130,14 +132,14 @@ export default function createNFT() {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-			})
+			});
 		}
 
-		router.push('/my-assets')
+		router.push('/my-assets');
 
 		// const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
-		// let marketContract = new ethers.Contract(marketContractAddress, Market.abi, signer)
+		// let marketContract = new ethers.Contract(marketContractAddress, Market, signer)
 
 		// transaction = await marketContract.addItemToMarket(tokenId, price, nftContractAddress)
 		// await transaction.wait()
@@ -155,40 +157,44 @@ export default function createNFT() {
 	}
 
 	async function createAndSell(url) {
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		const provider = new ethers.providers.Web3Provider(connection)
-		const signer = provider.getSigner()
+		const web3Modal = new Web3Modal();
+		const connection = await web3Modal.connect();
+		const provider = new ethers.providers.Web3Provider(connection);
+		const signer = provider.getSigner();
 
-		let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
-		let transaction = await nftContract.createToken(url)
-		let tx = await transaction.wait()
+		let nftContract = new ethers.Contract(nftContractAddress, NFT, signer);
+		let transaction = await nftContract.createToken(url);
+		let tx = await transaction.wait();
 
-		let event = tx.events[0]
-		console.log(event)
-		let value = event.args[2]
-		let tokenId = value.toNumber()
+		let event = tx.events[0];
+		console.log(event);
+		let value = event.args[2];
+		let tokenId = value.toNumber();
 
-		const price = ethers.utils.parseUnits(formInput.price, 'ether')
+		const price = ethers.utils.parseUnits(formInput.price, 'ether');
 
 		let marketContract = new ethers.Contract(
 			marketContractAddress,
-			Market.abi,
+			Market,
 			signer
-		)
+		);
 
 		// TODO: The token ID of the fresh NFT
 		// Maybe in `tx` of the creating process
-		transaction = await tokenContract.approve(marketContractAddress, nft.tokenId)
-		tx = await transaction.wait()
-		console.log(`The tx: ${tx}`)
+		transaction = await tokenContract.approve(
+			marketContractAddress,
+			nft.tokenId
+		);
+
+		tx = await transaction.wait();
+		console.log(`The tx: ${tx}`);
 
 		transaction = await marketContract.addItemToMarket(
 			tokenId,
 			price,
 			nftContractAddress
-		)
-		await transaction.wait()
+		);
+		await transaction.wait();
 
 		if (transaction) {
 			toast.success('Success!', {
@@ -199,11 +205,11 @@ export default function createNFT() {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-			})
+			});
 		}
 
 		// try {
-		// 	let nftContract = new ethers.Contract(nftContractAddress, NFT.abi, signer)
+		// 	let nftContract = new ethers.Contract(nftContractAddress, NFT, signer)
 		// 	let transaction = await nftContract.createToken(url)
 		// 	let tx = await transaction.wait()
 
@@ -214,7 +220,7 @@ export default function createNFT() {
 
 		// 	const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
-		// 	let marketContract = new ethers.Contract(marketContractAddress, Market.abi, signer)
+		// 	let marketContract = new ethers.Contract(marketContractAddress, Market, signer)
 
 		// 	transaction = await marketContract.addItemToMarket(tokenId, price, nftContractAddress)
 		// 	await transaction.wait()
@@ -243,7 +249,7 @@ export default function createNFT() {
 
 		// transaction = await marketContract.addItemToMarket(nftContractAddress, tokenId, price, { value: listingPrice })
 
-		router.push('/market')
+		router.push('/market');
 	}
 
 	return (
@@ -311,7 +317,7 @@ export default function createNFT() {
 				/>
 			</div>
 		</Layout>
-	)
+	);
 }
 
 // createNFT.getLayout = function getLayout(page) {

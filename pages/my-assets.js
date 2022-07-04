@@ -6,13 +6,15 @@ import getConfig from 'next/config';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { nftContractAddress, marketContractAddress } from '../config';
+import NFT from '../NFT.json';
+import Market from '../Market.json';
 
 // TODO: turn imports into environment variables instead of the relative file path because of not-working build function on Vercel
-import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json';
-import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json';
+// import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json';
+// import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json';
 import Layout from '../components/layout';
 
-// import Web3 from 'web3'
+// import Web3 from 'web3';
 
 const Web3 = require('web3');
 
@@ -43,15 +45,11 @@ export default function MyAssets() {
 
 		const marketContract = new ethers.Contract(
 			marketContractAddress,
-			Market.abi,
+			Market,
 			signer
 		);
 
-		const tokenContract = new ethers.Contract(
-			nftContractAddress,
-			NFT.abi,
-			signer
-		);
+		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
 
 		const price = ethers.utils.parseUnits('0.01', 'ether');
 
@@ -91,7 +89,7 @@ export default function MyAssets() {
 	async function unlist() {}
 
 	async function loadNFTs() {
-		// const contract = new web3.eth.Contract(NFT.abi, nftContractAddress)
+		// const contract = new web3.eth.Contract(NFT, nftContractAddress)
 		// const walletAddress =
 		let accounts;
 		let nftArray = [];
@@ -134,15 +132,11 @@ export default function MyAssets() {
 
 		const marketContract = new ethers.Contract(
 			marketContractAddress,
-			Market.abi,
+			Market,
 			signer
 		);
 
-		const tokenContract = new ethers.Contract(
-			nftContractAddress,
-			NFT.abi,
-			signer
-		);
+		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
 
 		console.log(tokenContract);
 		const ownedNFT = await tokenContract
@@ -178,10 +172,11 @@ export default function MyAssets() {
 				})
 				.catch((error) => console.error(error));
 
+			console.log(metadataUri);
+
 			// response.json()
 
 			// console.log(response)
-			console.log(metadataUri);
 
 			// TODO: Know why not working?
 			// const metadata = await fetch(metadataUri)
@@ -215,7 +210,7 @@ export default function MyAssets() {
 		setNfts(nftArray);
 		setLoadingState('loaded');
 
-		// // const nftContract = new web3.eth.Contract(NFT.abi, nftContractAddress)
+		// // const nftContract = new web3.eth.Contract(NFT, nftContractAddress)
 		// // const callData1 = tokenContract.ownerOf(1).encodeABI();
 		// // const callData1 = nftContract.methods['ownerOf'](1).encodeABI()
 		// // const callData2 = nftContract.methods['ownerOf'](2).encodeABI()
@@ -258,9 +253,9 @@ export default function MyAssets() {
 
 		// // console.log(callData2)
 		// // console.log(multicallAddress)
-		// // console.log(Multicall.abi)
+		// // console.log(Multicall)
 
-		// // TODO: Localhost
+		// // TODO: artifact can used in Localhost, it's needed to import ABI and deployed contract address
 		// // const multicallContract = new web3.eth.Contract(Multicall.abi, multicallAddress)
 		// // const multicallArgs = [
 		// // 	{
@@ -330,6 +325,7 @@ export default function MyAssets() {
 
 								<div className="grid grid-cols-2">
 									<button
+										// onClick={list(nft)}
 										onClick={() => list(nft)}
 										className="font-bold mt-4 text-2xl bg-blue-400 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-800 text-white rounded-lg p-4 shadow-lg"
 									>
