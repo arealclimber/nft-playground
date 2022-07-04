@@ -1,50 +1,51 @@
-import { ethers } from 'ethers'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import Web3Modal from 'web3modal'
-import Layout from '../components/layout'
+import { ethers } from 'ethers';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Web3Modal from 'web3modal';
+import Layout from '../components/layout';
 
-import { nftContractAddress, marketContractAddress } from '../config'
+import { nftContractAddress, marketContractAddress } from '../config';
 
-import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json'
-import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
+import NFT from '../NFT.json';
+import Market from '../Market.json';
+// import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json'
+// import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
 
 export default function NFTMarket() {
-	const [nfts, setNfts] = useState([])
-	const [loadingState, setLoadingState] = useState('not-loaded')
+	const [nfts, setNfts] = useState([]);
+	const [loadingState, setLoadingState] = useState('not-loaded');
 
 	useEffect(() => {
-		loadNFTs()
-	}, [])
+		loadNFTs();
+	}, []);
 
 	async function loadNFTs() {
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		const provider = new ethers.providers.Web3Provider(connection)
+		const web3Modal = new Web3Modal();
+		const connection = await web3Modal.connect();
+		const provider = new ethers.providers.Web3Provider(connection);
 		// const signer = provider.getSigner()
 
 		// const provider = new ethers.providers.JsonRpcProvider()
-		const tokenContract = new ethers.Contract(
-			nftContractAddress,
-			NFT.abi,
-			provider
-		)
+		const tokenContract = new ethers.Contract(nftContractAddress, NFT, provider);
 		const marketContract = new ethers.Contract(
 			marketContractAddress,
-			Market.abi,
+			Market,
 			provider
-		)
+		);
 		// console.log(tokenContract)
 
 		try {
-			const data = await marketContract.fetchMarketItems()
+			const data = await marketContract.fetchMarketItems();
 			// Get the NFT array populated with metadata (IPFS in this case)
-			console.log(`data: ${data}`)
+			console.log(`data: ${data}`);
 			const items = await Promise.all(
 				data.map(async (i) => {
-					const tokenUri = await tokenContract.tokenURI(i.tokenId)
-					const meta = await axios.get(tokenUri)
-					let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+					const tokenUri = await tokenContract.tokenURI(i.tokenId);
+					const meta = await axios.get(tokenUri);
+					let price = ethers.utils.formatUnits(
+						i.price.toString(),
+						'ether'
+					);
 					let item = {
 						price,
 						itemId: i.itemId.toNumber(),
@@ -54,31 +55,31 @@ export default function NFTMarket() {
 						image: meta.data.image,
 						name: meta.data.name,
 						description: meta.data.description,
-					}
-					return item
+					};
+					return item;
 				})
-			)
+			);
 
-			const totalNFT = (await tokenContract.totalSupply()).toNumber()
-			console.log('Total Supply: ', totalNFT)
+			const totalNFT = (await tokenContract.totalSupply()).toNumber();
+			console.log('Total Supply: ', totalNFT);
 			// console.log(test)
 
-			setNfts(items)
-			setLoadingState('loaded')
+			setNfts(items);
+			setLoadingState('loaded');
 		} catch (error) {
-			console.error(error)
-			return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>
+			console.error(error);
+			return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>;
 		}
 	}
 
 	async function buyNft(nft) {
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		const provider = new ethers.providers.Web3Provider(connection)
+		const web3Modal = new Web3Modal();
+		const connection = await web3Modal.connect();
+		const provider = new ethers.providers.Web3Provider(connection);
 		// This doesn't work for we can't get Infura provider to go on transaction.
 		// const provider = new ethers.providers.Web3Provider(web3.currentProvider)
 
-		const signer = provider.getSigner()
+		const signer = provider.getSigner();
 
 		// // MetaMask requires requesting permission to connect users accounts
 		// // Will connect to Brave Wallet?
@@ -98,40 +99,36 @@ export default function NFTMarket() {
 		// console.log(`Signer: ${signer.getAddress}`)
 		// console.log(`Window: ${window.ethereum}`)
 
-		const contract = new ethers.Contract(
-			marketContractAddress,
-			Market.abi,
-			signer
-		)
-		console.log(contract.signer)
+		const contract = new ethers.Contract(marketContractAddress, Market, signer);
+		console.log(contract.signer);
 
-		const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
+		const price = ethers.utils.parseUnits(nft.price.toString(), 'ether');
 		// console.log(`Price: ${price}`)
 
-		const transaction = await contract.buyItem(nft.itemId, { value: price })
+		const transaction = await contract.buyItem(nft.itemId, { value: price });
 
 		// const transaction = await contract
 		// 	.buyItem(nft.itemId, { value: price })
 		// 	.then((res) => console.log(res))
 		// 	.catch((err) => console.error(err))
 
-		console.log(transaction)
+		console.log(transaction);
 
 		// const transaction = await contract.createMarketSale(
 		// 	nftContractAddress,
 		// 	nft.tokenId,
 		// 	{ value: price }
 		// )
-		const tx = await transaction.wait()
-		const event = tx.events[0]
-		console.log(`Transaction: ${tx}`)
-		console.log(`Event: ${event}`)
+		const tx = await transaction.wait();
+		const event = tx.events[0];
+		console.log(`Transaction: ${tx}`);
+		console.log(`Event: ${event}`);
 
-		loadNFTs()
+		loadNFTs();
 	}
 
 	if (loadingState === 'loaded' && !nfts.length)
-		return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>
+		return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>;
 
 	return (
 		<Layout>
@@ -179,7 +176,7 @@ export default function NFTMarket() {
 				</div>
 			</div>
 		</Layout>
-	)
+	);
 }
 
 // NFTMarket.getLayout = function getLayout(page) {
