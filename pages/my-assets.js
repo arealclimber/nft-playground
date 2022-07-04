@@ -14,9 +14,9 @@ import Market from '../Market.json';
 // import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json';
 import Layout from '../components/layout';
 
-// import Web3 from 'web3';
+import Web3 from 'web3';
 
-const Web3 = require('web3');
+// const Web3 = require('web3');
 
 // TODO: List and unlist function
 export default function MyAssets() {
