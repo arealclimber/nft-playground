@@ -291,6 +291,7 @@ export default function CreateNFT() {
 					)}
 
 					<button
+						disabled
 						onClick={createAndSell}
 						className="font-bold mt-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
 					>
