@@ -4,11 +4,16 @@ export default function Community() {
 	return (
 		<Layout>
 			<div className="flex justify-center">
-				<h1 className="py-10 px-20 text-3xl">Building...🔨🔨🔨{'\n'}</h1>
+				<div className="w-1/2 flex flex-col pb-12">
+					<textarea
+						placeholder="Just text something💌"
+						className="flex-2 mt-10 border min-h-full rounded p-4 text-black text-lg"
+					/>
 
-				<h3 className="py-10 px-20 text-xl">
-					Here is your participation in community! NFT created by yourself.
-				</h3>
+					<button className="flex-1 mt-10 font-bold p-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg">
+						Publish article NFT
+					</button>
+				</div>
 			</div>
 		</Layout>
 	);
