@@ -5,9 +5,9 @@ import Web3Modal from 'web3modal';
 import getConfig from 'next/config';
 import { ToastContainer, toast } from 'react-toastify';
 
-import { nftContractAddress, marketContractAddress } from '../config';
-import NFT from '../NFT.json';
-import Market from '../Market.json';
+import { nftContractAddress, marketContractAddress } from '../utils/config';
+import NFT from '../utils/NFT.json';
+import Market from '../utils/Market.json';
 
 // TODO: turn imports into environment variables instead of the relative file path because of not-working build function on Vercel
 // import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json';
