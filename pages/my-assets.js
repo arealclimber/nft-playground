@@ -12,7 +12,7 @@ import Market from '../utils/Market.json';
 // TODO: turn imports into environment variables instead of the relative file path because of not-working build function on Vercel
 // import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json';
-import Layout from '../components/layout';
+import Layout from '../components/Layout';
 
 import Web3 from 'web3';
 

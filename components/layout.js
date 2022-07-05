@@ -1,4 +1,4 @@
-import PageHead from './head'
+import PageHead from './Head';
 
 export default function Layout({ children }) {
 	return (
@@ -7,5 +7,5 @@ export default function Layout({ children }) {
 
 			<main>{children}</main>
 		</>
-	)
+	);
 }
