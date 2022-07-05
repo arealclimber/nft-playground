@@ -25,9 +25,9 @@ const client = create({
 	},
 });
 
-import { nftContractAddress, marketContractAddress } from '../config';
-import NFT from '../NFT.json';
-import Market from '../Market.json';
+import { nftContractAddress, marketContractAddress } from '../utils/config';
+import NFT from '../utils/NFT.json';
+import Market from '../utils/Market.json';
 
 // import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json';
