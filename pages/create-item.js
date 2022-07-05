@@ -32,7 +32,7 @@ import Market from '../Market.json';
 // import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json';
 // import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json';
 
-export default function createNFT() {
+export default function CreateNFT() {
 	const [fileUrl, setFileUrl] = useState(null);
 	const [formInput, updateFormInput] = useState({
 		price: '',
