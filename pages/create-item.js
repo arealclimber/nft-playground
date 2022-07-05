@@ -4,7 +4,7 @@ import { create, CID } from 'ipfs-http-client';
 import { useRouter } from 'next/router';
 import { Buffer } from 'buffer';
 import Web3Modal from 'web3modal';
-import Layout from '../components/layout';
+import Layout from '../components/Layout';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

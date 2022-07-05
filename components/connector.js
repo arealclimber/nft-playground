@@ -1,41 +1,41 @@
-import { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
-import Web3Modal from 'web3modal'
-import WalletConnectProvider from '@walletconnect/web3-provider'
-import CoinbaseWalletSDK from '@coinbase/wallet-sdk'
-import Head from 'next/head'
-import { Alert, Success, Fail } from './alert'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
+import Web3Modal from 'web3modal';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
+import Head from 'next/head';
+import { Alert, Success, Fail } from './Alert';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Connector() {
-	const rinkebyChainId = '0x4'
-	const mumbaiChainId = '0x13881'
-	const neededCahinId = mumbaiChainId
+	const rinkebyChainId = '0x4';
+	const mumbaiChainId = '0x13881';
+	const neededCahinId = mumbaiChainId;
 
-	const infuraId = process.env.INFURA_MUMBAI_URL
+	const infuraId = process.env.INFURA_MUMBAI_URL;
 
-	const [currentAccount, setCurrentAccount] = useState('')
-	const [correctNetwork, setCorrectNetwork] = useState(false)
-	const [provider, setProvider] = useState([])
-	const [library, setLibrary] = useState([])
+	const [currentAccount, setCurrentAccount] = useState('');
+	const [correctNetwork, setCorrectNetwork] = useState(false);
+	const [provider, setProvider] = useState([]);
+	const [library, setLibrary] = useState([]);
 
 	async function checkIfWalletIsConnected() {
-		const { ethereum } = window
+		const { ethereum } = window;
 		if (ethereum) {
-			console.log('Got the ethereum object: ', ethereum)
+			console.log('Got the ethereum object: ', ethereum);
 		} else {
-			console.log('No Wallet found. Connect Wallet')
+			console.log('No Wallet found. Connect Wallet');
 		}
 
 		try {
-			const accounts = await ethereum.request({ method: 'eth_accounts' })
+			const accounts = await ethereum.request({ method: 'eth_accounts' });
 
 			if (accounts.length !== 0) {
-				console.log('Found authorized Account: ', accounts[0])
-				setCurrentAccount(accounts[0])
+				console.log('Found authorized Account: ', accounts[0]);
+				setCurrentAccount(accounts[0]);
 			} else {
-				console.log('No Wallet found. Connect Wallet')
+				console.log('No Wallet found. Connect Wallet');
 
 				toast.warn('Make sure you have Wallet Connected', {
 					position: 'top-right',
@@ -45,10 +45,10 @@ export default function Connector() {
 					pauseOnHover: true,
 					draggable: true,
 					progress: undefined,
-				})
+				});
 			}
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 			toast.error(`${error.message}`, {
 				position: 'top-right',
 				autoClose: 5000,
@@ -57,18 +57,18 @@ export default function Connector() {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-			})
+			});
 		}
 	}
 
 	async function checkCorrectNetwork() {
 		try {
-			const { ethereum } = window
-			let chainId = await ethereum.request({ method: 'eth_chainId' })
-			console.log('Connect to chain: ' + chainId)
+			const { ethereum } = window;
+			let chainId = await ethereum.request({ method: 'eth_chainId' });
+			console.log('Connect to chain: ' + chainId);
 
 			if (chainId !== neededCahinId) {
-				setCorrectNetwork(false)
+				setCorrectNetwork(false);
 
 				toast.warn('Please change to Mumbai Testnet !', {
 					position: 'top-right',
@@ -78,9 +78,9 @@ export default function Connector() {
 					pauseOnHover: true,
 					draggable: true,
 					progress: undefined,
-				})
+				});
 			} else {
-				setCorrectNetwork(true)
+				setCorrectNetwork(true);
 
 				toast.success('Connect to Mumbai !', {
 					position: 'top-right',
@@ -90,10 +90,10 @@ export default function Connector() {
 					pauseOnHover: true,
 					draggable: true,
 					progress: undefined,
-				})
+				});
 			}
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 
 			toast.error(`${error.message}`, {
 				position: 'top-right',
@@ -103,14 +103,14 @@ export default function Connector() {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-			})
+			});
 		}
 	}
 
 	useEffect(() => {
-		checkIfWalletIsConnected()
-		checkCorrectNetwork()
-	}, [])
+		checkIfWalletIsConnected();
+		checkCorrectNetwork();
+	}, []);
 
 	const providerOptions = {
 		injected: {
@@ -136,7 +136,7 @@ export default function Connector() {
 				darkMode: false, // Optional. Use dark theme, defaults to false
 			},
 		},
-	}
+	};
 
 	// FIXME: Error: accounts received is empty [Coinbasewallet cancelled]
 	// FIXME: Error: User closed modal [walletConnect]
@@ -153,7 +153,7 @@ export default function Connector() {
 				border: 'rgba(195, 195, 195, 0.14)',
 				hover: 'rgb(16, 26, 32)',
 			},
-		})
+		});
 
 		// const walletProvider = new WalletConnectProvider({
 		// 	infuraId: infuraId,
@@ -161,17 +161,17 @@ export default function Connector() {
 		// await walletProvider.enable().catch(reject)
 
 		try {
-			const provider = await web3Modal.connect()
-			const library = new ethers.providers.Web3Provider(provider)
-			setProvider(provider)
-			setLibrary(library)
+			const provider = await web3Modal.connect();
+			const library = new ethers.providers.Web3Provider(provider);
+			setProvider(provider);
+			setLibrary(library);
 
 			const walletProvider = new WalletConnectProvider({
 				infuraId: infuraId,
-			})
-			await walletProvider.enable().catch(reject)
+			});
+			await walletProvider.enable().catch(reject);
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 		}
 
 		// try {
@@ -182,7 +182,7 @@ export default function Connector() {
 		// } catch (err) {
 		// 	console.error(err)
 		// }
-	}
+	};
 
 	// try {
 	// 	const provider = new WalletConnectProvider({
@@ -195,23 +195,23 @@ export default function Connector() {
 
 	function toastPopup() {
 		const notify = () => {
-			toast('Default Notification !')
+			toast('Default Notification !');
 
 			toast.success('Connect to Mumbai !', {
 				position: toast.POSITION.TOP_RIGHT,
-			})
+			});
 
 			toast.warn('Please change to Mumbai Testnet !', {
 				position: toast.POSITION.TOP_CENTER,
-			})
-		}
+			});
+		};
 
 		return (
 			<div>
 				<button onClick={notify}>Notify!</button>
 				<ToastContainer />
 			</div>
-		)
+		);
 	}
 
 	// const notify = () => {
@@ -266,5 +266,5 @@ export default function Connector() {
 				</div>
 			)}
 		</div>
-	)
+	);
 }

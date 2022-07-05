@@ -1,4 +1,4 @@
-import Layout from '../components/layout'
+import Layout from '../components/Layout';
 
 export default function Community() {
 	return (
@@ -11,7 +11,7 @@ export default function Community() {
 				</h3>
 			</div>
 		</Layout>
-	)
+	);
 }
 
 // Community.getLayout = function getLayout(page) {
