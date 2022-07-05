@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import Connector from '../components/Connector';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
-import Footer from '../components/footer';
+import Footer from '../components/Footer';
 
 export default function MyApp({ Component, pageProps }) {
 	return (
