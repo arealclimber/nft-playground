@@ -48,7 +48,6 @@ export default function MyAssets() {
 			Market,
 			signer
 		);
-
 		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
 
 		const price = ethers.utils.parseUnits('0.01', 'ether');
@@ -82,11 +81,48 @@ export default function MyAssets() {
 				progress: undefined,
 			});
 		}
-
 		// loadNFTs()
 	}
 
 	async function unlist() {}
+
+	async function testList(nft) {
+		const web3Modal = new Web3Modal();
+		const connection = await web3Modal.connect();
+		const provider = new ethers.providers.Web3Provider(connection);
+		const signer = provider.getSigner();
+
+		const marketContract = new ethers.Contract(
+			marketContractAddress,
+			Market,
+			signer
+		);
+		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
+
+		const price = ethers.utils.parseUnits('0.001', 'ether');
+		let transaction = await marketContract.addItemToMarket(
+			nft.tokenId,
+			price,
+			nftContractAddress
+		);
+		console.log(`transaction: ${transaction}`);
+		let tx = await transaction.wait();
+		console.log(`tx: ${tx}`);
+		let event = tx.events[0];
+		console.log(event);
+		let value = event.args[2];
+		if (value) {
+			toast.success('Success to put NFT on Market!', {
+				position: 'top-right',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		}
+	}
 
 	async function loadNFTs() {
 		// const contract = new web3.eth.Contract(NFT, nftContractAddress)
@@ -327,15 +363,15 @@ export default function MyAssets() {
 									<button
 										// onClick={list(nft)}
 										onClick={() => list(nft)}
-										className="font-bold mt-4 text-2xl bg-blue-400 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-800 text-white rounded-lg p-4 shadow-lg"
+										className="font-bold mt-4 text-2xl bg-blue-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-700 text-white rounded-lg p-4 shadow-lg"
 									>
 										List
 									</button>
 									<button
-										onClick={unlist}
-										className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-500 text-white rounded-lg p-4 shadow-lg"
+										onClick={() => testList(nft)}
+										className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-700 text-white rounded-lg p-4 shadow-lg"
 									>
-										Unlist
+										TestList
 									</button>
 								</div>
 							</div>
