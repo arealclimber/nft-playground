@@ -1,19 +1,28 @@
 // const { ethers } = require('hardhat')
-const hre = require('hardhat')
+const hre = require('hardhat');
 
 async function main() {
-	const [deployer] = await hre.ethers.getSigners()
-	console.log('Account balance: ', (await deployer.getBalance()).toString())
+	// Account basic info
+	const [deployer] = await hre.ethers.getSigners();
+	console.log('Account balance: ', (await deployer.getBalance()).toString());
 
-	const NFTMarket = await hre.ethers.getContractFactory('NFTMarket')
-	const nftMarket = await NFTMarket.deploy()
-	await nftMarket.deployed()
-	console.log('nftMarket deployed to:', nftMarket.address)
+	// NFT Market Deployment
+	const NFTMarket = await hre.ethers.getContractFactory('NFTMarket');
+	const nftMarket = await NFTMarket.deploy();
+	await nftMarket.deployed();
+	console.log('nftMarket deployed to:', nftMarket.address);
 
-	const NFT = await hre.ethers.getContractFactory('NFT')
-	const nft = await NFT.deploy()
-	await nft.deployed()
-	console.log('nft deployed to:', nft.address)
+	// NFT Deployment
+	const NFT = await hre.ethers.getContractFactory('NFT');
+	const nft = await NFT.deploy();
+	await nft.deployed();
+	console.log('nft deployed to:', nft.address);
+
+	// Article Deployment
+	const Article = await hre.ethers.getContractFactory('Article');
+	const article = await Article.deploy();
+	await article.deployed();
+	console.log('article deployed to:', article.address);
 
 	// const Multicall = await hre.ethers.getContractFactory('Multicall')
 	// const multicall = await Multicall.deploy()
@@ -26,6 +35,6 @@ async function main() {
 main()
 	.then(() => process.exit(0))
 	.catch((error) => {
-		console.error(error)
-		process.exit(1)
-	})
+		console.error(error);
+		process.exit(1);
+	});
