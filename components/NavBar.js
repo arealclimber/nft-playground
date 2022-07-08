@@ -12,14 +12,16 @@ export const NavBar = () => {
 	return (
 		<>
 			<nav className="flex items-center flex-wrap p-3">
-				<Link href="/">
-					<a className="inline-flex items-center p-2 mr-4">
-						<Image src={icon} width={30} height={30} className="" />
-						<span className="text-2xl p-2 font-bold uppercase tracking-wide hover:text-blue-200">
-							NFT Playground
-						</span>
-					</a>
-				</Link>
+				<div className=" rounded hover:bg-blue-200 hover:text-black">
+					<Link href="/">
+						<a className="inline-flex items-center p-2 mr-4">
+							<Image src={icon} width={30} height={30} className="" />
+							<span className="text-2xl p-2 font-bold uppercase tracking-wide">
+								NFT Playground
+							</span>
+						</a>
+					</Link>
+				</div>
 
 				<button
 					className="inline-flex p-3 hover:bg-blue-300 rounded lg:hidden text-white ml-auto hover:text-white outline-none"
