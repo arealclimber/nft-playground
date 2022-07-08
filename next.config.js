@@ -10,6 +10,9 @@ const nextConfig = {
 		INFURA_MUMBAI_URL: process.env.INFURA_MUMBAI_URL,
 		ALCHEMY_RINKEBY_URL: process.env.ALCHEMY_RINKEBY_URL,
 	},
+	images: {
+		domains: ['ipfs.infura.io'],
+	},
 };
 
 module.exports = nextConfig;
