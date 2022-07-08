@@ -3,7 +3,7 @@ import PageHead from './Head';
 export default function Layout({ children }) {
 	return (
 		<>
-			<PageHead />
+			{/* <PageHead /> */}
 
 			<main>{children}</main>
 		</>
