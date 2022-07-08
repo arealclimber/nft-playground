@@ -3,6 +3,11 @@ import Layout from '../components/Layout';
 export default function Community() {
 	return (
 		<Layout>
+			<div className="p-4">
+				<h1 className="text-3xl font-bold py-2 text-blue-200">
+					Write Articles
+				</h1>
+			</div>
 			<div className="flex justify-center">
 				<div className="w-1/2 flex flex-col pb-12">
 					<textarea

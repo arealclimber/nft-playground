@@ -222,9 +222,9 @@ export default function Home() {
 				<div className="p-6">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 						<Link href="/market">
-							<h2 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
+							<h1 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
 								NFT Marketplace
-							</h2>
+							</h1>
 						</Link>
 						<p className="text-2xl font-bold py-2">
 							Buy and sell your NFTs.
@@ -255,9 +255,9 @@ export default function Home() {
 					<div>
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 							<Link href="/loans">
-								<h2 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
+								<h1 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
 									Fractional NFTs
-								</h2>
+								</h1>
 							</Link>
 							<p className="text-2xl font-bold py-2">
 								Lend and borrow with NFTs.
@@ -291,9 +291,9 @@ export default function Home() {
 						<div>
 							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 								<Link href="/community">
-									<h2 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
+									<h1 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
 										Community Playground
-									</h2>
+									</h1>
 								</Link>
 								<p className="text-2xl font-bold py-2">
 									Thoughts and chats.
