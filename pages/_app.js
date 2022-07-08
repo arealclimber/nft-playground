@@ -1,15 +1,17 @@
 import '../styles/globals.css';
 import Connector from '../components/Connector';
 import Link from 'next/link';
+import PageHead from '../components/Head';
 import styles from '../styles/Home.module.css';
 import Footer from '../components/Footer';
+import { NavBar } from '../components/NavBar';
 
 export default function MyApp({ Component, pageProps }) {
 	return (
 		<>
+			<PageHead />
+			<NavBar />
 			<div className="container">
-				<title>NFT Playground</title>
-
 				<nav className="border-b p-6 ">
 					<div className="flex grid-flow-row">
 						<div className="md:w-full">
