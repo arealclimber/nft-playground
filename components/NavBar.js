@@ -50,27 +50,27 @@ export const NavBar = () => {
 				>
 					<div className="lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
 						<Link href="/market">
-							<a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold text-lg items-center justify-center hover:bg-blue-300 hover:text-black">
+							<a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold text-lg items-center justify-center hover:bg-blue-200 hover:text-black">
 								Market
 							</a>
 						</Link>
 						<Link href="/loans">
-							<a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold text-lg items-center justify-center hover:bg-blue-300 hover:text-black">
+							<a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold text-lg items-center justify-center hover:bg-blue-200 hover:text-black">
 								Loan
 							</a>
 						</Link>
 						<Link href="/community">
-							<a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold text-lg items-center justify-center hover:bg-blue-300 hover:text-black">
+							<a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold text-lg items-center justify-center hover:bg-blue-200 hover:text-black">
 								Community
 							</a>
 						</Link>
 						<Link href="/create-item">
-							<a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold text-lg items-center justify-center hover:bg-blue-300 hover:text-black">
+							<a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold text-lg items-center justify-center hover:bg-blue-200 hover:text-black">
 								Create NFT
 							</a>
 						</Link>
 						<Link href="/my-assets">
-							<a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold text-lg items-center justify-center hover:bg-blue-300 hover:text-black">
+							<a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded font-bold text-lg items-center justify-center hover:bg-blue-200 hover:text-black">
 								My NFT
 							</a>
 						</Link>
