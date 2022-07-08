@@ -4,6 +4,7 @@ import axios from 'axios';
 import Web3Modal from 'web3modal';
 import getConfig from 'next/config';
 import { ToastContainer, toast } from 'react-toastify';
+import Image from 'next/image';
 
 import { nftContractAddress, marketContractAddress } from '../utils/config';
 import NFT from '../utils/NFT.json';
@@ -84,7 +85,32 @@ export default function MyAssets() {
 		// loadNFTs()
 	}
 
-	async function unlist() {}
+	async function unlist(nft) {
+		const web3Modal = new Web3Modal();
+		const connection = await web3Modal.connect();
+		const provider = new ethers.providers.Web3Provider(connection);
+		const signer = provider.getSigner();
+
+		const marketContract = new ethers.Contract(
+			marketContractAddress,
+			Market,
+			signer
+		);
+		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
+		console.log(nft.itemId);
+		itemsForSale[itemId];
+
+		// let transaction = await marketContract.unlistItem(
+		// 	nft.id,
+		// 	nft.tokenId,
+		// 	nftContractAddress
+		// );
+		// console.log(`Unlist item transaction: ${transaction}`);
+		// let tx = await transaction.wait();
+		// console.log(`After waiting unlist-item transaction: ${tx}`);
+		// let event = tx.events[0];
+		// console.log(event);
+	}
 
 	async function testList(nft) {
 		const web3Modal = new Web3Modal();
@@ -361,20 +387,27 @@ export default function MyAssets() {
 										{nft.description}
 									</p>
 								</div>
-
+								<div>
+									<input
+										type="string"
+										placeholder="Ether"
+										className="border rounded px-3 py-1 mr-2 h-10 w-24 text-right text-black"
+									/>
+								</div>
+								{/* TODO: Check if item is on sale and change the Btn to List or Unlist accordingly */}
 								<div className="grid grid-cols-2">
 									<button
 										// onClick={list(nft)}
 										onClick={() => list(nft)}
-										className="font-bold mt-4 text-2xl bg-blue-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-700 text-white rounded-lg p-4 shadow-lg"
+										className="font-bold mt-4 text-2xl bg-blue-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
 									>
 										List
 									</button>
 									<button
-										onClick={() => testList(nft)}
-										className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-700 text-white rounded-lg p-4 shadow-lg"
+										onClick={() => unlist(nft)}
+										className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-600 text-white rounded-lg p-4 shadow-lg"
 									>
-										TestList
+										Unlist
 									</button>
 								</div>
 							</div>
