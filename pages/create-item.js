@@ -254,6 +254,11 @@ export default function CreateNFT() {
 
 	return (
 		<Layout>
+			<div className="p-4">
+				<h1 className="text-3xl font-bold py-2 text-blue-200">
+					Create yourself NFT
+				</h1>
+			</div>
 			<div className="flex justify-center">
 				<div className="w-1/2 flex flex-col pb-12">
 					<input

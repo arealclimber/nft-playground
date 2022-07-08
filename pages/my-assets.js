@@ -341,7 +341,10 @@ export default function MyAssets() {
 
 	return (
 		<Layout>
-			<div className="flex justify-center">
+			<div className="p-4">
+				<h1 className="text-3xl font-bold py-2 text-blue-200">My NFTs</h1>
+			</div>
+			<div className="flex justify-start">
 				<div className="p-4">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 						{nfts.map((nft, i) => (
