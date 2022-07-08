@@ -5,7 +5,7 @@ import Connector from './Connector';
 export default function PageHead() {
 	return (
 		<Head>
-			<title>NFTsaa Playground</title>
+			<title>NFT Playground</title>
 		</Head>
 	);
 }
