@@ -2,6 +2,7 @@ import Link from 'next/link';
 import icon from '../public/icon.png';
 import Image from 'next/image';
 import { useState } from 'react';
+import Connector from './Connector';
 
 export const NavBar = () => {
 	const [active, setActive] = useState(false);
@@ -71,6 +72,7 @@ export const NavBar = () => {
 								My NFT
 							</a>
 						</Link>
+						<Connector />
 					</div>
 				</div>
 			</nav>

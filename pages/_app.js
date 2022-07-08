@@ -11,7 +11,7 @@ export default function MyApp({ Component, pageProps }) {
 		<>
 			<PageHead />
 			<NavBar />
-			<div className="container">
+			{/* <div className="container">
 				<nav className="border-b p-6 ">
 					<div className="flex grid-flow-row">
 						<div className="md:w-full">
@@ -58,7 +58,7 @@ export default function MyApp({ Component, pageProps }) {
 						</div>
 					</div>
 				</nav>
-			</div>
+			</div> */}
 
 			<Component {...pageProps} />
 		</>
