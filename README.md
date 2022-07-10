@@ -4,6 +4,21 @@ This project is started with the intention to make everyone in the world have fu
 
 NFT Playground is the community-oriented NFT-based ecosystem where everyone can share thoughts and get free NFTs (costing gas fee).
 
+# Tech stack
+
+### Frontend
+
+-   Next.js
+-   Context API
+-   Web3Modal
+-   Ethers.js
+-   Tailwind CSS
+
+### Blockchain
+
+-   Hardhat
+-   IPFS Protocol
+
 # 🧱 Roadmap 🔨
 
 ![BUIDL](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG)
