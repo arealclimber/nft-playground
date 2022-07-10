@@ -9,9 +9,8 @@ NFT Playground is the community-oriented NFT-based ecosystem where everyone can 
 ### Frontend
 
 -   Next.js
--   Context API
--   Web3Modal
--   Ethers.js
+    -   Web3Modal
+    -   Ethers.js
 -   Tailwind CSS
 
 ### Blockchain
