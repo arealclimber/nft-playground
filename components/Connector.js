@@ -7,8 +7,11 @@ import Head from 'next/head';
 import { Alert, Success, Fail } from './Alert';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 
 export default function Connector() {
+	const router = useRouter();
+
 	const rinkebyChainId = '0x4';
 	const mumbaiChainId = '0x13881';
 	const neededCahinId = mumbaiChainId;
@@ -20,7 +23,7 @@ export default function Connector() {
 	const [provider, setProvider] = useState([]);
 	const [library, setLibrary] = useState([]);
 
-	async function checkIfWalletIsConnected() {
+	async function isWalletConnected() {
 		const { ethereum } = window;
 		if (ethereum) {
 			console.log('Got the ethereum object: ', ethereum);
@@ -61,7 +64,7 @@ export default function Connector() {
 		}
 	}
 
-	async function checkCorrectNetwork() {
+	async function isCorrectNetwork() {
 		try {
 			const { ethereum } = window;
 			let chainId = await ethereum.request({ method: 'eth_chainId' });
@@ -91,6 +94,8 @@ export default function Connector() {
 					draggable: true,
 					progress: undefined,
 				});
+
+				// router.reload(window.location.pathname);
 			}
 		} catch (error) {
 			console.error(error);
@@ -108,8 +113,8 @@ export default function Connector() {
 	}
 
 	useEffect(() => {
-		checkIfWalletIsConnected();
-		checkCorrectNetwork();
+		isWalletConnected();
+		isCorrectNetwork();
 	}, []);
 
 	const providerOptions = {
