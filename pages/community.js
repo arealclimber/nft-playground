@@ -5,7 +5,7 @@ export default function Community() {
 		<Layout>
 			<div className="p-4">
 				<h1 className="text-3xl font-bold py-2 text-blue-200">
-					Write Articles
+					Write Articles [building...]
 				</h1>
 			</div>
 			<div className="flex justify-center">
