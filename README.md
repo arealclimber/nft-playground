@@ -6,7 +6,11 @@ This project is built to learn the NFT marketplace dApp.
 
 NFT Playground is the community-oriented NFT-based ecosystem where everyone can share thoughts and get free NFTs (costing gas fee). -->
 
-## 🧱 Features 🔨
+## 🚀 Live Demo
+
+<!-- TODO: Gif and Link -->
+
+## 🧱 Features
 
 ![BUIDL](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG)
 
@@ -84,9 +88,23 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
     -   Tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))
 
+# How to use
+
+### Run locally
+
+-   Clone this repo and install the package `npm install`
+-   Revise `.env.example` to `.env` and set configs
+-   `npm run dev` to run Next.js
+
+### Deploy your own with Vercel
+
+Remember to set the environment variables.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Farealclimber%2Fnft-playground)
+
 # Commands
 
-**Hardhat:**
+**Hardhat**
 
 -   `npx hardhat compile` to compile contracts and generate `abi` in `.json` of the folder `artifacts`
 
@@ -103,6 +121,12 @@ npx hardhat accounts
 npx hardhat clean
 npx hardhat help
 ```
+
+---
+
+**Next.js**
+
+-   `npm run dev` to run dev mode
 
 # License
 
