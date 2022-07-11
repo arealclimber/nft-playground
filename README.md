@@ -94,7 +94,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 -   `npx hardhat test` to run test
 
-    -   ensure that the `defaultNetwork` in `hardhat.config.js` is `hardhat` and put private key of test account in `.env` to charge test accounts for tests
+    -   ensure that the `defaultNetwork` in `hardhat.config.js` is `hardhat` and put the private key of the test account in `.env` to charge the hardhat account for smart contract tests
 
 -   `npx hardhat run scripts/deploy.js --network localhost` (much faster) **or** `node scripts/deploy.js --network localshost` to deploy on the localhost
 
