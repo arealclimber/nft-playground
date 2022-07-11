@@ -7,7 +7,7 @@ This project is built to learn the NFT marketplace dApp.
   - [🧱 Features](#-features)
     - [NFT Creation](#nft-creation)
     - [NFT Market](#nft-market)
-  - [👩🏻‍💻 Tech stack](#-tech-stack)
+  - [👩🏻‍💻 Tech Stack](#-tech-stack)
     - [Frontend](#frontend)
     - [Blockchain](#blockchain)
   - [💗 Credit](#-credit)
@@ -41,7 +41,7 @@ NFT Playground is the community-oriented NFT-based ecosystem where everyone can 
 
 Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
-## 👩🏻‍💻 Tech stack
+## 👩🏻‍💻 Tech Stack
 
 ### Frontend
 
