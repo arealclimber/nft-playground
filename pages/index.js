@@ -299,10 +299,10 @@ export default function Home() {
 				<div className="p-6 break-words">
 					<div className="pt-4 flex py-2 overflow-hidden">
 						<div className="">
-							<Link href="/market">
-								<h1 className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
+							<Link href="/loans">
+								<a className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
 									Fractional NFTs
-								</h1>
+								</a>
 							</Link>
 						</div>
 						<div className="px-10">
@@ -339,10 +339,10 @@ export default function Home() {
 						<div>
 							<div className="pt-4 flex py-2 overflow-hidden">
 								<div className="">
-									<Link href="/market">
-										<h1 className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
+									<Link href="/community">
+										<a className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
 											Community
-										</h1>
+										</a>
 									</Link>
 								</div>
 								<div className="px-10">
