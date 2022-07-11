@@ -365,11 +365,13 @@ export default function MyAssets() {
 	if (loadingState === 'loaded' && !nfts.length)
 		return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>;
 
+	// TODO: Loading ui
 	return (
 		<Layout>
 			<div className="p-4">
 				<h1 className="text-3xl font-bold py-2 text-blue-200">My NFTs</h1>
 			</div>
+
 			<div className="flex justify-start">
 				<div className="p-4">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">

@@ -237,9 +237,7 @@ export default function Home() {
 							</Link>
 						</div>
 						<div className="px-10">
-							<p className="text-2xl font-bold">
-								Buy and sell your NFTs.
-							</p>
+							<p className="text-2xl font-bold">Buy and sell NFTs.</p>
 						</div>
 					</div>
 
@@ -297,20 +295,24 @@ export default function Home() {
 					</div>
 				</div>
 
-				<div className="p-6">
-					<div>
-						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-							<Link href="/loans">
-								<h1 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
+				{/* NOW */}
+				<div className="p-6 break-words">
+					<div className="pt-4 flex py-2 overflow-hidden">
+						<div className="">
+							<Link href="/market">
+								<h1 className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
 									Fractional NFTs
 								</h1>
 							</Link>
-							<p className="text-2xl font-bold py-2">
-								Lend and borrow with NFTs.
+						</div>
+						<div className="px-10">
+							<p className="text-2xl font-bold">
+								Lend and borrow NFTs.
 							</p>
 						</div>
+					</div>
 
-						{/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+					{/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 							{nfts.map((nft, i) => (
 								<div
 									key={i}
@@ -329,42 +331,46 @@ export default function Home() {
 								</div>
 							))}
 						</div> */}
-					</div>
 				</div>
 
-				<div className="p-6">
+				{/* NOW */}
+				<div className="p-6 break-words">
 					{
 						<div>
-							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-								<Link href="/community">
-									<h1 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
-										Community Playground
-									</h1>
-								</Link>
-								<p className="text-2xl font-bold py-2">
-									Thoughts and chats.
-								</p>
+							<div className="pt-4 flex py-2 overflow-hidden">
+								<div className="">
+									<Link href="/market">
+										<h1 className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
+											Community
+										</h1>
+									</Link>
+								</div>
+								<div className="px-10">
+									<p className="text-2xl font-bold">
+										Thoughts and chats.
+									</p>
+								</div>
 							</div>
 
 							{/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-								{nfts.map((nft, i) => (
-									<div
-										key={i}
-										className="border shadow rounded-xl overflow-hidden"
-									>
-										<img src={nft.image} className="rounded" />
-										<div className="p-4 bg-black">
-											<p className="text-2xl font-bold text-white">
-												{nft.name}
-											</p>
+							{nfts.map((nft, i) => (
+								<div
+									key={i}
+									className="border shadow rounded-xl overflow-hidden"
+								>
+									<img src={nft.image} className="rounded" />
+									<div className="p-4 bg-black">
+										<p className="text-2xl font-bold text-white">
+											{nft.name}
+										</p>
 
-											<p className="text-2xl font-bold text-white">
-												Price - {nft.price} ETH
-											</p>
-										</div>
+										<p className="text-2xl font-bold text-white">
+											Price - {nft.price} ETH
+										</p>
 									</div>
-								))}
-							</div> */}
+								</div>
+							))}
+						</div> */}
 						</div>
 					}
 				</div>
