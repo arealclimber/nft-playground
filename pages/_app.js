@@ -9,6 +9,8 @@ import { NavBar } from '../components/NavBar';
 export default function MyApp({ Component, pageProps }) {
 	return (
 		<>
+			{/* TODO: Adding `container` for footer design will break the Navbar design.*/}
+			{/* <div className="container"> */}
 			<PageHead />
 			<NavBar />
 			{/* <div className="container">
@@ -61,6 +63,17 @@ export default function MyApp({ Component, pageProps }) {
 			</div> */}
 
 			<Component {...pageProps} />
+			{/* <Footer />
+				<style jsx global>
+					{`
+						.container {
+							display: flex;
+							flex-direction: column;
+							min-height: 100vh;
+						}
+					`}
+				</style> */}
+			{/* </div> */}
 		</>
 	);
 }
