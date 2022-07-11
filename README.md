@@ -80,7 +80,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 ## Credit 💗
 
--   Favicon and the carrot NFT created by [Parry](https://www.instagram.com/parryfromfantasytostart/)
+-   Favicon and the carrot NFT painted by [Parry](https://www.instagram.com/parryfromfantasytostart/)
 
 ## Acknowledgments 🖥
 
