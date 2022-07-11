@@ -6,7 +6,7 @@ This project is built to learn the NFT marketplace dApp.
   - [🚀 Live Demo](#-live-demo)
   - [🧱 Features](#-features)
     - [NFT Creation](#nft-creation)
-    - [NFT Market Functionality](#nft-market-functionality)
+    - [NFT Market](#nft-market)
   - [Tech stack](#tech-stack)
     - [Frontend](#frontend)
     - [Blockchain](#blockchain)
@@ -33,7 +33,7 @@ NFT Playground is the community-oriented NFT-based ecosystem where everyone can 
 
 -   [x] Make your pictures NFT
 
-### NFT Market Functionality
+### NFT Market
 
 -   [x] List your NFT for sale
 -   [x] Buy the NFT with mumbai testnet Matic
