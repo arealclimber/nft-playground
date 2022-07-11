@@ -147,7 +147,7 @@ export default function NFTMarket() {
 								<div className="p-4">
 									<p
 										style={{ height: '64px' }}
-										className="text-4xl font-semibold"
+										className="text-4xl "
 									>
 										{nft.name}
 									</p>

@@ -11,7 +11,7 @@ const nextConfig = {
 		ALCHEMY_RINKEBY_URL: process.env.ALCHEMY_RINKEBY_URL,
 	},
 	images: {
-		domains: ['ipfs.infura.io'],
+		domains: ['ipfs.infura.io', 'ipfs.io'],
 	},
 };
 

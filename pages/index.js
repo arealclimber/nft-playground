@@ -5,6 +5,7 @@ import Web3Modal from 'web3modal';
 import Layout from '../components/Layout';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
+import { useRouter } from 'next/router';
 
 // import { useAccount, useBalance } from 'wagmi'
 // import { useConnect } from 'wagmi'
@@ -17,6 +18,7 @@ import Market from '../utils/Market.json';
 // import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
 	useEffect(() => {
@@ -216,38 +218,82 @@ export default function Home() {
 		}
 	}
 
+	const router = useRouter();
+	const handleClick = (nft) => {
+		router.push('/market');
+		console.log(`NFT image: ${nft.image}`);
+	};
+
 	return (
 		<Layout>
 			<div className="">
-				<div className="p-6">
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-						<Link href="/market">
-							<h1 className="text-2xl font-bold py-2 text-accent hover:text-blue-200 hover:cursor-pointer">
-								NFT Marketplace
-							</h1>
-						</Link>
-						<p className="text-2xl font-bold py-2">
-							Buy and sell your NFTs.
-						</p>
+				<div className="p-6 break-words">
+					<div className="pt-4 flex py-2 overflow-hidden">
+						<div className="">
+							<Link href="/market">
+								<h1 className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
+									NFT Marketplace
+								</h1>
+							</Link>
+						</div>
+						<div className="px-10">
+							<p className="text-2xl font-bold">
+								Buy and sell your NFTs.
+							</p>
+						</div>
 					</div>
 
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+					{/* Anthoer way: useing Image component */}
+					{/* <ul className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4 xl:grid-cols-4 2xl:grid-cols-5 pt-5">
 						{nfts.map((nft, i) => (
-							<div
+							<li
 								key={i}
-								className="border shadow rounded-xl overflow-hidden"
+								className="flex flex-col justify-between h-128 border shadow rounded-lg cursor-pointer p-2 hover:opacity-70 bg-white"
+								onClick={() => handleClick(nft)}
 							>
-								<img src={nft.image} className="rounded" />
-								<div className="p-4 bg-black">
-									<p className="text-2xl font-bold text-white">
-										{nft.name}
-									</p>
-									<p className="text-2xl font-bold text-white">
-										Price - {nft.price} Eth
-									</p>
+								<div className="h-4/5 relative">
+									<Image
+										src="https://ipfs.infura.io/ipfs/QmZdEm6dfxdSP6noEMwbR9dMrn8bZxTf1PfGXnoXDC1i7K"
+										alt="NFT image"
+										layout="fill"
+										objectFit="cover"
+										objectPosition="top center"
+										className="rounded-lg rounded-b-none"
+									/>
 								</div>
-							</div>
+								<div className="p-2">
+									<p className="text-2xl">{nft.name}</p>
+									<div>
+										<p className="text-gray-400 truncate">
+											{nft.description}
+										</p>
+									</div>
+								</div>
+							</li>
 						))}
+					</ul> */}
+					<div className="flex justify-start">
+						<div className="px-4" style={{ maxWidth: '1600px' }}>
+							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+								{nfts.map((nft, i) => (
+									<div
+										key={i}
+										className="border shadow rounded-xl overflow-hidden cursor-pointer p-2 hover:opacity-90"
+										onClick={handleClick}
+									>
+										<img src={nft.image} className="rounded" />
+										<div className="p-4 bg-black">
+											<p className="text-2xl font-bold text-white">
+												{nft.name}
+											</p>
+											<p className="text-2xl font-bold text-white">
+												Price - {nft.price} Eth
+											</p>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
 					</div>
 				</div>
 
