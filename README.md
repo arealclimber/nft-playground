@@ -2,6 +2,21 @@
 
 This project is built to learn the NFT marketplace dApp.
 
+- [NFT Playground](#nft-playground)
+  - [🚀 Live Demo](#-live-demo)
+  - [🧱 Features](#-features)
+    - [NFT Creation](#nft-creation)
+    - [NFT Market Functionality](#nft-market-functionality)
+  - [Tech stack](#tech-stack)
+    - [Frontend](#frontend)
+    - [Blockchain](#blockchain)
+  - [Credit 💗](#credit-)
+  - [Acknowledgments 🖥](#acknowledgments-)
+- [How to use](#how-to-use)
+    - [Run locally](#run-locally)
+    - [Deploy your own with Vercel](#deploy-your-own-with-vercel)
+- [Commands](#commands)
+- [License](#license)
 <!-- This project is started with the intention to make everyone in the world have fun with NFT.
 
 NFT Playground is the community-oriented NFT-based ecosystem where everyone can share thoughts and get free NFTs (costing gas fee). -->
@@ -12,7 +27,7 @@ NFT Playground is the community-oriented NFT-based ecosystem where everyone can 
 
 ## 🧱 Features
 
-![BUIDL](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG)
+<!-- ![BUIDL](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG) -->
 
 ### NFT Creation
 
