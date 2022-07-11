@@ -154,8 +154,7 @@ describe('Working NFT Market Test: ', function () {
 
 		// console.log('The manager balance: ', (await marketContractAddress.manager.getBalance()).toString())
 
-		// TODO: Test if the marketplace receive the commision
-		// TODO: Test if the seller receive the commision
+
 
 		items = await market.fetchMarketItems()
 
@@ -201,7 +200,8 @@ describe('Working NFT Market Test: ', function () {
 		console.log('The number of address2 own NFTs: ', (await nft.balanceOf(add2.address)).toNumber())
 		console.log('The number of address3 own NFTs: ', (await nft.balanceOf(add3.address)).toNumber())
 
-
+		// TODO: Test if the marketplace receive the commision
+		// TODO: Test if the seller receive the commision
 		console.log('The manager balance: ', (await provider.getBalance(manager)).toString())
 		console.log('The balance of address_ wallet: ', (await _.getBalance()).toString())
 		console.log('The balance of address1 wallet: ', (await add1.getBalance()).toString())

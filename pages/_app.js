@@ -10,9 +10,10 @@ export default function MyApp({ Component, pageProps }) {
 	return (
 		<>
 			{/* TODO: Adding `container` for footer design will break the Navbar design.*/}
-			{/* <div className="container"> */}
+
 			<PageHead />
 			<NavBar />
+
 			{/* <div className="container">
 				<nav className="border-b p-6 ">
 					<div className="flex grid-flow-row">
@@ -63,7 +64,8 @@ export default function MyApp({ Component, pageProps }) {
 			</div> */}
 
 			<Component {...pageProps} />
-			{/* <Footer />
+			{/* <div className="container">
+				<Footer />
 				<style jsx global>
 					{`
 						.container {
@@ -72,8 +74,8 @@ export default function MyApp({ Component, pageProps }) {
 							min-height: 100vh;
 						}
 					`}
-				</style> */}
-			{/* </div> */}
+				</style>
+			</div> */}
 		</>
 	);
 }

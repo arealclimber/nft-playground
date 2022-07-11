@@ -1,10 +1,28 @@
 # NFT Playground
 
-This project is started with the intention to make everyone in the world have fun with NFT.
+This project is built to learn the NFT marketplace dApp.
 
-NFT Playground is the community-oriented NFT-based ecosystem where everyone can share thoughts and get free NFTs (costing gas fee).
+<!-- This project is started with the intention to make everyone in the world have fun with NFT.
 
-# Tech stack
+NFT Playground is the community-oriented NFT-based ecosystem where everyone can share thoughts and get free NFTs (costing gas fee). -->
+
+## 🧱 Features 🔨
+
+![BUIDL](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG)
+
+### NFT Creation
+
+-   [x] Make your pictures NFT
+
+### NFT Market Functionality
+
+-   [x] List your NFT for sale
+-   [x] Buy the NFT with mumbai testnet Matic
+-   [ ] Delist your NFT from the marketplace
+
+Made with 💙 by [Lumii](https://twitter.com/arealclimber)
+
+## Tech stack
 
 ### Frontend
 
@@ -12,17 +30,14 @@ NFT Playground is the community-oriented NFT-based ecosystem where everyone can 
     -   Web3Modal
     -   Ethers.js
 -   Tailwind CSS
+-   daisyUI
 
 ### Blockchain
 
 -   Hardhat
 -   IPFS Protocol
 
-# 🧱 Roadmap 🔨
-
-![BUIDL](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG)
-
-## Community😋
+<!-- ## Community😋
 
 ### Share to Earn
 
@@ -57,15 +72,13 @@ NFT Playground is the community-oriented NFT-based ecosystem where everyone can 
 
 #### Wallet integrations, fiat-to-crypto bridges, and more
 
--   [ ] Make the Crypto world more available to the world
+-   [ ] Make the Crypto world more available to the world -->
 
-Made with 💙 by [Lumii](https://twitter.com/arealclimber)
-
-# Credit 💗
+## Credit 💗
 
 -   Favicon and the carrot NFT created by [Parry](https://www.instagram.com/parryfromfantasytostart/)
 
-# Acknowledgments 🖥
+## Acknowledgments 🖥
 
 -   [Nader Dabit](https://twitter.com/dabit3)
 
@@ -75,13 +88,15 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 **Hardhat:**
 
-`npx hardhat compile` to compile contracts and generate `abi` in `.json` of the folder artifacts
+-   `npx hardhat compile` to compile contracts and generate `abi` in `.json` of the folder `artifacts`
 
-`npx hardhat test` to run test
+-   `npx hardhat node` to run the localhost and get test accounts
 
-`npx hardhat node` to run the localhost and get test accounts
+-   `npx hardhat test` to run test
 
-`node scripts/deploy.js --network localshost` to deploy on the localhost
+    -   ensure that the `defaultNetwork` in `hardhat.config.js` is `hardhat` and put private key of test account in `.env` to charge test accounts for tests
+
+-   `npx hardhat run scripts/deploy.js --network localhost` (much faster) **or** `node scripts/deploy.js --network localshost` to deploy on the localhost
 
 ```shell
 npx hardhat accounts
