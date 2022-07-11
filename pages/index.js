@@ -28,6 +28,7 @@ export default function Home() {
 	}, []);
 
 	const infuraId = process.env.INFURA_MUMBAI_URL;
+
 	// Hex
 	const rinkebyChainId = '0x4';
 	const mumbaiChainId = '0x13881';
@@ -203,9 +204,11 @@ export default function Home() {
 						name: meta.data.name,
 						description: meta.data.description,
 					};
+					console.log(`item id:${item.itemId}`);
 					return item;
 				})
 			);
+
 			setNfts(items);
 			setLoadingState('loaded');
 
