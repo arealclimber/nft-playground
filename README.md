@@ -7,11 +7,11 @@ This project is built to learn the NFT marketplace dApp.
   - [🧱 Features](#-features)
     - [NFT Creation](#nft-creation)
     - [NFT Market](#nft-market)
-  - [Tech stack](#tech-stack)
+  - [👩🏻‍💻 Tech stack](#-tech-stack)
     - [Frontend](#frontend)
     - [Blockchain](#blockchain)
-  - [Credit 💗](#credit-)
-  - [Acknowledgments 🖥](#acknowledgments-)
+  - [💗 Credit](#-credit)
+  - [🖥 Acknowledgments](#-acknowledgments)
 - [How to use](#how-to-use)
     - [Run locally](#run-locally)
     - [Deploy your own with Vercel](#deploy-your-own-with-vercel)
@@ -41,7 +41,7 @@ NFT Playground is the community-oriented NFT-based ecosystem where everyone can 
 
 Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
-## Tech stack
+## 👩🏻‍💻 Tech stack
 
 ### Frontend
 
@@ -93,11 +93,11 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 -   [ ] Make the Crypto world more available to the world -->
 
-## Credit 💗
+## 💗 Credit
 
 -   Favicon and the carrot NFT painted by [Parry](https://www.instagram.com/parryfromfantasytostart/)
 
-## Acknowledgments 🖥
+## 🖥 Acknowledgments
 
 -   [Nader Dabit](https://twitter.com/dabit3)
 
