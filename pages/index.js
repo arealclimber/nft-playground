@@ -221,7 +221,7 @@ export default function Home() {
 	const router = useRouter();
 	const handleClick = (nft) => {
 		router.push('/market');
-		console.log(`NFT image: ${nft.image}`);
+		console.log(`NFT image: ${nft.image}`); //FIXME: why `undefined` but displayed?
 	};
 
 	return (
