@@ -117,7 +117,7 @@ Install the Metamask chrome extension and set Polygon Mumbai testnet config.
 
 -   Install Metamask plugin
 -   Head over to [Chainlist](https://chainlist.org/) and turn on testnet button and search for Polygon
-    <!-- ![chainlist](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG) -->
+    <!-- ![chainlist](https://github.com/arealclimber/nft-playground-private/blob/main/public/chainlist.PNG?raw=true) -->
 
 ### Run locally
 
