@@ -7,7 +7,6 @@ This project is built to learn the NFT marketplace dApp.
   - [🧱 Features](#-features)
     - [NFT Creation](#nft-creation)
     - [NFT Market](#nft-market)
-    - [Fractionalized NFT](#fractionalized-nft)
   - [👩🏻‍💻 Tech Stack](#-tech-stack)
     - [Frontend](#frontend)
     - [Blockchain](#blockchain)
@@ -43,9 +42,9 @@ Live Demo
 -   [x] Buy the NFT with mumbai testnet Matic
 -   [ ] Delist your NFT from the marketplace
 
-### Fractionalized NFT
+<!-- ### Fractionalized NFT
 
--   [ ] Vault contract tests
+-   [ ] Vault contract tests -->
 
 Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
