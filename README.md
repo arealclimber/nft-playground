@@ -45,7 +45,7 @@ Live Demo
 
 ### Fractionalized NFT
 
--   [ ] Vault contract test
+-   [ ] Vault contract tests
 
 Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
