@@ -160,7 +160,7 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         // TODO: push? storage vs memory?
         MarketItem[] memory items = new MarketItem[](unsoldItemCount);
         for (uint i = 0; i < itemCount; i++) {
-            if ((itemsForSale[i].isSold == false) && (itemsForSale[i].isOnSale == true )) {
+            if ((itemsForSale[i].isSold == false) || (itemsForSale[i].isOnSale == true )) {
                 uint currentId = itemsForSale[i].itemId;
                 MarketItem storage currentItem = itemsForSale[currentId];
                 items[currentIndex] = currentItem;

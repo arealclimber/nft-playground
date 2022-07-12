@@ -51,6 +51,14 @@ describe('Working NFT Test: ', function () {
 		console.log('The address2 has NFT amount: ', (await nft.balanceOf(add2.address)).toNumber())
 		console.log('The address3 has NFT amount: ', (await nft.balanceOf(add3.address)).toNumber())
 
+		/** 
+		 * @dev In {ERC721Enumerable} or {IERC721Enumerable}, `_ownedTokens` to mapping owner to list of owned token IDs
+		 * and `tokenOfOwnerByIndex()` to return a token ID owned by `owner` at a given `index` of its token list
+		 * @param1 mapping(address => mapping(uint256 => uint256)) private _ownedTokens;
+		 * @param2 function tokenOfOwnerByIndex(address owner, uint256 index) external view returns (uint256)
+		 * note the `index` is required to less than `ERC721.balanceOf(owner)`, in order to make owner index within bounds
+		 * @return _ownedTokens[owner][index]
+		 */
 		// Give `tokenOfOwnerByIndex` the parameter of index=0 and address-3, and it'll return the tokenId owned by address-3. 
 		// `index=0` means the `tokenOfOwnerByIndex` run the loop for one time
 		console.log('The tokenOfOwnerByIndex with index=1 and address-3: ', (await nft.tokenOfOwnerByIndex(add3.address, 1)));
