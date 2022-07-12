@@ -119,7 +119,8 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 -   Install Metamask chrome extension
 -   Head over to [Chainlist](https://chainlist.org/) and turn on testnet button and search for Polygon
-    <!-- ![chainlist](https://github.com/arealclimber/nft-playground-private/blob/main/public/chainlist.PNG?raw=true) -->
+
+![chainlist](https://github.com/arealclimber/nft-playground/blob/main/public/chainlist.PNG?raw=true)
 
 ### Run locally
 
