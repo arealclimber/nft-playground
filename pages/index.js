@@ -6,6 +6,8 @@ import Layout from '../components/Layout';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Image from 'next/image';
 
 // import { useAccount, useBalance } from 'wagmi'
 // import { useConnect } from 'wagmi'
@@ -16,9 +18,6 @@ import Market from '../utils/Market.json';
 
 // import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json'
 // import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
-
-import Link from 'next/link';
-import Image from 'next/image';
 
 export default function Home() {
 	useEffect(() => {
@@ -282,7 +281,15 @@ export default function Home() {
 										className="border shadow rounded-xl overflow-hidden cursor-pointer p-2 hover:opacity-90"
 										onClick={handleClick}
 									>
-										<img src={nft.image} className="rounded" />
+										<div className="container h-72 w-72 relative">
+											<Image
+												className="rounded mt-4"
+												layout="fill"
+												src={nft.image}
+												alt="image"
+											/>
+										</div>
+
 										<div className="p-4 bg-black">
 											<p className="text-2xl font-bold text-white">
 												{nft.name}
