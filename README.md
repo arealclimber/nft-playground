@@ -13,6 +13,7 @@ This project is built to learn the NFT marketplace dApp.
   - [💗 Credit](#-credit)
   - [🖥 Acknowledgments](#-acknowledgments)
 - [How to use](#how-to-use)
+    - [Connect to Polygon Mumbai testnet](#connect-to-polygon-mumbai-testnet)
     - [Run locally](#run-locally)
     - [Deploy your own with Vercel](#deploy-your-own-with-vercel)
 - [Commands](#commands)
@@ -109,6 +110,14 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 -   Image cropper: [iloveimg](https://www.iloveimg.com/download/7bf6c82djk4pw37hyb2j54yy9zhnr9hmsvlyy4139hn9yg2jgn38bAxbsfvgfm2p96zl5r3r277wbwyr1b79Agq3qk1d2bn071j51tjrqstt55w1z3lmAb198myzcs7m1y090mz6lhrx4rdghrnbjrl3r2mk5mk6k73pxAAg74d9rf4ql4r1/8)
 
 # How to use
+
+### Connect to Polygon Mumbai testnet
+
+Install the Metamask chrome extension and set Polygon Mumbai testnet config.
+
+-   Install Metamask plugin
+-   Head over to [Chainlist](https://chainlist.org/) and turn on testnet button and search for Polygon
+    <!-- ![chainlist](https://raw.githubusercontent.com/arealclimber/nft-playground/main/public/BUIDL.PNG) -->
 
 ### Run locally
 
