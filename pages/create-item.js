@@ -7,6 +7,7 @@ import Web3Modal from 'web3modal';
 import Layout from '../components/Layout';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Image from 'next/image';
 
 // const client = ipfsHttpClient('https://ipfs.fleek.co/ipfs/HASH');
 // 'https://ipfs.infura.io:5001/api/v0'
@@ -134,6 +135,9 @@ export default function CreateNFT() {
 				progress: undefined,
 			});
 		}
+
+		let test_prop = true;
+		console.log(test_prop);
 
 		router.push('/my-assets');
 
@@ -292,7 +296,16 @@ export default function CreateNFT() {
 					/>
 
 					{fileUrl && (
-						<img className="rounded mt-4" width="350" src={fileUrl} />
+						<>
+							<div className="container h-72 w-72 relative">
+								<Image
+									className="rounded mt-4"
+									layout="fill"
+									src={fileUrl}
+									alt="image"
+								/>
+							</div>
+						</>
 					)}
 
 					<button
