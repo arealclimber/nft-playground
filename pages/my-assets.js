@@ -377,6 +377,7 @@ export default function MyAssets() {
 		);
 
 	// TODO: Loading ui
+	// TODO: Detect if the NFT is on sale then display Unlist btn, otherwise displaying List btn
 	return (
 		<Layout>
 			<div className="p-4">
