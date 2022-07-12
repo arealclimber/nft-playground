@@ -363,7 +363,12 @@ export default function MyAssets() {
 		// // console.log(tokenContract.methods.tokenOfOwnerByIndex(signerAddress, 0).call())
 	}
 	if (loadingState === 'loaded' && !nfts.length)
-		return <h1 className="py-10 px-20 text-3xl">No assets owned</h1>;
+		return (
+			<div className="p-4">
+				<h1 className="text-3xl font-bold py-2 text-blue-200">My NFTs</h1>
+				<h1 className="py-10 px-20 text-3xl">No assets owned</h1>
+			</div>
+		);
 
 	// TODO: Loading ui
 	return (
