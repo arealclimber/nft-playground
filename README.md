@@ -53,8 +53,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 ### Frontend
 
 -   Next.js
-    -   Web3Modal
-    -   Ethers.js
+    -   Context API 🤔
 -   Tailwind CSS
 -   daisyUI
 
