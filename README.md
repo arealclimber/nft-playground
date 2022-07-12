@@ -2,26 +2,28 @@
 
 This project is built to learn the NFT marketplace dApp.
 
--   [NFT Playground](#nft-playground)
-    -   [🚀 Live Demo](#-live-demo)
-    -   [🧱 Features](#-features)
-        -   [NFT Creation](#nft-creation)
-        -   [NFT Market](#nft-market)
-    -   [👩🏻‍💻 Tech Stack](#-tech-stack)
-        -   [Frontend](#frontend)
-        -   [Blockchain](#blockchain)
-    -   [💗 Credit](#-credit)
-    -   [🖥 Acknowledgments](#-acknowledgments)
--   [How to use](#how-to-use)
-    -   [Run locally](#run-locally)
-    -   [Deploy your own with Vercel](#deploy-your-own-with-vercel)
--   [Commands](#commands)
--   [License](#license)
+- [NFT Playground](#nft-playground)
+  - [🚀 Demo](#-demo)
+  - [🧱 Features](#-features)
+    - [NFT Creation](#nft-creation)
+    - [NFT Market](#nft-market)
+  - [👩🏻‍💻 Tech Stack](#-tech-stack)
+    - [Frontend](#frontend)
+    - [Blockchain](#blockchain)
+  - [💗 Credit](#-credit)
+  - [🖥 Acknowledgments](#-acknowledgments)
+- [How to use](#how-to-use)
+    - [Run locally](#run-locally)
+    - [Deploy your own with Vercel](#deploy-your-own-with-vercel)
+- [Commands](#commands)
+- [License](#license)
 <!-- This project is started with the intention to make everyone in the world have fun with NFT.
 
 NFT Playground is the community-oriented NFT-based ecosystem where everyone can share thoughts and get free NFTs (costing gas fee). -->
 
-## 🚀 Live Demo
+## 🚀 Demo
+
+Live Demo
 
 <!-- TODO: Gif and Link -->
 
@@ -102,6 +104,9 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 -   [Nader Dabit](https://twitter.com/dabit3)
 
     -   Tutorial about building NFT Marketplace ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0) & [Dev.to](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb))
+
+-   Pictures resource: [Unsplash](https://unsplash.com/)
+-   Image cropper: [iloveimg](https://www.iloveimg.com/download/7bf6c82djk4pw37hyb2j54yy9zhnr9hmsvlyy4139hn9yg2jgn38bAxbsfvgfm2p96zl5r3r277wbwyr1b79Agq3qk1d2bn071j51tjrqstt55w1z3lmAb198myzcs7m1y090mz6lhrx4rdghrnbjrl3r2mk5mk6k73pxAAg74d9rf4ql4r1/8)
 
 # How to use
 
