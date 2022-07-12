@@ -2,21 +2,21 @@
 
 This project is built to learn the NFT marketplace dApp.
 
-- [NFT Playground](#nft-playground)
-  - [🚀 Live Demo](#-live-demo)
-  - [🧱 Features](#-features)
-    - [NFT Creation](#nft-creation)
-    - [NFT Market](#nft-market)
-  - [👩🏻‍💻 Tech Stack](#-tech-stack)
-    - [Frontend](#frontend)
-    - [Blockchain](#blockchain)
-  - [💗 Credit](#-credit)
-  - [🖥 Acknowledgments](#-acknowledgments)
-- [How to use](#how-to-use)
-    - [Run locally](#run-locally)
-    - [Deploy your own with Vercel](#deploy-your-own-with-vercel)
-- [Commands](#commands)
-- [License](#license)
+-   [NFT Playground](#nft-playground)
+    -   [🚀 Live Demo](#-live-demo)
+    -   [🧱 Features](#-features)
+        -   [NFT Creation](#nft-creation)
+        -   [NFT Market](#nft-market)
+    -   [👩🏻‍💻 Tech Stack](#-tech-stack)
+        -   [Frontend](#frontend)
+        -   [Blockchain](#blockchain)
+    -   [💗 Credit](#-credit)
+    -   [🖥 Acknowledgments](#-acknowledgments)
+-   [How to use](#how-to-use)
+    -   [Run locally](#run-locally)
+    -   [Deploy your own with Vercel](#deploy-your-own-with-vercel)
+-   [Commands](#commands)
+-   [License](#license)
 <!-- This project is started with the intention to make everyone in the world have fun with NFT.
 
 NFT Playground is the community-oriented NFT-based ecosystem where everyone can share thoughts and get free NFTs (costing gas fee). -->
@@ -113,7 +113,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 ### Deploy your own with Vercel
 
-Remember to set the environment variables.
+Remember to add the required environment variables.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Farealclimber%2Fnft-playground)
 
@@ -129,7 +129,7 @@ Remember to set the environment variables.
 
     -   ensure that the `defaultNetwork` in `hardhat.config.js` is `hardhat` and put the private key of the test account in `.env` to charge the hardhat account for smart contract tests
 
--   `npx hardhat run scripts/deploy.js --network localhost` (much faster) **or** `node scripts/deploy.js --network localshost` to deploy on the localhost
+-   `npx hardhat run scripts/deploy.js --network localhost` (recommended) **or** `node scripts/deploy.js --network localshost` to deploy on the localhost
 
 ```shell
 npx hardhat accounts
