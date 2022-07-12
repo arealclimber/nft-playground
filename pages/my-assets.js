@@ -5,6 +5,7 @@ import Web3Modal from 'web3modal';
 import getConfig from 'next/config';
 import { ToastContainer, toast } from 'react-toastify';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import { nftContractAddress, marketContractAddress } from '../utils/config';
 import NFT from '../utils/NFT.json';
@@ -25,6 +26,7 @@ export default function MyAssets() {
 	const web3 = new Web3(process.env.INFURA_MUMBAI_URL);
 	// console.log(process.env.ALCHEMY_MUMBAI_URL)
 
+	const router = useRouter();
 	const [nfts, setNfts] = useState([]);
 	const [loadingState, setLoadingState] = useState('not-loaded');
 	const [listingState, setListingState] = useState(false);
@@ -82,6 +84,9 @@ export default function MyAssets() {
 				progress: undefined,
 			});
 		}
+
+		router.push('/market');
+
 		// loadNFTs()
 	}
 
@@ -97,8 +102,9 @@ export default function MyAssets() {
 			signer
 		);
 		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
-		console.log(nft.itemId);
-		itemsForSale[itemId];
+		// console.log(`market contract signer${marketContract.signer}`); // [object Object]
+		// console.log(`market contract signer${JSON.parse(marketContract.signer)}`);
+		// itemsForSale[itemId];
 
 		// let transaction = await marketContract.unlistItem(
 		// 	nft.id,
@@ -385,7 +391,14 @@ export default function MyAssets() {
 								key={i}
 								className="border shadow rounded-xl overflow-hidden"
 							>
-								<img src={nft.image} className="rounded" />
+								<div className="container h-72 w-72 relative">
+									<Image
+										className="rounded mt-4"
+										layout="fill"
+										src={nft.image}
+										alt="image"
+									/>
+								</div>
 								<div className="p-4 bg-black">
 									<p className="text-2xl font-bold text-white">
 										{nft.name}

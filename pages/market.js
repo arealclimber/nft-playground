@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Web3Modal from 'web3modal';
 import Layout from '../components/Layout';
+import Image from 'next/image';
 
 import { nftContractAddress, marketContractAddress } from '../utils/config';
 
@@ -143,7 +144,14 @@ export default function NFTMarket() {
 								key={i}
 								className="border shadow rounded-xl overflow-hidden"
 							>
-								<img src={nft.image} />
+								<div className="container h-72 w-72 relative">
+									<Image
+										className="rounded mt-4"
+										layout="fill"
+										src={nft.image}
+										alt="image"
+									/>
+								</div>
 								<div className="p-4">
 									<p
 										style={{ height: '64px' }}
