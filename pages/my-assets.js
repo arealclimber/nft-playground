@@ -96,12 +96,24 @@ export default function MyAssets() {
 		const provider = new ethers.providers.Web3Provider(connection);
 		const signer = provider.getSigner();
 
-		const marketContract = new ethers.Contract(
-			marketContractAddress,
-			Market,
-			signer
+		const contract = new ethers.Contract(marketContractAddress, Market, signer);
+
+		// FIXME: Temporary cheat
+		const transaction = await contract.unlistItem(
+			nft.tokenId,
+			nft.tokenId,
+			nftContractAddress
 		);
-		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
+
+		console.log(`Unlist transaction: ${transaction}`);
+
+		const tx = await transaction.wait();
+		const event = tx.events[0];
+
+		console.log(`Unlist tx: ${tx}`);
+		console.log(`Unlist tx.events[0]: ${event}`);
+		loadNFTs();
+		// const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
 		// console.log(`market contract signer${marketContract.signer}`); // [object Object]
 		// console.log(`market contract signer${JSON.parse(marketContract.signer)}`);
 		// itemsForSale[itemId];
@@ -221,9 +233,14 @@ export default function MyAssets() {
 			let tokenId = (
 				await tokenContract.tokenOfOwnerByIndex(accounts[0], i)
 			).toNumber();
+
 			let tokenURI = await tokenContract.tokenURI(tokenId);
+
+			// let tokenItemId = await marketContract.itemsForSale;
+
 			console.log(`Token ID: ${tokenId}`);
 			console.log(`Token URI: ${tokenURI}`);
+			// console.log(`Token Item ID: ${tokenItemId}`);
 
 			// redirection
 			const metadataUri = await fetch(tokenURI)

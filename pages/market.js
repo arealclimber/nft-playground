@@ -60,6 +60,7 @@ export default function NFTMarket() {
 					return item;
 				})
 			);
+			console.log(`data after map(): ${items}`); // [object Object],[object Object],...
 
 			const totalNFT = (await tokenContract.totalSupply()).toNumber();
 			console.log('Total Supply: ', totalNFT);
