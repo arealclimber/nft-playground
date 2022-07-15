@@ -14,10 +14,12 @@ This project is built to learn the NFT marketplace dApp.
   - [🖥 Acknowledgments](#-acknowledgments)
 - [How to use](#how-to-use)
     - [Connect to Polygon Mumbai testnet](#connect-to-polygon-mumbai-testnet)
+    - [Environment variables](#environment-variables)
     - [Run locally](#run-locally)
     - [Deploy your own with Vercel](#deploy-your-own-with-vercel)
 - [Commands](#commands)
 - [License](#license)
+
 <!-- This project is started with the intention to make everyone in the world have fun with NFT.
 
 NFT Playground is the community-oriented NFT-based ecosystem where everyone can share thoughts and get free NFTs (costing gas fee). -->
@@ -118,6 +120,12 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 -   Head over to [Chainlist](https://chainlist.org/) and search for Polygon, with the **Testnets** button turned on, and click **Connect Wallet** on Mumbai to get network config - [details](https://medium.com/stakingbits/how-to-connect-polygon-mumbai-testnet-to-metamask-fc3487a3871f)
 
 ![chainlist](https://github.com/arealclimber/nft-playground/blob/main/public/chainlist.PNG?raw=true)
+
+### Environment variables
+
+[Infura](https://infura.io/) - Appyly for IPFS API and Mumbai RPC for `.env`.
+
+And set your test-only account private key.
 
 ### Run locally
 
