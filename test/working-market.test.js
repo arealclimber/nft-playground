@@ -9,7 +9,6 @@ let nftContractAddress
 let market
 let marketContractAddress
 
-
 beforeEach(async () => {
 	provider = waffle.provider
 	
@@ -23,7 +22,7 @@ beforeEach(async () => {
 	nft = await NFT.deploy()
 	await nft.deployed()
 	nftContractAddress = nft.address
-	console.log('The NFT Contract Address: ',nftContractAddress)
+	console.log('The NFT Contract Address: ', nftContractAddress)
 })
 
 describe('Working NFT Test: ', function () {
@@ -33,7 +32,7 @@ describe('Working NFT Test: ', function () {
 		console.log('address 2: ', add2.address)
 		console.log('address 3: ', add3.address)
 
-		// If not clearly saying who creating the token, it defaultly set to the address 1.
+		// If not clearly saying who creating the token, it set to the address 1 by default.
 		await nft.connect(add1).createToken('https://www.mytokenlocation.com') // tokenId=0
 		await nft.connect(add2).createToken('https://www.mytokenlocation.com') // tokenId=1
 		await nft.connect(add3).createToken('https://www.mytokenlocation.com') // tokenId=2
@@ -96,9 +95,10 @@ describe('Working NFT Market Test: ', function () {
 		// await nft.createToken('https://www.mytokenlocation.com')
 		// await nft.createToken('https://www.mytokenlocation.com')
 
-		await nft.connect(_).createToken('https://www.mytokenlocation.com')
-		await nft.connect(add1).createToken('https://www.mytokenlocation.com')
-		await nft.connect(add1).createToken('https://www.mytokenlocation.com')
+		await nft.connect(_).createToken('https://www.mytokenlocation.com') // tokenId=0
+		await nft.connect(add1).createToken('https://www.mytokenlocation.com') // tokenId=1
+		await nft.connect(add1).createToken('https://www.mytokenlocation.com') // tokenId=2
+		await nft.connect(add2).createToken('https://www.mytokenlocation.com') // TODO: tokenId=3 to test delist functionality
 		console.log('The address1 has NFT amount: ', (await nft.balanceOf(add1.address)).toNumber())
 		console.log('The NFT tokenId owned by address_ : ', (await nft.tokenOfOwnerByIndex(_.address, 0))); //tokenId=0
 		console.log('The NFT tokenId owned by address1: ', (await nft.tokenOfOwnerByIndex(add1.address, 1))); //tokenId=1
@@ -120,6 +120,25 @@ describe('Working NFT Market Test: ', function () {
 		await market.connect(add1).addItemToMarket(1, auctionPrice, nftContractAddress)
 		console.log('Successful adding token ID 1 to market by address-1')
 
+		/**
+		 * @dev to test the delist NFT functionality
+		 * @param1 function addItemToMarket(uint tokenId, uint price,address tokenAddress) onlyItemOwner(tokenAddress, tokenId) hasTransferApproval(tokenAddress, tokenId) external returns (uint) 
+		 * @param2 function unlistItem(uint id, uint tokenId, address tokenAddress) onlyItemOwner(tokenAddress, tokenId) external
+		 * @note Now, we can inference the item ID is 2 (the third one put on the market) for this case,
+		 * so we put itemId=2 tokenId=3 to trying delist this NFT commodity
+		 * @test the test NFT is owned by `add2` and `tokenId`=3 and `itemId` may be *2*
+		 */
+
+		// Set tokenId=3 on sale
+		await nft.connect(add2).approve(marketContractAddress, 3);
+		console.log('The token-3 approved by: ', (await nft.getApproved(3)))
+		await market.connect(add2).addItemToMarket(3, auctionPrice, nftContractAddress)
+		console.log('Successful adding token ID 3 to market by address-2')
+
+		// FIXME: How to get the specific NFT item id owned by the very account
+		// Delist tokenId=3 itemId=2
+		await market.connect(add2).unlistItem(2, 3, nftContractAddress)
+
 		let items = await market.fetchMarketItems()
 
 		// Set the items to be the result of this mapping
@@ -139,7 +158,7 @@ describe('Working NFT Market Test: ', function () {
 				return item
 			})
 		)
-		console.log('After adding items, the items on the market: ', items)
+		console.log('After adding items AND delist the tokenId=3 NFT, the items on the market: ', items)
 
 		console.log('The seller before-sold-balance: ', (await _.getBalance()).toString())
 
@@ -161,8 +180,6 @@ describe('Working NFT Market Test: ', function () {
 		// console.log(await market.manager)
 
 		// console.log('The manager balance: ', (await marketContractAddress.manager.getBalance()).toString())
-
-
 
 		items = await market.fetchMarketItems()
 
@@ -199,6 +216,7 @@ describe('Working NFT Market Test: ', function () {
 		// *------------------------Resell the NFT------------------------* //
 		await nft.connect(add1).approve(marketContractAddress, 0);
 		
+		// FIXME: something wrong with `add2` `itemId=2` `tokenId=3` why it bought by `add3`?
 		await market.connect(add1).addItemToMarket(0, auctionPrice, nftContractAddress)
 		await market.connect(add3).buyItem(2, { value: auctionPrice })
 		await market.connect(add2).buyItem(1, { value: auctionPrice })
@@ -208,8 +226,9 @@ describe('Working NFT Market Test: ', function () {
 		console.log('The number of address2 own NFTs: ', (await nft.balanceOf(add2.address)).toNumber())
 		console.log('The number of address3 own NFTs: ', (await nft.balanceOf(add3.address)).toNumber())
 
-		// TODO: Test if the marketplace receive the commision
-		// TODO: Test if the seller receive the commision
+
+		// Test if the marketplace receive the commision
+		// Test if the seller receive the commision
 		console.log('The manager balance: ', (await provider.getBalance(manager)).toString())
 		console.log('The balance of address_ wallet: ', (await _.getBalance()).toString())
 		console.log('The balance of address1 wallet: ', (await add1.getBalance()).toString())
@@ -241,8 +260,10 @@ describe('Working NFT Market Test: ', function () {
 		console.log('The history of the whole items-for-sale: ', allItems)
 
 		const thirdManagerBalance = (await provider.getBalance(manager)).toString()
+		const thirdManagerBalanceEth = ethers.utils.formatUnits(thirdManagerBalance, "ether")
 		commisionRevenue = ethers.utils.formatUnits(thirdManagerBalance, "ether") - ethers.utils.formatUnits(secondManagerBalance, "ether");
 		console.log('The manager balance: ', thirdManagerBalance)
+		console.log(`The manager balance in Eth: ${thirdManagerBalanceEth}`)
 		console.log('The manager GET: ', commisionRevenue, 'ether')
 
 		// console.log(nft)
