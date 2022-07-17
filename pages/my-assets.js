@@ -429,7 +429,7 @@ export default function MyAssets() {
 									<input
 										type="string"
 										placeholder="Ether"
-										className="border rounded px-3 py-1 mr-2 h-10 w-24 text-right text-black"
+										className="border rounded px-3 py-1 mr-2 h-10 w-36 text-right text-black"
 									/>
 								</div>
 								{/* TODO: Check if item is on sale and change the Btn to List or Unlist accordingly */}
