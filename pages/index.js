@@ -295,8 +295,9 @@ export default function Home() {
 											<p className="text-2xl font-bold text-white">
 												{nft.name}
 											</p>
-											<p className="text-2xl font-bold text-white">
-												Price - {nft.price} Eth
+
+											<p className="text-2xl font-bold text-red-300">
+												{nft.price} MATIC
 											</p>
 										</div>
 									</div>
