@@ -139,7 +139,7 @@ export default function NFTMarket() {
 			</div>
 			<div className="flex justify-start">
 				<div className="px-4" style={{ maxWidth: '1600px' }}>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
 						{nfts.map((nft, i) => (
 							<div
 								key={i}
@@ -171,12 +171,12 @@ export default function NFTMarket() {
 										</p>
 									</div>
 								</div>
-								<div className="p-4 bg-slate-800">
-									<p className="text-2xl font-bold text-white">
-										{nft.price} ETH
+								<div className="p-4 ">
+									<p className="text-2xl font-bold text-red-300">
+										{nft.price} MATIC
 									</p>
 									<button
-										className="mt-4 w-full bg-blue-500 text-white font-bold py-2 px-12 rounded hover:bg-blue-400"
+										className="mt-4 w-full bg-blue-400 text-black font-bold text-2xl py-2 px-12 rounded hover:bg-blue-500 "
 										onClick={() => buyNft(nft)}
 									>
 										Buy
