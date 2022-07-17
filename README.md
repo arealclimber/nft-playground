@@ -110,7 +110,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 -   Inspired by [Nader Dabit](https://twitter.com/dabit3)'s [article](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb) ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0))
 
 -   Pictures resource: [Unsplash](https://unsplash.com/)
--   Image cropper: [iloveimg](https://www.iloveimg.com/download/7bf6c82djk4pw37hyb2j54yy9zhnr9hmsvlyy4139hn9yg2jgn38bAxbsfvgfm2p96zl5r3r277wbwyr1b79Agq3qk1d2bn071j51tjrqstt55w1z3lmAb198myzcs7m1y090mz6lhrx4rdghrnbjrl3r2mk5mk6k73pxAAg74d9rf4ql4r1/8)
+-   Image cropper: [iloveimg](https://www.iloveimg.com/crop-image)
 
 # How to use
 
