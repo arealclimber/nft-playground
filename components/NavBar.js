@@ -15,7 +15,13 @@ export const NavBar = () => {
 				<div className=" rounded hover:bg-blue-200 hover:text-black">
 					<Link href="/">
 						<a className="inline-flex items-center p-2 mr-4">
-							<Image src={icon} width={30} height={30} className="" />
+							<Image
+								alt="logo"
+								src={icon}
+								width={30}
+								height={30}
+								className=""
+							/>
 							<span className="text-2xl p-2 font-bold uppercase tracking-wide">
 								NFT Playground
 							</span>
