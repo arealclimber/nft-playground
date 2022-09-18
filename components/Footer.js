@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 const Footer = () => {
 	return (
 		// <footer
-		// 	classNameName="footer footer-center"
+		// 	className="footer footer-center"
 		// 	// style={{ position: 'absolute', bottom: 0, width: '100%' }}
-		// 	// classNameName="flex items-center justify-between flex-wrap bg-blue-900 p-6 absolute-footer"
+		// 	// className="flex items-center justify-between flex-wrap bg-blue-900 p-6 absolute-footer"
 		// >
 		// 	<p>Test</p>
 		// 	<Link href="https://github.com/arealclimber/nft-playground">
