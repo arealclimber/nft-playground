@@ -1,12 +1,18 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 const Alert = ({ color, text }) => {
-	const [showAlert, setShowAlert] = useState(true)
+	const [showAlert, setShowAlert] = useState(true);
 
 	return (
 		<>
 			{showAlert ? (
-				<div classNameName={'text-white px-6 py-4 border-0 rounded relative mb-4 bg-' + color + '-500'}>
+				<div
+					classNameName={
+						'text-white px-6 py-4 border-0 rounded relative mb-4 bg-' +
+						color +
+						'-500'
+					}
+				>
 					<span classNameName="text-xl inline-block mr-5 align-middle">
 						<i classNameName="fas fa-bell" />
 					</span>
@@ -22,11 +28,11 @@ const Alert = ({ color, text }) => {
 				</div>
 			) : null}
 		</>
-	)
-}
+	);
+};
 
 const Success = ({ text }) => {
-	const [showSuccess, setShowSuccess] = useState(true)
+	const [showSuccess, setShowSuccess] = useState(true);
 	return (
 		<>
 			{showSuccess ? (
@@ -74,11 +80,11 @@ const Success = ({ text }) => {
 				</div>
 			) : null}
 		</>
-	)
-}
+	);
+};
 
 const Fail = ({ text }) => {
-	const [showFail, setShowFail] = useState(true)
+	const [showFail, setShowFail] = useState(true);
 
 	return (
 		<>
@@ -127,8 +133,8 @@ const Fail = ({ text }) => {
 				</div>
 			) : null}
 		</>
-	)
-}
+	);
+};
 
 // const toastSuccess = () => {
 
@@ -148,4 +154,4 @@ const Fail = ({ text }) => {
 // 	)
 // }
 
-export { Alert, Success, Fail }
+export { Alert, Success, Fail };
