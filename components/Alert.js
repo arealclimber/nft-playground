@@ -7,20 +7,20 @@ const Alert = ({ color, text }) => {
 		<>
 			{showAlert ? (
 				<div
-					classNameName={
+					className={
 						'text-white px-6 py-4 border-0 rounded relative mb-4 bg-' +
 						color +
 						'-500'
 					}
 				>
-					<span classNameName="text-xl inline-block mr-5 align-middle">
-						<i classNameName="fas fa-bell" />
+					<span className="text-xl inline-block mr-5 align-middle">
+						<i className="fas fa-bell" />
 					</span>
-					<span classNameName="inline-block align-middle mr-8">
-						<b classNameName="capitalize">{text}</b>
+					<span className="inline-block align-middle mr-8">
+						<b className="capitalize">{text}</b>
 					</span>
 					<button
-						classNameName="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
+						className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
 						onClick={() => setShowAlert(false)}
 					>
 						<span>×</span>
