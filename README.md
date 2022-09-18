@@ -36,13 +36,13 @@ Live Demo
 
 ### NFT Creation
 
--   [x] Make your pictures NFT
+- [x] Make your pictures NFT
 
 ### NFT Market
 
--   [x] List your NFT for sale
--   [x] Buy the NFT with mumbai testnet Matic
--   [ ] Delist your NFT from the marketplace
+- [x] List your NFT for sale
+- [x] Buy the NFT with mumbai testnet Matic
+- [ ] Delist your NFT from the marketplace
 
 <!-- ### Fractionalized NFT
 
@@ -54,15 +54,14 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 ### Frontend
 
--   Next.js
-    -   Context API 🤔
--   Tailwind CSS
--   daisyUI
+- Next.js
+- Tailwind CSS
+- daisyUI
 
 ### Blockchain
 
--   Hardhat
--   IPFS Protocol
+- Hardhat
+- IPFS Protocol
 
 <!-- ## Community😋
 
@@ -103,21 +102,21 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 ## 💗 Credit
 
--   Favicon and the carrot NFT painted by [Parry](https://www.instagram.com/parryfromfantasytostart/)
+- Favicon and the carrot NFT painted by [Parry](https://www.instagram.com/parryfromfantasytostart/)
 
 ## 🖥 Acknowledgments
 
--   Inspired by [Nader Dabit](https://twitter.com/dabit3)'s [article](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb) ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0))
+- Inspired by [Nader Dabit](https://twitter.com/dabit3)'s [article](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb) ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0))
 
--   Pictures resource: [Unsplash](https://unsplash.com/)
--   Image cropper: [iloveimg](https://www.iloveimg.com/crop-image)
+- Pictures resource: [Unsplash](https://unsplash.com/)
+- Image cropper: [iloveimg](https://www.iloveimg.com/crop-image)
 
 # How to use
 
 ### Connect to Polygon Mumbai testnet
 
--   Install [Metamask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) chrome extension
--   Head over to [Chainlist](https://chainlist.org/) and search for Polygon, with the **Testnets** button turned on, and click **Connect Wallet** on Mumbai to get network config - [details](https://medium.com/stakingbits/how-to-connect-polygon-mumbai-testnet-to-metamask-fc3487a3871f)
+- Install [Metamask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) chrome extension
+- Head over to [Chainlist](https://chainlist.org/) and search for Polygon, with the **Testnets** button turned on, and click **Connect Wallet** on Mumbai to get network config - [details](https://medium.com/stakingbits/how-to-connect-polygon-mumbai-testnet-to-metamask-fc3487a3871f)
 
 ![chainlist](https://github.com/arealclimber/nft-playground/blob/main/public/chainlist.PNG?raw=true)
 
@@ -129,9 +128,9 @@ And set your test-only account private key.
 
 ### Run locally
 
--   Clone this repo and install the package `npm install`
--   Revise `.env.example` to `.env` and set configs
--   `npm run dev` to run Next.js
+- Clone this repo and install the package `npm install`
+- Revise `.env.example` to `.env` and set configs
+- `npm run dev` to run Next.js
 
 ### Deploy your own with Vercel
 
@@ -143,15 +142,15 @@ Remember to add the required environment variables.
 
 **Hardhat**
 
--   `npx hardhat compile` to compile contracts and generate `abi` in `.json` of the folder `artifacts`
+- `npx hardhat compile` to compile contracts and generate `abi` in `.json` of the folder `artifacts`
 
--   `npx hardhat node` to run the localhost and get test accounts
+- `npx hardhat node` to run the localhost and get test accounts
 
--   `npx hardhat test` to run test
+- `npx hardhat test` to run test
 
-    -   ensure that the `defaultNetwork` in `hardhat.config.js` is `hardhat` and put the private key of the test account in `.env` to charge the hardhat account for smart contract tests
+  - ensure that the `defaultNetwork` in `hardhat.config.js` is `hardhat` and put the private key of the test account in `.env` to charge the hardhat account for smart contract tests
 
--   `npx hardhat run scripts/deploy.js --network localhost` (recommended) **or** `node scripts/deploy.js --network localshost` to deploy on the localhost
+- `npx hardhat run scripts/deploy.js --network localhost` (recommended) **or** `node scripts/deploy.js --network localshost` to deploy on the localhost
 
 ```shell
 npx hardhat accounts
@@ -163,7 +162,7 @@ npx hardhat help
 
 **Next.js**
 
--   `npm run dev` to run dev mode
+- `npm run dev` to run dev mode
 
 # License
 
