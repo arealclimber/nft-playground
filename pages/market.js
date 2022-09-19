@@ -43,10 +43,7 @@ export default function NFTMarket() {
 				data.map(async (i) => {
 					const tokenUri = await tokenContract.tokenURI(i.tokenId);
 					const meta = await axios.get(tokenUri);
-					let price = ethers.utils.formatUnits(
-						i.price.toString(),
-						'ether'
-					);
+					let price = ethers.utils.formatUnits(i.price.toString(), 'ether');
 					let item = {
 						price,
 						itemId: i.itemId.toNumber(),
@@ -141,10 +138,7 @@ export default function NFTMarket() {
 				<div className="px-4" style={{ maxWidth: '1600px' }}>
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
 						{nfts.map((nft, i) => (
-							<div
-								key={i}
-								className="border shadow rounded-xl overflow-hidden"
-							>
+							<div key={i} className="border shadow rounded-xl overflow-hidden">
 								<div className="container h-72 w-72 relative">
 									<Image
 										className="rounded mt-4"
@@ -154,10 +148,7 @@ export default function NFTMarket() {
 									/>
 								</div>
 								<div className="p-4">
-									<p
-										style={{ height: '64px' }}
-										className="text-4xl "
-									>
+									<p style={{ height: '64px' }} className="text-4xl ">
 										{nft.name}
 									</p>
 									<div
@@ -165,10 +156,9 @@ export default function NFTMarket() {
 											height: '70px',
 											overflow: 'hidden',
 										}}
+										className="pt-4"
 									>
-										<p className="text-lg text-blue-300">
-											{nft.description}
-										</p>
+										<p className="text-lg text-blue-300">{nft.description}</p>
 									</div>
 								</div>
 								<div className="p-4 ">

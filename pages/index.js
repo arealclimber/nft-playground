@@ -26,7 +26,7 @@ export default function Home() {
 		loadNFTs();
 	}, []);
 
-	const infuraId = process.env.INFURA_MUMBAI_URL;
+	const infuraMumbaiUrl = process.env.INFURA_MUMBAI_URL;
 
 	// Hex
 	const rinkebyChainId = '0x4';
@@ -129,59 +129,67 @@ export default function Home() {
 
 	// FIXME: How to display the market item without user connecting wallet?
 	async function loadNFTs() {
-		const web3Modal = new Web3Modal();
-		// const connection = await web3Modal.connect()
-		// const provider = new ethers.providers.Web3Provider(connection)
+		// const web3Modal = new Web3Modal();
+		// // const connection = await web3Modal.connect()
+		// // const provider = new ethers.providers.Web3Provider(connection)
 
-		// const providerOptions = {
-		// 	injected: {
-		// 		display: {
-		// 			name: 'Injected',
-		// 			description: 'Connect with the provider in your Browser',
-		// 		},
-		// 		package: null,
-		// 	},
-		// 	walletconnect: {
-		// 		package: WalletConnectProvider, // required
-		// 		options: {
-		// 			infuraId: 'INFURA_ID', // required
-		// 		},
-		// 	},
-		// 	coinbasewallet: {
-		// 		package: CoinbaseWalletSDK, // Required
-		// 		options: {
-		// 			appName: 'NFT Playground', // Required
-		// 			infuraId: 'INFURA_ID', // Required
-		// 			rpc: '', // Optional if `infuraId` is provided; otherwise it's required
-		// 			chainId: neededCahinId, // Optional. It defaults to 1 if not provided
-		// 			darkMode: false, // Optional. Use dark theme, defaults to false
-		// 		},
-		// 	},
-		// }
+		// // const providerOptions = {
+		// // 	injected: {
+		// // 		display: {
+		// // 			name: 'Injected',
+		// // 			description: 'Connect with the provider in your Browser',
+		// // 		},
+		// // 		package: null,
+		// // 	},
+		// // 	walletconnect: {
+		// // 		package: WalletConnectProvider, // required
+		// // 		options: {
+		// // 			infuraId: 'INFURA_ID', // required
+		// // 		},
+		// // 	},
+		// // 	coinbasewallet: {
+		// // 		package: CoinbaseWalletSDK, // Required
+		// // 		options: {
+		// // 			appName: 'NFT Playground', // Required
+		// // 			infuraId: 'INFURA_ID', // Required
+		// // 			rpc: '', // Optional if `infuraId` is provided; otherwise it's required
+		// // 			chainId: neededCahinId, // Optional. It defaults to 1 if not provided
+		// // 			darkMode: false, // Optional. Use dark theme, defaults to false
+		// // 		},
+		// // 	},
+		// // }
 
-		// const web3Modal = new Web3Modal({
-		// 	providerOptions,
-		// 	cacheProvider: true,
-		// 	theme: {
-		// 		background: 'rgb(39, 49, 56)',
-		// 		main: 'rgb(199, 199, 199)',
-		// 		secondary: 'rgb(136, 136, 136)',
-		// 		border: 'rgba(195, 195, 195, 0.14)',
-		// 		hover: 'rgb(16, 26, 32)',
-		// 	},
-		// })
+		// // const web3Modal = new Web3Modal({
+		// // 	providerOptions,
+		// // 	cacheProvider: true,
+		// // 	theme: {
+		// // 		background: 'rgb(39, 49, 56)',
+		// // 		main: 'rgb(199, 199, 199)',
+		// // 		secondary: 'rgb(136, 136, 136)',
+		// // 		border: 'rgba(195, 195, 195, 0.14)',
+		// // 		hover: 'rgb(16, 26, 32)',
+		// // 	},
+		// // })
 
-		const provider = await web3Modal.connect();
-		const library = new ethers.providers.Web3Provider(provider);
-		const signer = library.getSigner();
+		// const provider = await web3Modal.connect();
+		// const library = new ethers.providers.Web3Provider(provider);
+		// const signer = library.getSigner();
 
-		// const provider = new ethers.providers.JsonRpcProvider()
-		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
+		// // const provider = new ethers.providers.JsonRpcProvider()
+		// const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
+		// const marketContract = new ethers.Contract(
+		// 	marketContractAddress,
+		// 	Market,
+		// 	signer
+		// );
+		const provider = new ethers.providers.InfuraProvider('maticmum');
+		const tokenContract = new ethers.Contract(nftContractAddress, NFT, provider);
 		const marketContract = new ethers.Contract(
 			marketContractAddress,
 			Market,
-			signer
+			provider
 		);
+
 		try {
 			const data = await marketContract.fetchMarketItems();
 			// Get the NFT array populated with metadata (IPFS in this case)
@@ -189,10 +197,7 @@ export default function Home() {
 				data.map(async (i) => {
 					const tokenUri = await tokenContract.tokenURI(i.tokenId);
 					const meta = await axios.get(tokenUri);
-					let price = ethers.utils.formatUnits(
-						i.price.toString(),
-						'ether'
-					);
+					let price = ethers.utils.formatUnits(i.price.toString(), 'ether');
 					let item = {
 						price,
 						itemId: i.itemId.toNumber(),
@@ -292,9 +297,7 @@ export default function Home() {
 										</div>
 
 										<div className="p-4 bg-black">
-											<p className="text-2xl font-bold text-white">
-												{nft.name}
-											</p>
+											<p className="text-2xl font-bold text-white">{nft.name}</p>
 
 											<p className="text-2xl font-bold text-red-300">
 												{nft.price} MATIC
@@ -318,9 +321,7 @@ export default function Home() {
 							</Link>
 						</div>
 						<div className="px-10">
-							<p className="text-2xl font-bold">
-								Lend and borrow NFTs.
-							</p>
+							<p className="text-2xl font-bold">Lend and borrow NFTs.</p>
 						</div>
 					</div>
 
@@ -358,9 +359,7 @@ export default function Home() {
 									</Link>
 								</div>
 								<div className="px-10">
-									<p className="text-2xl font-bold">
-										Thoughts and chats.
-									</p>
+									<p className="text-2xl font-bold">Thoughts and chats.</p>
 								</div>
 							</div>
 
