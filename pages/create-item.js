@@ -55,7 +55,7 @@ export default function CreateNFT() {
 			});
 
 			// const url = `https://ipfs.infura.io:5001/api/v0/cat?arg=${added.path}`
-			const url = `https://infura-ipfs.io/ipfs/${added.path}`;
+			const url = `https://arealclimber.infura-ipfs.io/ipfs/${added.path}`;
 
 			client.pin.add(added.path).then((res) => {
 				console.log(res);
@@ -84,7 +84,10 @@ export default function CreateNFT() {
 		try {
 			const added = await client.add(data);
 			// const url = `https://ipfs.infura.io:5001/api/v0/cat?arg=${added.path}`
-			const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+			// https://arealclimber.infura-ipfs.io
+			// infura-ipfs.io
+			// stale: ipfs.infura.io
+			const url = `https://arealclimber.infura-ipfs.io/ipfs/${added.path}`;
 
 			// after file is uploaded to IPFS, pass the URL to save it on Polygon
 			create(url);
