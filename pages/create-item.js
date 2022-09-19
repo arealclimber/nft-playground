@@ -18,7 +18,7 @@ const auth = `Basic ${Buffer.from(projectIdAndSecret).toString('base64')}`;
 // Buffer.from(projectIdAndSecret).toString('base64')
 // authorization: `Basic ${Buffer.from(projectIdAndSecret).toString('base64')}`,
 const client = create({
-	host: 'ipfs.infura.io',
+	host: 'infura-ipfs.io',
 	port: 5001,
 	protocol: 'https',
 	headers: {
@@ -55,7 +55,7 @@ export default function CreateNFT() {
 			});
 
 			// const url = `https://ipfs.infura.io:5001/api/v0/cat?arg=${added.path}`
-			const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+			const url = `https://infura-ipfs.io/ipfs/${added.path}`;
 
 			client.pin.add(added.path).then((res) => {
 				console.log(res);
@@ -177,18 +177,11 @@ export default function CreateNFT() {
 
 		const price = ethers.utils.parseUnits(formInput.price, 'ether');
 
-		let marketContract = new ethers.Contract(
-			marketContractAddress,
-			Market,
-			signer
-		);
+		let marketContract = new ethers.Contract(marketContractAddress, Market, signer);
 
 		// TODO: The token ID of the fresh NFT
 		// Maybe in `tx` of the creating process
-		transaction = await tokenContract.approve(
-			marketContractAddress,
-			nft.tokenId
-		);
+		transaction = await tokenContract.approve(marketContractAddress, nft.tokenId);
 
 		tx = await transaction.wait();
 		console.log(`The tx: ${tx}`);
@@ -268,9 +261,7 @@ export default function CreateNFT() {
 					<input
 						placeholder="Asset Name"
 						className="mt-8 border rounded p-4 text-black text-lg"
-						onChange={(e) =>
-							updateFormInput({ ...formInput, name: e.target.value })
-						}
+						onChange={(e) => updateFormInput({ ...formInput, name: e.target.value })}
 					/>
 					<textarea
 						placeholder="Asset Description"
