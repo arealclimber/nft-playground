@@ -409,6 +409,7 @@ export default function MyAssets() {
 				<h1 className="text-3xl font-bold py-2 text-blue-200">My NFTs</h1>
 			</div>
 
+
 			{loading ? (
 				<Loading />
 			) : (
@@ -438,6 +439,7 @@ export default function MyAssets() {
 											value={priceInput}
 											className="border rounded px-3 py-1 mr-2 h-10 w-36 text-right text-black"
 										/> */}
+
 									</div>
 									{/* TODO: Check if item is on sale and change the Btn to List or Unlist accordingly */}
 									<div className="grid">
@@ -486,6 +488,7 @@ export default function MyAssets() {
 							draggable
 							pauseOnHover
 						/>
+
 					</div>
 				</div>
 			)}
