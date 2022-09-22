@@ -115,7 +115,7 @@ export default function MyAssets() {
 
 		console.log(`Unlist transaction: ${transaction}`);
 
-		const tx = await transaction.wait();
+		const tx = await transaction.wait(); // The tx: [object Object]
 		const event = tx.events[0];
 
 		console.log(`Unlist tx: ${tx}`);
@@ -138,41 +138,39 @@ export default function MyAssets() {
 		// console.log(event);
 	}
 
-	async function testList(nft) {
+	async function loadItems(tokenContract, marketContract) {
 		const web3Modal = new Web3Modal();
 		const connection = await web3Modal.connect();
 		const provider = new ethers.providers.Web3Provider(connection);
 		const signer = provider.getSigner();
+		try {
+			const data = await marketContract.fetchMarketItems();
+			// Get the NFT array populated with metadata (IPFS in this case)
+			console.log(`data: ${data}`);
+			const items = await Promise.all(
+				data
+					.filter((item) => item.isOnSale === true)
+					.map(async (i) => {
+						const tokenUri = await tokenContract.tokenURI(i.tokenId);
+						const meta = await axios.get(tokenUri);
+						let price = ethers.utils.formatUnits(i.price.toString(), 'ether');
+						let item = {
+							price,
+							itemId: i.itemId.toNumber(),
+							tokenId: i.tokenId.toNumber(),
+							seller: i.seller,
+							owner: i.owner,
+							image: meta.data.image,
+							name: meta.data.name,
+							description: meta.data.description,
+						};
+						return item;
+					})
+			);
 
-		const marketContract = new ethers.Contract(
-			marketContractAddress,
-			Market,
-			signer
-		);
-		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
-
-		const price = ethers.utils.parseUnits('0.001', 'ether');
-		let transaction = await marketContract.addItemToMarket(
-			nft.tokenId,
-			price,
-			nftContractAddress
-		);
-		console.log(`transaction: ${transaction}`);
-		let tx = await transaction.wait();
-		console.log(`tx: ${tx}`);
-		let event = tx.events[0];
-		console.log(event);
-		let value = event.args[2];
-		if (value) {
-			toast.success('Success to put NFT on Market!', {
-				position: 'top-right',
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
+			return items;
+		} catch (error) {
+			console.error(error);
 		}
 	}
 
@@ -206,17 +204,9 @@ export default function MyAssets() {
 			console.error(error);
 		}
 
-		// TODO: Return Promise, try it later
-		// let signerAddress = signer.getAddress()
-		// console.log('signer address: ', signerAddress)
-		// // console.log(address)
-		// // address.then(() => {
-		// // 	console.log(address)
-		// // })
-
-		// // signerAddress.then((i) => {
-		// // 	console.log(i)
-		// // })
+		// Return Promise=> use `await`
+		let signerAddress = await signer.getAddress();
+		console.log('signer address: ', signerAddress);
 
 		const marketContract = new ethers.Contract(
 			marketContractAddress,
@@ -225,16 +215,20 @@ export default function MyAssets() {
 		);
 
 		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
-
 		console.log(tokenContract);
 		const ownedNFT = await tokenContract
 			.balanceOf(accounts[0])
 			.then((v) => v.toNumber());
 		console.log(`The amount of NFT this user own: ${ownedNFT}`);
 
-		const totalSupply = await tokenContract.totalSupply().then((v) => {
-			return v.toNumber();
-		});
+		let marketItems = await loadItems(tokenContract, marketContract);
+		console.log('marketItems: ', marketItems);
+
+		// const totalSupply = await tokenContract.totalSupply().then((v) => {
+		// 	return v.toNumber();
+		// });
+
+		const totalSupply = (await tokenContract.totalSupply()).toNumber();
 		console.log('total supply: ', totalSupply);
 
 		for (let i = 0; i < ownedNFT; i++) {
@@ -246,7 +240,10 @@ export default function MyAssets() {
 
 			// let tokenItemId = await marketContract.itemsForSale;
 
+			let approvedAddress = await tokenContract.getApproved(tokenId);
+
 			console.log(`Token ID: ${tokenId}`);
+			console.log('Token ', tokenId, 'approved by:', approvedAddress);
 			console.log(`Token URI: ${tokenURI}`);
 			// console.log(`Token Item ID: ${tokenItemId}`);
 
@@ -424,7 +421,7 @@ export default function MyAssets() {
 								</div>
 								<div className="p-4 bg-black">
 									<p className="text-2xl font-bold text-white">{nft.name}</p>
-									<p className="text-m font-bold">{nft.description}</p>
+									<p className="text-m font-bold pt-4">{nft.description}</p>
 								</div>
 								{/* <form> */}
 								<div>
@@ -437,7 +434,7 @@ export default function MyAssets() {
 										/> */}
 								</div>
 								{/* TODO: Check if item is on sale and change the Btn to List or Unlist accordingly */}
-								<div className="grid grid-cols-2">
+								<div className="grid">
 									<button
 										// onClick={list(nft)}
 										onClick={() => list(nft)}
@@ -451,6 +448,22 @@ export default function MyAssets() {
 									>
 										Unlist
 									</button>
+									{/* {nft.tokenId === 0 ? (
+										<button
+											// onClick={list(nft)}
+											onClick={() => list(nft)}
+											className="font-bold mt-4 text-2xl bg-blue-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
+										>
+											List
+										</button>
+									) : (
+										<button
+											onClick={() => unlist(nft)}
+											className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-600 text-white rounded-lg p-4 shadow-lg"
+										>
+											Unlist
+										</button>
+									)} */}
 								</div>
 								{/* </form> */}
 							</div>

@@ -21,19 +21,37 @@ export default function NFTMarket() {
 	}, []);
 
 	async function loadNFTs() {
-		const web3Modal = new Web3Modal();
-		const connection = await web3Modal.connect();
-		const provider = new ethers.providers.Web3Provider(connection);
-		// const signer = provider.getSigner()
+		// const web3Modal = new Web3Modal();
+		// const connection = await web3Modal.connect();
+		// const provider = new ethers.providers.Web3Provider(connection);
+		// // const signer = provider.getSigner()
 
-		// const provider = new ethers.providers.JsonRpcProvider()
+		// // const provider = new ethers.providers.JsonRpcProvider()
+		// const tokenContract = new ethers.Contract(nftContractAddress, NFT, provider);
+		// const marketContract = new ethers.Contract(
+		// 	marketContractAddress,
+		// 	Market,
+		// 	provider
+		// );
+		// // console.log(tokenContract)
+
+		let provider = new ethers.providers.InfuraProvider('maticmum');
 		const tokenContract = new ethers.Contract(nftContractAddress, NFT, provider);
 		const marketContract = new ethers.Contract(
 			marketContractAddress,
 			Market,
 			provider
 		);
-		// console.log(tokenContract)
+
+		// try {
+		// 	const web3Modal = new Web3Modal();
+		// 	const connection = await web3Modal.connect();
+		// 	provider = new ethers.providers.Web3Provider(connection);
+		// 	const signer = provider.getSigner();
+		// 	const signerAddress = signer.getAddress();
+		// } catch (err) {
+		// 	console.error(err);
+		// }
 
 		try {
 			const data = await marketContract.fetchMarketItems();
