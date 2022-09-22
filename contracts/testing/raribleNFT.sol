@@ -1,37 +1,37 @@
-// SPDX-License-Identifier: MIT
+// // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.4;
+// pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+// import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+// import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract MorarableToken is ERC721 {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
+// contract MorarableToken is ERC721 {
+//     using Counters for Counters.Counter;
+//     Counters.Counter private _tokenIds;
 
-    constructor () ERC721("MorarableToken", "MORA"){}
+//     constructor () ERC721("MorarableToken", "MORA"){}
 
-    struct Item {
-        uint256 id;
-        address creator;
-        string uri;
-    }
+//     struct Item {
+//         uint256 id;
+//         address creator;
+//         string uri;
+//     }
 
-    mapping (uint256 => Item) public Items;
+//     mapping (uint256 => Item) public Items;
 
-    function createItem(string memory uri) public returns (uint256){
-        _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
-        _safeMint(msg.sender, newItemId);
+//     function createItem(string memory uri) public returns (uint256){
+//         _tokenIds.increment();
+//         uint256 newItemId = _tokenIds.current();
+//         _safeMint(msg.sender, newItemId);
 
-        Items[newItemId] = Item(newItemId, msg.sender, uri);
+//         Items[newItemId] = Item(newItemId, msg.sender, uri);
 
-        return newItemId;
-    }
+//         return newItemId;
+//     }
 
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+//     function tokenURI(uint256 tokenId) public view override returns (string memory) {
+//         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
-       return Items[tokenId].uri;
-    }
-}
+//        return Items[tokenId].uri;
+//     }
+// }

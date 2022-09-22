@@ -30,6 +30,7 @@ export default function MyAssets() {
 	const [nfts, setNfts] = useState([]);
 	const [loadingState, setLoadingState] = useState('not-loaded');
 	const [listingState, setListingState] = useState(false);
+	const [priceInput, setPriceInput] = useState(0);
 
 	useEffect(() => {
 		loadNFTs();
@@ -40,6 +41,13 @@ export default function MyAssets() {
 
 	// TODO: 1. Set approval 2. Put the item on the market
 	// TODO: Check if item already existed
+
+	const handleChange = (e) => {
+		const { value } = e.target;
+		setPriceInput(value);
+		console.log('price input:', value);
+	};
+
 	async function list(nft) {
 		const web3Modal = new Web3Modal();
 		const connection = await web3Modal.connect();
@@ -405,10 +413,7 @@ export default function MyAssets() {
 				<div className="p-4">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 						{nfts.map((nft, i) => (
-							<div
-								key={i}
-								className="border shadow rounded-xl overflow-hidden"
-							>
+							<div key={i} className="border shadow rounded-xl overflow-hidden">
 								<div className="container h-72 w-72 relative">
 									<Image
 										className="rounded mt-4"
@@ -418,19 +423,18 @@ export default function MyAssets() {
 									/>
 								</div>
 								<div className="p-4 bg-black">
-									<p className="text-2xl font-bold text-white">
-										{nft.name}
-									</p>
-									<p className="text-m font-bold">
-										{nft.description}
-									</p>
+									<p className="text-2xl font-bold text-white">{nft.name}</p>
+									<p className="text-m font-bold">{nft.description}</p>
 								</div>
+								{/* <form> */}
 								<div>
-									<input
-										type="string"
-										placeholder="Ether"
-										className="border rounded px-3 py-1 mr-2 h-10 w-36 text-right text-black"
-									/>
+									{/* <input
+											type="number"
+											placeholder="Ether"
+											onChange={handleChange}
+											value={priceInput}
+											className="border rounded px-3 py-1 mr-2 h-10 w-36 text-right text-black"
+										/> */}
 								</div>
 								{/* TODO: Check if item is on sale and change the Btn to List or Unlist accordingly */}
 								<div className="grid grid-cols-2">
@@ -448,6 +452,7 @@ export default function MyAssets() {
 										Unlist
 									</button>
 								</div>
+								{/* </form> */}
 							</div>
 						))}
 					</div>

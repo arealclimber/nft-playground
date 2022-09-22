@@ -29,12 +29,12 @@ async function main() {
 	// await multicall.deployed()
 	// console.log('multicall deployed to: ', multicall.address)
 
-	await sleep(10000);
+	await sleep(50000);
 
-	await run('verify:verify', {
-		address: nftMarket.address,
-		contract: 'contracts/working/NFTMarket.sol:NFTMarket',
-	});
+	// await run('verify:verify', {
+	// 	address: nftMarket.address,
+	// 	contract: 'contracts/working/NFTMarket.sol:NFTMarket',
+	// });
 
 	await run('verify:verify', {
 		address: nft.address,

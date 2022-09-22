@@ -1,59 +1,57 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+// // SPDX-License-Identifier: MIT
+// pragma solidity ^0.8.4;
 
-// TODO: Non-tradable NFTs
-
-
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-
-import "@openzeppelin/contracts/access/Ownable.sol";
+// // TODO: Non-tradable NFTs
 
 
-import "hardhat/console.sol";
+// import "@openzeppelin/contracts/utils/Counters.sol";
+// import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+// import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+// import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+
+// import "@openzeppelin/contracts/access/Ownable.sol";
 
 
-contract Article is ERC721URIStorage, ERC721Enumerable {
-    using Strings for uint256;
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
-    address contractAddress;
+// import "hardhat/console.sol";
 
-    constructor() ERC721("NFT", "NFT") {
-    }
 
-    // Required overrides from parent contracts
-    function _burn(uint256 tokenId) internal virtual override(ERC721, ERC721URIStorage) {
-        super._burn(tokenId);
-    }
+// contract Article is ERC721URIStorage, ERC721Enumerable {
+//     using Strings for uint256;
+//     using Counters for Counters.Counter;
+//     Counters.Counter private _tokenIds;
+//     address contractAddress;
 
-    function tokenURI(uint256 tokenId) public view virtual override(ERC721, ERC721URIStorage) returns (string memory) {
-        // return string(abi.encodePacked(super.tokenURI(tokenId), ".json"));
-        return super.tokenURI(tokenId);
-    }
+//     constructor() ERC721("NFT", "NFT") {
+//     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal override(ERC721, ERC721Enumerable) {
-        super._beforeTokenTransfer(from, to, tokenId);
-    }
+//     // Required overrides from parent contracts
+//     function _burn(uint256 tokenId) internal virtual override(ERC721, ERC721URIStorage) {
+//         super._burn(tokenId);
+//     }
 
-    function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
-        return super.supportsInterface(interfaceId);
-    }
+//     function tokenURI(uint256 tokenId) public view virtual override(ERC721, ERC721URIStorage) returns (string memory) {
+//         // return string(abi.encodePacked(super.tokenURI(tokenId), ".json"));
+//         return super.tokenURI(tokenId);
+//     }
 
-    function createToken(string memory tokenURI) public returns (uint) {
+//     function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal override(ERC721, ERC721Enumerable) {
+//         super._beforeTokenTransfer(from, to, tokenId);
+//     }
+
+//     function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
+//         return super.supportsInterface(interfaceId);
+//     }
+
+//     function createToken(string memory tokenURI) public returns (uint) {
         
-        uint256 newItemId = _tokenIds.current();
-        _tokenIds.increment();
+//         uint256 newItemId = _tokenIds.current();
+//         _tokenIds.increment();
 
-        _safeMint(msg.sender, newItemId);
-        _setTokenURI(newItemId, tokenURI);
+//         _safeMint(msg.sender, newItemId);
+//         _setTokenURI(newItemId, tokenURI);
 
-        return newItemId;
-    }
+//         return newItemId;
+//     }
 
-
-
-}
+// }
 
