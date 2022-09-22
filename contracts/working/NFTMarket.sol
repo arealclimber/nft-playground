@@ -19,7 +19,6 @@ contract NFTMarket is ReentrancyGuard, Ownable {
     // Counters.Counter private _marketItems;
 
     uint256 private commission = 1;
-    address payable private manager;
 
     struct MarketItem {
         uint256 itemId;
@@ -58,7 +57,7 @@ contract NFTMarket is ReentrancyGuard, Ownable {
     );
 
     constructor() {
-        manager = payable(msg.sender);
+
     }
 
     modifier onlyItemOwner(address tokenAddress, uint256 tokenId) {
@@ -285,9 +284,6 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         return commission;
     }
 
-    function getManager() public view returns (address) {
-        return manager;
-    }
 
     receive() external payable {}
 

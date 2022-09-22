@@ -99,8 +99,8 @@ describe('Working NFT Market Test: ', function () {
 		// console.log('The commission amount:', 4000 * 0.01)
 		console.log('commission:', commission)
 
-		let manager = await market.getManager();
-		console.log('The manager address receives the commission: ', manager)
+		// let manager = await market.getManager();
+		// console.log('The manager address receives the commission: ', manager)
 
 		// await nft.createToken('https://www.mytokenlocation.com')
 		// await nft.createToken('https://www.mytokenlocation.com')
@@ -211,11 +211,11 @@ describe('Working NFT Market Test: ', function () {
 		console.log('The owner address deploy the market contract: ', marketOwner)
 		
 
-		expect(manager).to.equal(marketOwner)
+		// expect(manager).to.equal(marketOwner)
 
 		// expect(await nft.ownerOf(2)).to.equal(add3.address)
-		const initialManagerBalance = (await provider.getBalance(manager)).toString()
-		console.log('The manager balance: ', initialManagerBalance)
+		const initialManagerBalance = (await provider.getBalance(_.address)).toString()
+		console.log('The market owner balance: ', initialManagerBalance)
 		
 
 		// console.log(await market.manager)
@@ -246,11 +246,11 @@ describe('Working NFT Market Test: ', function () {
 
 		console.log('After buying the item, the items on the market: ', items)
 		
-		const secondManagerBalance = (await provider.getBalance(manager)).toString()
+		const secondManagerBalance = (await provider.getBalance(_.address)).toString()
 		console.log(ethers.utils.formatUnits(secondManagerBalance, "ether"));
 		let commisionRevenue = ethers.utils.formatUnits(secondManagerBalance, "ether") - ethers.utils.formatUnits(initialManagerBalance, "ether");
-		console.log('The manager balance: ', secondManagerBalance)
-		console.log('The manager GET: ', commisionRevenue)
+		console.log('The market owner balance: ', secondManagerBalance)
+		console.log('The market owner GET: ', commisionRevenue)
 		console.log('The number of address_ own NFTs: ', (await nft.balanceOf(_.address)).toNumber())
 		console.log('The number of address1 own NFTs: ', (await nft.balanceOf(add1.address)).toNumber())
 		console.log('The number of address2 own NFTs: ', (await nft.balanceOf(add2.address)).toNumber())
@@ -276,7 +276,7 @@ describe('Working NFT Market Test: ', function () {
 
 		// Test if the marketplace receive the commission
 		// Test if the seller receive the commission
-		console.log('The manager balance: ', (await provider.getBalance(manager)).toString())
+		console.log('The market owner balance: ', (await provider.getBalance(_.address)).toString())
 		console.log('The balance of address_ wallet: ', (await _.getBalance()).toString())
 		console.log('The balance of address1 wallet: ', (await add1.getBalance()).toString())
 		console.log('The balance of address2 wallet: ', (await add2.getBalance()).toString())
@@ -329,12 +329,12 @@ describe('Working NFT Market Test: ', function () {
 		)
 		console.log('Items on the market: ', items)
 
-		const thirdManagerBalance = (await provider.getBalance(manager)).toString()
+		const thirdManagerBalance = (await provider.getBalance(_.address)).toString()
 		const thirdManagerBalanceEth = ethers.utils.formatUnits(thirdManagerBalance, "ether")
 		commisionRevenue = ethers.utils.formatUnits(thirdManagerBalance, "ether") - ethers.utils.formatUnits(secondManagerBalance, "ether");
-		console.log('The manager balance: ', thirdManagerBalance)
-		console.log(`The manager balance in Eth: ${thirdManagerBalanceEth}`)
-		console.log('The manager GET: ', commisionRevenue, 'ether')
+		console.log('The market owner balance: ', thirdManagerBalance)
+		console.log(`The market owner balance in Eth: ${thirdManagerBalanceEth}`)
+		console.log('The market owner GET: ', commisionRevenue, 'ether')
 
 		// console.log(nft)
 		// console.log(market)
