@@ -20,7 +20,7 @@ export default function NFTMarket() {
 	useEffect(() => {
 		loadNFTs();
 	}, []);
-
+  
 	async function loadNFTs() {
 		setLoading(true);
 		// const web3Modal = new Web3Modal();
@@ -189,12 +189,13 @@ export default function NFTMarket() {
 											</p>
 										</div>
 									</div>
-									<div className="p-4 ">
+
+									<div className="p-4">
 										<p className="text-2xl font-bold text-red-300">
 											{nft.price} MATIC
 										</p>
 										<button
-											className="mt-4 w-full bg-blue-400 text-black font-bold text-2xl py-2 px-12 rounded hover:bg-blue-500 "
+											className="mt-4 w-full bg-blue-400 text-black font-bold text-2xl py-2 px-12 rounded hover:scale-102 hover:bg-blue-600 transition shadow-lg"
 											onClick={() => buyNft(nft)}
 										>
 											Buy
