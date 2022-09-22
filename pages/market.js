@@ -40,6 +40,7 @@ export default function NFTMarket() {
 			// Get the NFT array populated with metadata (IPFS in this case)
 			console.log(`data: ${data}`);
 			const items = await Promise.all(
+
 				data
 					.filter((item) => item.isOnSale === true)
 					.map(async (i) => {
@@ -58,6 +59,7 @@ export default function NFTMarket() {
 						};
 						return item;
 					})
+
 			);
 			console.log(`data after map(): ${items}`); // [object Object],[object Object],...
 

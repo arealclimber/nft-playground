@@ -213,6 +213,7 @@ export default function Home() {
 						console.log(`item id:${item.itemId}`);
 						return item;
 					})
+
 			);
 
 			setNfts(items);
