@@ -34,6 +34,7 @@ import Market from '../utils/Market.json';
 // import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json';
 
 export default function CreateNFT() {
+	const [loading, setLoading] = useState(false);
 	const [fileUrl, setFileUrl] = useState(null);
 	const [formInput, updateFormInput] = useState({
 		price: '',
@@ -312,7 +313,7 @@ export default function CreateNFT() {
 					<button
 						disabled
 						onClick={createAndSell}
-						className="font-bold mt-4 text-2xl bg-red-500 hover:bg-red-600 text-white rounded-lg p-4 shadow-lg"
+						className="hover:cursor-not-allowed font-bold mt-4 text-2xl bg-red-500 hover:bg-red-600 text-white rounded-lg p-4 shadow-lg"
 					>
 						Create and Sell NFT
 					</button>

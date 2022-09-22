@@ -17,6 +17,7 @@ import Market from '../utils/Market.json';
 import Layout from '../components/Layout';
 
 import Web3 from 'web3';
+import Loading from '../components/Loading';
 
 // const Web3 = require('web3');
 
@@ -28,7 +29,7 @@ export default function MyAssets() {
 
 	const router = useRouter();
 	const [nfts, setNfts] = useState([]);
-	const [loadingState, setLoadingState] = useState('not-loaded');
+	const [loading, setLoading] = useState(true);
 	const [listingState, setListingState] = useState(false);
 	const [priceInput, setPriceInput] = useState(0);
 
@@ -175,6 +176,7 @@ export default function MyAssets() {
 	}
 
 	async function loadNFTs() {
+		setLoading(true);
 		// const contract = new web3.eth.Contract(NFT, nftContractAddress)
 		// const walletAddress =
 		let accounts;
@@ -298,7 +300,7 @@ export default function MyAssets() {
 			}
 		}
 		setNfts(nftArray);
-		setLoadingState('loaded');
+		setLoading(false);
 
 		// // const nftContract = new web3.eth.Contract(NFT, nftContractAddress)
 		// // const callData1 = tokenContract.ownerOf(1).encodeABI();
@@ -390,13 +392,14 @@ export default function MyAssets() {
 
 		// // console.log(tokenContract.methods.tokenOfOwnerByIndex(signerAddress, 0).call())
 	}
-	if (loadingState === 'loaded' && !nfts.length)
+	if (!loading && !nfts.length) {
 		return (
 			<div className="p-4">
 				<h1 className="text-3xl font-bold py-2 text-blue-200">My NFTs</h1>
 				<h1 className="py-10 px-20 text-3xl">No assets owned</h1>
 			</div>
 		);
+	}
 
 	// TODO: Loading ui
 	// TODO: Detect if the NFT is on sale then display Unlist btn, otherwise displaying List btn
@@ -406,49 +409,52 @@ export default function MyAssets() {
 				<h1 className="text-3xl font-bold py-2 text-blue-200">My NFTs</h1>
 			</div>
 
-			<div className="flex justify-start">
-				<div className="p-4">
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-						{nfts.map((nft, i) => (
-							<div key={i} className="border shadow rounded-xl overflow-hidden">
-								<div className="container h-72 w-72 relative">
-									<Image
-										className="rounded mt-4"
-										layout="fill"
-										src={nft.image}
-										alt="image"
-									/>
-								</div>
-								<div className="p-4 bg-black">
-									<p className="text-2xl font-bold text-white">{nft.name}</p>
-									<p className="text-m font-bold pt-4">{nft.description}</p>
-								</div>
-								{/* <form> */}
-								<div>
-									{/* <input
+			{loading ? (
+				<Loading />
+			) : (
+				<div className="flex justify-start">
+					<div className="p-4">
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+							{nfts.map((nft, i) => (
+								<div key={i} className="border shadow rounded-xl overflow-hidden">
+									<div className="container h-72 w-72 relative">
+										<Image
+											className="rounded mt-4"
+											layout="fill"
+											src={nft.image}
+											alt="image"
+										/>
+									</div>
+									<div className="p-4 bg-black">
+										<p className="text-2xl font-bold text-white">{nft.name}</p>
+										<p className="text-m font-bold pt-4">{nft.description}</p>
+									</div>
+									{/* <form> */}
+									<div>
+										{/* <input
 											type="number"
 											placeholder="Ether"
 											onChange={handleChange}
 											value={priceInput}
 											className="border rounded px-3 py-1 mr-2 h-10 w-36 text-right text-black"
 										/> */}
-								</div>
-								{/* TODO: Check if item is on sale and change the Btn to List or Unlist accordingly */}
-								<div className="grid">
-									<button
-										// onClick={list(nft)}
-										onClick={() => list(nft)}
-										className="font-bold mt-4 text-2xl bg-blue-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
-									>
-										List
-									</button>
-									<button
-										onClick={() => unlist(nft)}
-										className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-600 text-white rounded-lg p-4 shadow-lg"
-									>
-										Unlist
-									</button>
-									{/* {nft.tokenId === 0 ? (
+									</div>
+									{/* TODO: Check if item is on sale and change the Btn to List or Unlist accordingly */}
+									<div className="grid">
+										<button
+											// onClick={list(nft)}
+											onClick={() => list(nft)}
+											className="font-bold mt-4 text-2xl bg-blue-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
+										>
+											List
+										</button>
+										<button
+											onClick={() => unlist(nft)}
+											className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-600 text-white rounded-lg p-4 shadow-lg"
+										>
+											Unlist
+										</button>
+										{/* {nft.tokenId === 0 ? (
 										<button
 											// onClick={list(nft)}
 											onClick={() => list(nft)}
@@ -464,24 +470,25 @@ export default function MyAssets() {
 											Unlist
 										</button>
 									)} */}
+									</div>
+									{/* </form> */}
 								</div>
-								{/* </form> */}
-							</div>
-						))}
+							))}
+						</div>
+						<ToastContainer
+							position="top-right"
+							autoClose={5000}
+							hideProgressBar={false}
+							newestOnTop={false}
+							closeOnClick
+							rtl={false}
+							pauseOnFocusLoss
+							draggable
+							pauseOnHover
+						/>
 					</div>
-					<ToastContainer
-						position="top-right"
-						autoClose={5000}
-						hideProgressBar={false}
-						newestOnTop={false}
-						closeOnClick
-						rtl={false}
-						pauseOnFocusLoss
-						draggable
-						pauseOnHover
-					/>
 				</div>
-			</div>
+			)}
 		</Layout>
 	);
 }

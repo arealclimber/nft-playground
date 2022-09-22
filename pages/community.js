@@ -15,7 +15,7 @@ export default function Community() {
 						className="flex-2 mt-10 border min-h-full rounded p-4 text-black text-lg"
 					/>
 
-					<button className="flex-1 mt-10 font-bold p-4 text-2xl bg-blue-500 hover:scale-110 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg">
+					<button className="hover:cursor-not-allowed flex-1 mt-10 font-bold p-4 text-2xl bg-blue-500  hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg">
 						Publish article NFT
 					</button>
 				</div>
