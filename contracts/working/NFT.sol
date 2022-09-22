@@ -55,12 +55,12 @@ contract NFT is ERC721URIStorage, ERC721Enumerable {
         return super.supportsInterface(interfaceId);
     }
 
-    function createToken(string memory tokenURI) public returns (uint256) {
+    function createToken(string memory tokenUri) public returns (uint256) {
         uint256 newItemId = _tokenIds.current();
         _tokenIds.increment();
 
         _safeMint(msg.sender, newItemId);
-        _setTokenURI(newItemId, tokenURI);
+        _setTokenURI(newItemId, tokenUri);
 
         return newItemId;
     }

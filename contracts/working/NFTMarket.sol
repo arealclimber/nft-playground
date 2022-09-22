@@ -12,19 +12,18 @@ import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
 
 import "hardhat/console.sol";
 
-
 contract NFTMarket is ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _itemIds; // The number is also the accumulating amount of NFT on the market
     Counters.Counter private _itemsSold; // The number is the NFT-sold amount
+    // Counters.Counter private _marketItems;
 
-    uint256 commision = 1;
-    address payable public manager;
+    uint256 private commission = 1;
 
     struct MarketItem {
-        uint itemId;
-        uint tokenId;
-        uint price;
+        uint256 itemId;
+        uint256 tokenId;
+        uint256 price;
         address nftContract;
         address payable seller;
         bool isSold;
@@ -32,116 +31,208 @@ contract NFTMarket is ReentrancyGuard, Ownable {
     }
 
     // Use `_itemIds` to track the items on the market?
-    mapping(uint256 => MarketItem) private idToMarketItem;
-    MarketItem[] public itemsForSale;
-    mapping(address => mapping(uint => bool)) activeItems;
-    // mapping (address => mapping (uint256 => bool)) activeItems;
-
+    // TODO: Should be `private`
+    mapping(uint256 => MarketItem) public idToMarketItem;
+    // MarketItem[] public itemsForSale;
+    mapping(address => mapping(uint256 => bool)) activeItems;
 
     // TODO: Is it necessary to mark nftContract `indexed`?
-    event itemAdded(uint indexed itemId, uint indexed tokenId, uint price, address indexed nftContract);
-    event itemSold(uint indexed itemId, uint indexed tokenId, uint price, address indexed buyer);
-    event itemRemoved(uint indexed itemId, uint indexed tokenId, uint price, address indexed nftContract);
+    event itemAdded(
+        uint256 indexed itemId,
+        uint256 indexed tokenId,
+        uint256 price,
+        address indexed nftContract
+    );
+    event itemSold(
+        uint256 indexed itemId,
+        uint256 indexed tokenId,
+        uint256 price,
+        address indexed buyer
+    );
+    event itemRemoved(
+        uint256 indexed itemId,
+        uint256 indexed tokenId,
+        uint256 price,
+        address indexed nftContract
+    );
 
     constructor() {
-        manager = payable(msg.sender);
+
     }
 
-    modifier onlyItemOwner(address tokenAddress, uint tokenId) {
+    modifier onlyItemOwner(address tokenAddress, uint256 tokenId) {
         IERC721 tokenContract = IERC721(tokenAddress);
-        require(tokenContract.ownerOf(tokenId) == msg.sender);
+        require(
+            tokenContract.ownerOf(tokenId) == msg.sender,
+            "Only the owner of this item can do this operation"
+        );
         _;
     }
 
-    modifier hasTransferApproval(address tokenAddress, uint tokenId) {
+    modifier hasTransferApproval(address tokenAddress, uint256 tokenId) {
         IERC721 tokenContract = IERC721(tokenAddress);
-        require(tokenContract.getApproved(tokenId) == address(this));
+        require(
+            tokenContract.getApproved(tokenId) == address(this),
+            "Not approved yet"
+        );
         _;
     }
 
     // TODO: Make sure if the item is already on the market?
-    modifier itemExists(uint id) {
+    modifier itemExists(uint256 id) {
         // require(id <= _itemIds.current() && idToMarketItem[id].itemId == id);
-        require(id < _itemIds.current() && itemsForSale[id].itemId == id);
+        require(
+            id < _itemIds.current() && idToMarketItem[id].itemId == id,
+            "Item is not on the market."
+        );
         _;
     }
 
     // TODO: Check if the item is sold out? What about reselling?
-    modifier isForSale(uint id) {
-        require(itemsForSale[id].isSold == false, "Item is already sold!");
+    modifier isForSale(uint256 id) {
+        require(idToMarketItem[id].isSold == false, "Item is already sold!");
         _;
     }
 
     function returnAllListedItems() public view returns (MarketItem[] memory) {
-        uint itemCount = _itemIds.current();
-        uint itemLength = itemsForSale.length;
-        uint currentIndex = 0;
+        uint256 itemCount = _itemIds.current();
+        // uint256 itemLength = itemsForSale.length;
+        uint256 currentIndex = 0;
 
         // MarketItem[] memory items = new MarketItem[](itemLength);
         MarketItem[] memory items = new MarketItem[](itemCount);
-        for (uint i = 0; i < itemCount; i++) {
-            uint currentId = itemsForSale[i].itemId;
-            MarketItem storage currentItem = itemsForSale[currentId];
+        for (uint256 i = 0; i < itemCount; i++) {
+            uint256 currentId = idToMarketItem[i].itemId;
+            MarketItem storage currentItem = idToMarketItem[currentId];
             items[currentIndex] = currentItem;
             currentIndex += 1;
         }
         return items;
     }
 
-    function unlistItem(uint id, uint tokenId, address tokenAddress) onlyItemOwner(tokenAddress, tokenId) external {
-        require(activeItems[tokenAddress][tokenId] == true, "Item is not on sale!");
-        itemsForSale[id].isOnSale = false;
+    function unlistItem(
+        uint256 id,
+        uint256 tokenId,
+        address tokenAddress
+    ) external onlyItemOwner(tokenAddress, tokenId) nonReentrant {
+        require(
+            activeItems[tokenAddress][tokenId] == true,
+            "Item is not on sale!"
+        );
+        _itemIds.decrement();
+        // _marketItems.decrement();
+
+        delete idToMarketItem[id];
+        idToMarketItem[id].isOnSale = false;
         activeItems[tokenAddress][tokenId] = false;
 
-        emit itemRemoved(id, tokenId, itemsForSale[id].price, tokenAddress);
-
+        // emit itemRemoved(id, tokenId, itemsForSale[id].price, tokenAddress);
     }
 
-    function addItemToMarket(uint tokenId, uint price,address tokenAddress) onlyItemOwner(tokenAddress, tokenId) hasTransferApproval(tokenAddress, tokenId) external returns (uint) {
-        require(activeItems[tokenAddress][tokenId] == false, "Item is already on sale!");        
-        uint newItemId = _itemIds.current();
+    function addItemToMarket(
+        uint256 tokenId,
+        uint256 price,
+        address tokenAddress
+    )
+        external
+        nonReentrant
+        onlyItemOwner(tokenAddress, tokenId)
+        hasTransferApproval(tokenAddress, tokenId)
+        returns (uint256)
+    {
+        require(
+            activeItems[tokenAddress][tokenId] == false,
+            "Item is already on sale!"
+        );
+        uint256 newItemId = _itemIds.current();
         _itemIds.increment();
-        itemsForSale.push(MarketItem(newItemId, tokenId, price, tokenAddress, payable(msg.sender), false, true));
+        // _marketItems.increment();
+        // itemsForSale.push(
+        //     MarketItem(
+        //         newItemId,
+        //         tokenId,
+        //         price,
+        //         tokenAddress,
+        //         payable(msg.sender),
+        //         false,
+        //         true
+        //     )
+        // );
+        idToMarketItem[newItemId] = MarketItem(
+            newItemId,
+            tokenId,
+            price,
+            tokenAddress,
+            payable(msg.sender),
+            false,
+            true
+        );
+
         activeItems[tokenAddress][tokenId] = true;
 
-        assert(itemsForSale[newItemId].itemId == newItemId);
+        assert(idToMarketItem[newItemId].itemId == newItemId);
         emit itemAdded(newItemId, tokenId, price, tokenAddress);
         return newItemId;
         // Set the item.isSold = false
         // Ask the owner to approve it? Or no need to do this asking? The owner has the ownership of the NFT and we just ask if he or she want to put the NFT on our market to sell.
-
     }
 
-    function buyItem(uint id) payable external itemExists(id) isForSale(id) hasTransferApproval(itemsForSale[id].nftContract, itemsForSale[id].tokenId) nonReentrant {
-        require(msg.value == itemsForSale[id].price, "Please submit the asking price in order to complete the purchase.");
-        require(msg.sender != itemsForSale[id].seller);
+    function buyItem(uint256 id)
+        external
+        payable
+        itemExists(id)
+        isForSale(id)
+        hasTransferApproval(
+            idToMarketItem[id].nftContract,
+            idToMarketItem[id].tokenId
+        )
+        nonReentrant
+    {
+        require(
+            msg.value == idToMarketItem[id].price,
+            "Please submit the asking price in order to complete the purchase."
+        );
+        require(
+            msg.sender != idToMarketItem[id].seller,
+            "Seller cannot be the buyer."
+        );
 
-        itemsForSale[id].isSold = true;
-        itemsForSale[id].isOnSale = false;
-        activeItems[itemsForSale[id].nftContract][itemsForSale[id].tokenId] = false;
+        idToMarketItem[id].isSold = true;
+        idToMarketItem[id].isOnSale = false;
+        activeItems[idToMarketItem[id].nftContract][
+            idToMarketItem[id].tokenId
+        ] = false;
 
-        IERC721(itemsForSale[id].nftContract).safeTransferFrom(itemsForSale[id].seller, msg.sender, itemsForSale[id].tokenId);
-        
-        // payable(address(this)).transfer(commision);
-        uint revenue = (msg.value) * 1 / 100;
-        payable(manager).transfer(revenue);
+        IERC721(idToMarketItem[id].nftContract).safeTransferFrom(
+            idToMarketItem[id].seller,
+            msg.sender,
+            idToMarketItem[id].tokenId
+        );
 
-        // payable(address(this)).transfer(revenue);
+        uint256 revenue = ((msg.value) * commission) / 100;
 
-        uint received = (msg.value - revenue);
+        // payable(manager).transfer(revenue);
+        payable(address(this)).transfer(revenue);
 
-        itemsForSale[id].seller.transfer(received);
+        uint256 received = (msg.value - revenue);
+
+        idToMarketItem[id].seller.transfer(received);
 
         _itemsSold.increment();
 
         // TODO: May use `mapping` instead of `array` is the more efficient way when there's no need to run for-loop
+        delete idToMarketItem[id];
         // delete itemsForSale[id];
 
-        emit itemSold(id, itemsForSale[id].tokenId, itemsForSale[id].price, msg.sender);
-
+        emit itemSold(
+            id,
+            idToMarketItem[id].tokenId,
+            idToMarketItem[id].price,
+            msg.sender
+        );
     }
 
-/*    
+    /*    
      struct MarketItem {
         uint itemId;
         uint tokenId;
@@ -153,22 +244,21 @@ contract NFTMarket is ReentrancyGuard, Ownable {
     }
 */
     function fetchMarketItems() public view returns (MarketItem[] memory) {
-        uint itemCount = _itemIds.current();
-        uint unsoldItemCount = _itemIds.current() - _itemsSold.current();
-        uint currentIndex = 0;
+        uint256 itemCount = _itemIds.current();
+        uint256 unsoldItemCount = _itemIds.current() - _itemsSold.current();
+        // uint256 unsoldItemCount = _marketItems.current() - _itemsSold.current();
+        uint256 currentIndex = 0;
 
         // TODO: push? storage vs memory?
 
         MarketItem[] memory items = new MarketItem[](unsoldItemCount);
-        for (uint i = 0; i < itemCount; i++) {
-            /* TODO:  
-            `if ((itemsForSale[i].isSold == false) && (itemsForSale[i].isOnSale == true ))`
-            OR
-            `if ((itemsForSale[i].isOnSale == true))`
-            */
-            if ((itemsForSale[i].isOnSale == true)) {
-                uint currentId = itemsForSale[i].itemId;
-                MarketItem storage currentItem = itemsForSale[currentId];
+        for (uint256 i = 0; i < itemCount; i++) {
+            if (
+                (idToMarketItem[i].nftContract != address(0)) &&
+                (idToMarketItem[i].isOnSale == true)
+            ) {
+                uint256 currentId = i;
+                MarketItem storage currentItem = idToMarketItem[currentId];
                 items[currentIndex] = currentItem;
                 currentIndex += 1;
             }
@@ -182,20 +272,25 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         return items;
     }
 
-    function setCommision(uint256 _commision) external onlyOwner nonReentrant {
-        commision = _commision;
+    function setCommission(uint256 _commission)
+        external
+        onlyOwner
+        nonReentrant
+    {
+        commission = _commission;
     }
 
-    function getCommision() public view returns (uint) {
-        return commision;
+    function getCommission() public view returns (uint256) {
+        return commission;
     }
 
 
+    receive() external payable {}
 
+    fallback() external payable {}
+
+    function withdrawMoney() external onlyOwner nonReentrant {
+        (bool success, ) = msg.sender.call{value: address(this).balance}("");
+        require(success, "Transfer failed.");
+    }
 }
-
-
-
-
-
-
