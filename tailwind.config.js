@@ -1,7 +1,11 @@
 module.exports = {
 	content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
 	theme: {
-		extend: {},
+		extend: {
+			animation: {
+				'spin-slow': 'spin 1s linear infinite',
+			},
+		},
 		fontFamily: {
 			'custom': ['Ubuntu', 'ubuntu-mono', 'sans-serif'],
 			'openSans': ['open-sans', 'sans-serif'],
@@ -12,4 +16,4 @@ module.exports = {
 	daisyui: {
 		themes: [{}, 'forest', 'lemonade'],
 	},
-}
+};

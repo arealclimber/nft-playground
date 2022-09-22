@@ -15,17 +15,12 @@ import Image from 'next/image';
 import { nftContractAddress, marketContractAddress } from '../utils/config';
 import NFT from '../utils/NFT.json';
 import Market from '../utils/Market.json';
+import Loading from '../components/Loading';
 
 // import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json'
 // import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
 
 export default function Home() {
-	useEffect(() => {
-		// checkIfWalletIsConnected()
-		// checkCorrectNetwork()
-		loadNFTs();
-	}, []);
-
 	const infuraMumbaiUrl = process.env.INFURA_MUMBAI_URL;
 
 	// Hex
@@ -35,11 +30,17 @@ export default function Home() {
 
 	const [nfts, setNfts] = useState([]);
 	const [sold, setSold] = useState([]);
-	const [loadingState, setLoadingState] = useState('not-loaded');
+	const [loading, setLoading] = useState(false);
 	const [provider, setProvider] = useState([]);
 	const [library, setLibrary] = useState([]);
 	const [currentAccount, setCurrentAccount] = useState('');
 	const [correctNetwork, setCorrectNetwork] = useState(false);
+
+	useEffect(() => {
+		// checkIfWalletIsConnected()
+		// checkCorrectNetwork()
+		loadNFTs();
+	}, []);
 
 	// async function checkIfWalletIsConnected() {
 	// 	const { ethereum } = window
@@ -129,6 +130,7 @@ export default function Home() {
 
 	// FIXME: How to display the market item without user connecting wallet?
 	async function loadNFTs() {
+		setLoading(true);
 		// const web3Modal = new Web3Modal();
 		// // const connection = await web3Modal.connect()
 		// // const provider = new ethers.providers.Web3Provider(connection)
@@ -213,22 +215,22 @@ export default function Home() {
 						console.log(`item id:${item.itemId}`);
 						return item;
 					})
-
 			);
 
 			setNfts(items);
-			setLoadingState('loaded');
+			setLoading(false);
 
 			// const soldItems = items.filter((i) => i.sold)
 			// setSold(soldItems)
-			setNfts(items);
-			setLoadingState('loaded');
+			// setNfts(items);
+			// setLoading(false);
 		} catch (error) {
 			console.error(error);
 		}
 	}
 
 	const router = useRouter();
+
 	const handleClick = (nft) => {
 		router.push('/market');
 		console.log(`NFT image: ${nft.image}`); //FIXME: why `undefined` but displayed?
@@ -236,23 +238,26 @@ export default function Home() {
 
 	return (
 		<Layout>
-			<div className="">
-				<div className="p-6 break-words">
-					<div className="pt-4 flex py-2 overflow-hidden">
-						<div className="">
-							<Link href="/market">
-								<h1 className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
-									NFT Marketplace
-								</h1>
-							</Link>
+			{loading ? (
+				<Loading />
+			) : (
+				<div className="">
+					<div className="p-6 break-words">
+						<div className="pt-4 flex py-2 overflow-hidden">
+							<div className="">
+								<Link href="/market">
+									<h1 className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
+										NFT Marketplace
+									</h1>
+								</Link>
+							</div>
+							<div className="px-10">
+								<p className="text-2xl font-bold">Buy and sell NFTs.</p>
+							</div>
 						</div>
-						<div className="px-10">
-							<p className="text-2xl font-bold">Buy and sell NFTs.</p>
-						</div>
-					</div>
 
-					{/* Anthoer way: useing Image component */}
-					{/* <ul className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4 xl:grid-cols-4 2xl:grid-cols-5 pt-5">
+						{/* Anthoer way: useing Image component */}
+						{/* <ul className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4 xl:grid-cols-4 2xl:grid-cols-5 pt-5">
 						{nfts.map((nft, i) => (
 							<li
 								key={i}
@@ -281,54 +286,54 @@ export default function Home() {
 						))}
 					</ul> */}
 
-					<div className="flex justify-start">
-						<div className="px-4" style={{ maxWidth: '1600px' }}>
-							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 2xl:grid-cols-5">
-								{nfts.map((nft, i) => (
-									<div
-										key={i}
-										className="border shadow rounded-xl overflow-hidden cursor-pointer p-2 hover:opacity-90"
-										onClick={handleClick}
-									>
-										<div className="container h-72 w-72 relative">
-											<Image
-												className="rounded mt-4"
-												layout="fill"
-												src={nft.image}
-												alt="image"
-											/>
-										</div>
+						<div className="flex justify-start">
+							<div className="px-4" style={{ maxWidth: '1600px' }}>
+								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 2xl:grid-cols-5">
+									{nfts.map((nft, i) => (
+										<div
+											key={i}
+											className="border shadow rounded-xl overflow-hidden cursor-pointer p-2 hover:opacity-90"
+											onClick={handleClick}
+										>
+											<div className="container h-72 w-72 relative">
+												<Image
+													className="rounded mt-4"
+													layout="fill"
+													src={nft.image}
+													alt="image"
+												/>
+											</div>
 
-										<div className="p-4 bg-black">
-											<p className="text-2xl font-bold text-white">{nft.name}</p>
+											<div className="p-4 bg-black">
+												<p className="text-2xl font-bold text-white">{nft.name}</p>
 
-											<p className="text-2xl font-bold text-red-300">
-												{nft.price} MATIC
-											</p>
+												<p className="text-2xl font-bold text-red-300">
+													{nft.price} MATIC
+												</p>
+											</div>
 										</div>
-									</div>
-								))}
+									))}
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 
-				{/* NOW */}
-				<div className="p-6 break-words">
-					<div className="pt-4 flex py-2 overflow-hidden">
-						<div className="">
-							<Link href="/loans">
-								<a className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
-									Fractional NFTs
-								</a>
-							</Link>
+					{/* NOW */}
+					<div className="p-6 break-words">
+						<div className="pt-4 flex py-2 overflow-hidden">
+							<div className="">
+								<Link href="/loans">
+									<a className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
+										Fractional NFTs
+									</a>
+								</Link>
+							</div>
+							<div className="px-10">
+								<p className="text-2xl font-bold">Lend and borrow NFTs.</p>
+							</div>
 						</div>
-						<div className="px-10">
-							<p className="text-2xl font-bold">Lend and borrow NFTs.</p>
-						</div>
-					</div>
 
-					{/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+						{/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 							{nfts.map((nft, i) => (
 								<div
 									key={i}
@@ -347,26 +352,26 @@ export default function Home() {
 								</div>
 							))}
 						</div> */}
-				</div>
+					</div>
 
-				{/* NOW */}
-				<div className="p-6 break-words">
-					{
-						<div>
-							<div className="pt-4 flex py-2 overflow-hidden">
-								<div className="">
-									<Link href="/community">
-										<a className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
-											Community
-										</a>
-									</Link>
+					{/* NOW */}
+					<div className="p-6 break-words">
+						{
+							<div>
+								<div className="pt-4 flex py-2 overflow-hidden">
+									<div className="">
+										<Link href="/community">
+											<a className="text-2xl font-bold text-accent hover:text-blue-200 hover:cursor-pointer">
+												Community
+											</a>
+										</Link>
+									</div>
+									<div className="px-10">
+										<p className="text-2xl font-bold">Thoughts and chats.</p>
+									</div>
 								</div>
-								<div className="px-10">
-									<p className="text-2xl font-bold">Thoughts and chats.</p>
-								</div>
-							</div>
 
-							{/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+								{/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
 							{nfts.map((nft, i) => (
 								<div
 									key={i}
@@ -385,10 +390,11 @@ export default function Home() {
 								</div>
 							))}
 						</div> */}
-						</div>
-					}
+							</div>
+						}
+					</div>
 				</div>
-			</div>
+			)}
 		</Layout>
 	);
 }

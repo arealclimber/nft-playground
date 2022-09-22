@@ -9,38 +9,57 @@ import { nftContractAddress, marketContractAddress } from '../utils/config';
 
 import NFT from '../utils/NFT.json';
 import Market from '../utils/Market.json';
+import Loading from '../components/Loading';
 // import NFT from '../artifacts/contracts/working/NFT.sol/NFT.json'
 // import Market from '../artifacts/contracts/working/NFTMarket.sol/NFTMarket.json'
 
 export default function NFTMarket() {
 	const [nfts, setNfts] = useState([]);
-	const [loadingState, setLoadingState] = useState('not-loaded');
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		loadNFTs();
 	}, []);
 
 	async function loadNFTs() {
-		const web3Modal = new Web3Modal();
-		const connection = await web3Modal.connect();
-		const provider = new ethers.providers.Web3Provider(connection);
-		// const signer = provider.getSigner()
+		setLoading(true);
+		// const web3Modal = new Web3Modal();
+		// const connection = await web3Modal.connect();
+		// const provider = new ethers.providers.Web3Provider(connection);
+		// // const signer = provider.getSigner()
 
-		// const provider = new ethers.providers.JsonRpcProvider()
+		// // const provider = new ethers.providers.JsonRpcProvider()
+		// const tokenContract = new ethers.Contract(nftContractAddress, NFT, provider);
+		// const marketContract = new ethers.Contract(
+		// 	marketContractAddress,
+		// 	Market,
+		// 	provider
+		// );
+		// // console.log(tokenContract)
+
+		let provider = new ethers.providers.InfuraProvider('maticmum');
 		const tokenContract = new ethers.Contract(nftContractAddress, NFT, provider);
 		const marketContract = new ethers.Contract(
 			marketContractAddress,
 			Market,
 			provider
 		);
-		// console.log(tokenContract)
+
+		// try {
+		// 	const web3Modal = new Web3Modal();
+		// 	const connection = await web3Modal.connect();
+		// 	provider = new ethers.providers.Web3Provider(connection);
+		// 	const signer = provider.getSigner();
+		// 	const signerAddress = signer.getAddress();
+		// } catch (err) {
+		// 	console.error(err);
+		// }
 
 		try {
 			const data = await marketContract.fetchMarketItems();
 			// Get the NFT array populated with metadata (IPFS in this case)
 			console.log(`data: ${data}`);
 			const items = await Promise.all(
-
 				data
 					.filter((item) => item.isOnSale === true)
 					.map(async (i) => {
@@ -59,7 +78,6 @@ export default function NFTMarket() {
 						};
 						return item;
 					})
-
 			);
 			console.log(`data after map(): ${items}`); // [object Object],[object Object],...
 
@@ -68,8 +86,9 @@ export default function NFTMarket() {
 			// console.log(test)
 
 			setNfts(items);
-			setLoadingState('loaded');
+			setLoading(false);
 		} catch (error) {
+			setLoading(false);
 			console.error(error);
 			return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>;
 		}
@@ -130,7 +149,7 @@ export default function NFTMarket() {
 		loadNFTs();
 	}
 
-	if (loadingState === 'loaded' && !nfts.length)
+	if (!loading && !nfts.length)
 		return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>;
 
 	return (
@@ -138,49 +157,55 @@ export default function NFTMarket() {
 			<div className="p-4">
 				<h1 className="text-3xl font-bold py-2 text-blue-200">Market</h1>
 			</div>
-			<div className="flex justify-start">
-				<div className="px-4" style={{ maxWidth: '1600px' }}>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
-						{nfts.map((nft, i) => (
-							<div key={i} className="border shadow rounded-xl overflow-hidden">
-								<div className="container h-72 w-72 relative">
-									<Image
-										className="rounded mt-4"
-										layout="fill"
-										src={nft.image}
-										alt="image"
-									/>
-								</div>
-								<div className="p-4">
-									<p style={{ height: '64px' }} className="text-4xl ">
-										{nft.name}
-									</p>
-									<div
-										style={{
-											height: '70px',
-											overflow: 'hidden',
-										}}
-										className="pt-4"
-									>
-										<p className="text-lg text-blue-300">{nft.description}</p>
+			{loading ? (
+				<Loading />
+			) : (
+				<div className="flex justify-start">
+					<div className="px-4" style={{ maxWidth: '1600px' }}>
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
+							{nfts.map((nft, i) => (
+								<div key={i} className="border shadow rounded-xl overflow-hidden">
+									<div className="container h-72 w-72 relative">
+										<Image
+											className="rounded mt-4"
+											layout="fill"
+											src={nft.image}
+											alt="image"
+										/>
+									</div>
+									<div className="p-4">
+										<p style={{ height: '64px' }} className="text-4xl ">
+											{nft.name}
+										</p>
+										<div
+											style={{
+												height: '70px',
+												// overflow: 'hidden',
+											}}
+											className="pt-4"
+										>
+											<p className="text-lg text-blue-300 truncate">
+												{nft.description}
+											</p>
+										</div>
+									</div>
+									<div className="p-4 ">
+										<p className="text-2xl font-bold text-red-300">
+											{nft.price} MATIC
+										</p>
+										<button
+											className="mt-4 w-full bg-blue-400 text-black font-bold text-2xl py-2 px-12 rounded hover:bg-blue-500 "
+											onClick={() => buyNft(nft)}
+										>
+											Buy
+										</button>
 									</div>
 								</div>
-								<div className="p-4 ">
-									<p className="text-2xl font-bold text-red-300">
-										{nft.price} MATIC
-									</p>
-									<button
-										className="mt-4 w-full bg-blue-400 text-black font-bold text-2xl py-2 px-12 rounded hover:bg-blue-500 "
-										onClick={() => buyNft(nft)}
-									>
-										Buy
-									</button>
-								</div>
-							</div>
-						))}
+							))}
+						</div>
 					</div>
 				</div>
-			</div>
+			)}
 		</Layout>
 	);
 }

@@ -17,6 +17,7 @@ import Market from '../utils/Market.json';
 import Layout from '../components/Layout';
 
 import Web3 from 'web3';
+import Loading from '../components/Loading';
 
 // const Web3 = require('web3');
 
@@ -28,7 +29,7 @@ export default function MyAssets() {
 
 	const router = useRouter();
 	const [nfts, setNfts] = useState([]);
-	const [loadingState, setLoadingState] = useState('not-loaded');
+	const [loading, setLoading] = useState(true);
 	const [listingState, setListingState] = useState(false);
 	const [priceInput, setPriceInput] = useState(0);
 
@@ -115,7 +116,7 @@ export default function MyAssets() {
 
 		console.log(`Unlist transaction: ${transaction}`);
 
-		const tx = await transaction.wait();
+		const tx = await transaction.wait(); // The tx: [object Object]
 		const event = tx.events[0];
 
 		console.log(`Unlist tx: ${tx}`);
@@ -138,45 +139,44 @@ export default function MyAssets() {
 		// console.log(event);
 	}
 
-	async function testList(nft) {
+	async function loadItems(tokenContract, marketContract) {
 		const web3Modal = new Web3Modal();
 		const connection = await web3Modal.connect();
 		const provider = new ethers.providers.Web3Provider(connection);
 		const signer = provider.getSigner();
+		try {
+			const data = await marketContract.fetchMarketItems();
+			// Get the NFT array populated with metadata (IPFS in this case)
+			console.log(`data: ${data}`);
+			const items = await Promise.all(
+				data
+					.filter((item) => item.isOnSale === true)
+					.map(async (i) => {
+						const tokenUri = await tokenContract.tokenURI(i.tokenId);
+						const meta = await axios.get(tokenUri);
+						let price = ethers.utils.formatUnits(i.price.toString(), 'ether');
+						let item = {
+							price,
+							itemId: i.itemId.toNumber(),
+							tokenId: i.tokenId.toNumber(),
+							seller: i.seller,
+							owner: i.owner,
+							image: meta.data.image,
+							name: meta.data.name,
+							description: meta.data.description,
+						};
+						return item;
+					})
+			);
 
-		const marketContract = new ethers.Contract(
-			marketContractAddress,
-			Market,
-			signer
-		);
-		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
-
-		const price = ethers.utils.parseUnits('0.001', 'ether');
-		let transaction = await marketContract.addItemToMarket(
-			nft.tokenId,
-			price,
-			nftContractAddress
-		);
-		console.log(`transaction: ${transaction}`);
-		let tx = await transaction.wait();
-		console.log(`tx: ${tx}`);
-		let event = tx.events[0];
-		console.log(event);
-		let value = event.args[2];
-		if (value) {
-			toast.success('Success to put NFT on Market!', {
-				position: 'top-right',
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
+			return items;
+		} catch (error) {
+			console.error(error);
 		}
 	}
 
 	async function loadNFTs() {
+		setLoading(true);
 		// const contract = new web3.eth.Contract(NFT, nftContractAddress)
 		// const walletAddress =
 		let accounts;
@@ -206,17 +206,9 @@ export default function MyAssets() {
 			console.error(error);
 		}
 
-		// TODO: Return Promise, try it later
-		// let signerAddress = signer.getAddress()
-		// console.log('signer address: ', signerAddress)
-		// // console.log(address)
-		// // address.then(() => {
-		// // 	console.log(address)
-		// // })
-
-		// // signerAddress.then((i) => {
-		// // 	console.log(i)
-		// // })
+		// Return Promise=> use `await`
+		let signerAddress = await signer.getAddress();
+		console.log('signer address: ', signerAddress);
 
 		const marketContract = new ethers.Contract(
 			marketContractAddress,
@@ -225,16 +217,20 @@ export default function MyAssets() {
 		);
 
 		const tokenContract = new ethers.Contract(nftContractAddress, NFT, signer);
-
 		console.log(tokenContract);
 		const ownedNFT = await tokenContract
 			.balanceOf(accounts[0])
 			.then((v) => v.toNumber());
 		console.log(`The amount of NFT this user own: ${ownedNFT}`);
 
-		const totalSupply = await tokenContract.totalSupply().then((v) => {
-			return v.toNumber();
-		});
+		let marketItems = await loadItems(tokenContract, marketContract);
+		console.log('marketItems: ', marketItems);
+
+		// const totalSupply = await tokenContract.totalSupply().then((v) => {
+		// 	return v.toNumber();
+		// });
+
+		const totalSupply = (await tokenContract.totalSupply()).toNumber();
 		console.log('total supply: ', totalSupply);
 
 		for (let i = 0; i < ownedNFT; i++) {
@@ -246,7 +242,10 @@ export default function MyAssets() {
 
 			// let tokenItemId = await marketContract.itemsForSale;
 
+			let approvedAddress = await tokenContract.getApproved(tokenId);
+
 			console.log(`Token ID: ${tokenId}`);
+			console.log('Token ', tokenId, 'approved by:', approvedAddress);
 			console.log(`Token URI: ${tokenURI}`);
 			// console.log(`Token Item ID: ${tokenItemId}`);
 
@@ -301,7 +300,7 @@ export default function MyAssets() {
 			}
 		}
 		setNfts(nftArray);
-		setLoadingState('loaded');
+		setLoading(false);
 
 		// // const nftContract = new web3.eth.Contract(NFT, nftContractAddress)
 		// // const callData1 = tokenContract.ownerOf(1).encodeABI();
@@ -393,13 +392,14 @@ export default function MyAssets() {
 
 		// // console.log(tokenContract.methods.tokenOfOwnerByIndex(signerAddress, 0).call())
 	}
-	if (loadingState === 'loaded' && !nfts.length)
+	if (!loading && !nfts.length) {
 		return (
 			<div className="p-4">
 				<h1 className="text-3xl font-bold py-2 text-blue-200">My NFTs</h1>
 				<h1 className="py-10 px-20 text-3xl">No assets owned</h1>
 			</div>
 		);
+	}
 
 	// TODO: Loading ui
 	// TODO: Detect if the NFT is on sale then display Unlist btn, otherwise displaying List btn
@@ -409,66 +409,89 @@ export default function MyAssets() {
 				<h1 className="text-3xl font-bold py-2 text-blue-200">My NFTs</h1>
 			</div>
 
-			<div className="flex justify-start">
-				<div className="p-4">
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-						{nfts.map((nft, i) => (
-							<div key={i} className="border shadow rounded-xl overflow-hidden">
-								<div className="container h-72 w-72 relative">
-									<Image
-										className="rounded mt-4"
-										layout="fill"
-										src={nft.image}
-										alt="image"
-									/>
-								</div>
-								<div className="p-4 bg-black">
-									<p className="text-2xl font-bold text-white">{nft.name}</p>
-									<p className="text-m font-bold">{nft.description}</p>
-								</div>
-								{/* <form> */}
-								<div>
-									{/* <input
+
+			{loading ? (
+				<Loading />
+			) : (
+				<div className="flex justify-start">
+					<div className="p-4">
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+							{nfts.map((nft, i) => (
+								<div key={i} className="border shadow rounded-xl overflow-hidden">
+									<div className="container h-72 w-72 relative">
+										<Image
+											className="rounded mt-4"
+											layout="fill"
+											src={nft.image}
+											alt="image"
+										/>
+									</div>
+									<div className="p-4 bg-black">
+										<p className="text-2xl font-bold text-white">{nft.name}</p>
+										<p className="text-m font-bold pt-4">{nft.description}</p>
+									</div>
+									{/* <form> */}
+									<div>
+										{/* <input
 											type="number"
 											placeholder="Ether"
 											onChange={handleChange}
 											value={priceInput}
 											className="border rounded px-3 py-1 mr-2 h-10 w-36 text-right text-black"
 										/> */}
+
+									</div>
+									{/* TODO: Check if item is on sale and change the Btn to List or Unlist accordingly */}
+									<div className="grid">
+										<button
+											// onClick={list(nft)}
+											onClick={() => list(nft)}
+											className="font-bold mt-4 text-2xl bg-blue-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
+										>
+											List
+										</button>
+										<button
+											onClick={() => unlist(nft)}
+											className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-600 text-white rounded-lg p-4 shadow-lg"
+										>
+											Unlist
+										</button>
+										{/* {nft.tokenId === 0 ? (
+										<button
+											// onClick={list(nft)}
+											onClick={() => list(nft)}
+											className="font-bold mt-4 text-2xl bg-blue-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
+										>
+											List
+										</button>
+									) : (
+										<button
+											onClick={() => unlist(nft)}
+											className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-600 text-white rounded-lg p-4 shadow-lg"
+										>
+											Unlist
+										</button>
+									)} */}
+									</div>
+									{/* </form> */}
 								</div>
-								{/* TODO: Check if item is on sale and change the Btn to List or Unlist accordingly */}
-								<div className="grid grid-cols-2">
-									<button
-										// onClick={list(nft)}
-										onClick={() => list(nft)}
-										className="font-bold mt-4 text-2xl bg-blue-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-blue-600 text-white rounded-lg p-4 shadow-lg"
-									>
-										List
-									</button>
-									<button
-										onClick={() => unlist(nft)}
-										className="font-bold mt-4 text-2xl bg-teal-800 hover:scale-102 transition duration-500 ease-in-out hover:bg-teal-600 text-white rounded-lg p-4 shadow-lg"
-									>
-										Unlist
-									</button>
-								</div>
-								{/* </form> */}
-							</div>
-						))}
+							))}
+						</div>
+						<ToastContainer
+							position="top-right"
+							autoClose={5000}
+							hideProgressBar={false}
+							newestOnTop={false}
+							closeOnClick
+							rtl={false}
+							pauseOnFocusLoss
+							draggable
+							pauseOnHover
+						/>
+
 					</div>
-					<ToastContainer
-						position="top-right"
-						autoClose={5000}
-						hideProgressBar={false}
-						newestOnTop={false}
-						closeOnClick
-						rtl={false}
-						pauseOnFocusLoss
-						draggable
-						pauseOnHover
-					/>
 				</div>
-			</div>
+			)}
 		</Layout>
 	);
 }
