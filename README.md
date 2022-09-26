@@ -42,7 +42,7 @@ Live Demo
 
 - [x] List your NFT for sale
 - [x] Buy the NFT with mumbai testnet Matic
-- [ ] Delist your NFT from the marketplace
+- [x] Delist your NFT from the marketplace
 
 <!-- ### Fractionalized NFT
 
@@ -62,6 +62,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 - Hardhat
 - IPFS Protocol
+- ERC721
 
 <!-- ## Community😋
 
@@ -106,7 +107,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 ## 🖥 Acknowledgments
 
-- Inspired by [Nader Dabit](https://twitter.com/dabit3)'s [article](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb) ([YouTube](https://www.youtube.com/watch?v=GKJBEEXUha0))
+- Inspired by [Nader Dabit](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb)
 
 - Pictures resource: [Unsplash](https://unsplash.com/)
 - Image cropper: [iloveimg](https://www.iloveimg.com/crop-image)
