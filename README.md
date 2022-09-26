@@ -50,6 +50,7 @@ Made with 💙 by [Lumii](https://twitter.com/arealclimber)
 
 ### Frontend
 
+- Javascript
 - Next.js
 - Tailwind CSS
 - daisyUI
