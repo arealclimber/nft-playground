@@ -1,4 +1,4 @@
-This project is built to learn the NFT marketplace dApp.
+This project is built to learn the NFT marketplace dApp
 
 - [🧱 Features](#-features)
     - [NFT Creation](#nft-creation)
